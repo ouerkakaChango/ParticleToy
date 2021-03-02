@@ -33,17 +33,39 @@
 //1.地形
 //Ying-Arrangement-Arrange3D(3DSpaceY)-Terrain3D(参数diamond displacement)
 //https://www.playfuljs.com/realistic-terrain-in-130-lines/
-//WorldR.Put3DPoints(Terrain3D(diamond)),由于地形比较特殊，不必要用时空点，使用（World的）基类的操作类（3DSpaceR）的函数，创建地形也行。
+//WorldR.Put3DPnts(Terrain3D(diamond)),由于地形比较特殊，不必要用时空点，使用（World的）基类的操作类（3DSpaceR）的函数，创建地形也行。
 
 //2.高尔夫球质点
 //阴:能量守恒 阳:表现-位移(速度，加速度)
 //Particle对应的Rule初始化PhysicProp
-//WorldR.CreateParticle("PhysicProp");
+//WorldR.PutWorldPnt("PhysicProp");
 
 //3.初始击打
 //照理来说，一切本已存在。但从源头考虑的话太复杂。
 //需要“突然”添加一个改变因素。
 //WorldR.ChangeRule(golfPoint,...);
+
+//4.时空演变
+//阳:变化
+//阴:受变
+//球变化后，有一个受变范围（比如boundingBox），然后受变范围里的物体受变
+
+//5.特殊:三角面
+//由于计算机存储空间有限，所以不能无限细分空间达到表述地面的功能
+//只能通过指定顶点，然后数学计算surface碰撞
+//所以，在电脑世界中，Surface也作为一个实物存在
+
+//测试场景1：简单4顶点地面+重力小球
+//WorldR.Put3DPnt(vert1);
+//WorldR.Put3DPnt(vert2);
+//WorldR.Put3DPnt(vert3);
+//WorldR.Put3DPnt(vert4);
+//WorldR.PutSurface(1,2,3);
+//WorldR.PutSurface(2,3,4);
+//WorldR.PutWorldPnt(golf,"PhysicProp");
+//（由于WorldPnt为时空点，所以其自然有一串时空轨迹。
+//在代码上，显示为其自更新，自管理）
+//golf.GetRecord(0,120,"s",0.01); //120s的0.01s间隔帧数据，共12000个
 
 //--操作0:准备3DSpaceR
 //--操作1:Put3DPoint，参数Terrain3D，迭代1
