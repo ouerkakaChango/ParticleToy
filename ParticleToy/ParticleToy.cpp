@@ -71,6 +71,8 @@
 //--操作1:Put3DPoint，参数Terrain3D，迭代1
 //--操作2:Put3DPoint，参数Terrain3D，迭代2
 
+//同步测试1:2021.03.06
+
 int main()
 {
     std::cout << "Hello World!\n"; 
