@@ -4,6 +4,4 @@
 
 Taiji::Taiji()
 {
-	//???
-	std::cout << "Taiji";
 }

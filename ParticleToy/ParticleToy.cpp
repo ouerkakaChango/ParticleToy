@@ -4,7 +4,7 @@
 #include "pch.h"
 #include <iostream>
 
-#include "../include/Base/Taiji.h"
+#include "../include/Base/Spaces.h"
 
 //类设计哲学:
 //1.类名后加后缀，Y为太极，I为阳，O为阴，R为人。阳上有阴阳，阴上有阴阳，以此类推。
@@ -12,6 +12,8 @@
 //3.人要使用任何东西，必须通过使用R。
 //4.按照本人哲学逻辑，对于使用者来说，任何Thing都很难扩展或继承，但很容易组合。
 //5.用R类创建，一般来说，生阳指阴。CreateXXXI(XXXO),用阴初始化阳。
+//++
+//6.无论阴阳，其本质不可用代码表述，其象表述方式千万。但是代码表述有默认方式，I类默认成员变量i，O类默认成员变量o。
 
 //虚拟高尔夫项目：
 //Yang-Space-MetricSpace-EuclideanSpace-3DSpace
@@ -29,6 +31,10 @@
 //WorldO为阴：世界规则/粒子属性，别名Rule
 //WorldI为阳：粒子，别名Particle
 //WorldI持有[3DPoint+Time,Rule]
+
+//++ ??
+//Time的阳是可以是时间戳？
+//Time的阴是时间管理物的变化？
 
 //1.地形
 //Ying-Arrangement-Arrange3D(3DSpaceY)-Terrain3D(参数diamond displacement)
@@ -71,13 +77,26 @@
 //--操作1:Put3DPoint，参数Terrain3D，迭代1
 //--操作2:Put3DPoint，参数Terrain3D，迭代2
 
+//#############################
 //同步测试1:2021.03.06
+//##############################
+//最新规则改动
+//1.无生阴阳的太极本物，本来规定后缀为Y，现在直接不加。
+//2.由于C++命名限制，3DSpace->Space3D,以此类推
+//3.无论阴阳，其本质不可用代码表述，其象
+//##############################
+//Target List
+//1.0 重力小球
+//1.1 Yang-Space-MetricSpace-EuclideanSpace-Space3D
+//1.2 Ying-Time
+//1.3 Minkowski = Space3D + Time
+//1.4 
+//##############################
 
 int main()
 {
-    std::cout << "Hello World!\n"; 
-	Yang k;
-	//1.
+	MinkowskiSpace* world = new MinkowskiSpace;
+	SayI(world);
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
