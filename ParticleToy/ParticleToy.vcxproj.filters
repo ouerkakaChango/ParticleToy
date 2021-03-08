@@ -27,6 +27,12 @@
     <ClInclude Include="..\include\Base\Taiji.h">
       <Filter>头文件\Base</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\Base\Spaces.h">
+      <Filter>头文件\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Base\Container.h">
+      <Filter>头文件\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -36,6 +42,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\include\Base\Taiji.cpp">
+      <Filter>源文件\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\Spaces.cpp">
+      <Filter>源文件\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\Container.cpp">
       <Filter>源文件\Base</Filter>
     </ClCompile>
   </ItemGroup>
