@@ -47,12 +47,12 @@ class Space3DO : public Space3D
 };
 typedef Space3DO Coordinate3D;
 
+//??? 一个完整高效的三维点云集合体
 class Space3DI
 {
 public:
 	float ii[3] = {0,1,2};
 };
-typedef Space3DI Point3D;
 
 class Space3DR : public R
 {
