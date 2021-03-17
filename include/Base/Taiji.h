@@ -1,10 +1,16 @@
 #pragma once
+#include "Utility.h"
 #include "Container.h"
 
-#define THIS(className) public:\
-className();\
-arr<void*> i; \
-arr<R*> r;
+#define THISY(className) public:\
+	className();\
+	arr<void*> i; \
+	arr<R*> r;
+
+#define THISR(className) public:\
+	className##R(className* y_) :y(y_) {}\
+	void SayI() override;\
+	className* y;
 
 class R
 {
@@ -14,11 +20,11 @@ public:
 
 class Taiji
 {
-	THIS(Taiji)
+	THISY(Taiji)
 };
 
 template <class T>
-void SayI(T* tt_)
+void CommonSayI(T* tt_)
 {
 	for (auto tr : tt_->r)
 	{

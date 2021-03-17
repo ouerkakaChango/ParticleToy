@@ -150,12 +150,14 @@
     <ClInclude Include="..\include\Base\Container.h" />
     <ClInclude Include="..\include\Base\Spaces.h" />
     <ClInclude Include="..\include\Base\Taiji.h" />
+    <ClInclude Include="..\include\Base\Utility.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\include\Base\Container.cpp" />
     <ClCompile Include="..\include\Base\Spaces.cpp" />
     <ClCompile Include="..\include\Base\Taiji.cpp" />
+    <ClCompile Include="..\include\Base\Utility.cpp" />
     <ClCompile Include="ParticleToy.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

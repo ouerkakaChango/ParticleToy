@@ -9,7 +9,7 @@ class Space : public Yang
 
 class Time : public Ying
 {
-	THIS(Time)
+	THISY(Time)
 };
 
 class TimeI
@@ -20,10 +20,7 @@ public:
 
 class TimeR :public R
 {
-public:
-	TimeR(TimeI* i_);
-	void SayI() override;
-	TimeI* i;
+	THISR(Time)
 };
 
 class MetricSpace : public Space
@@ -38,7 +35,7 @@ class EuclideanSpace : public MetricSpace
 
 class Space3D : public EuclideanSpace
 {
-	THIS(Space3D)
+	THISY(Space3D)
 };
 
 class Space3DO : public Space3D
@@ -56,18 +53,15 @@ public:
 
 class Space3DR : public R
 {
-public:
-	Space3DR(Space3DI* i_);
-	void SayI() override;
-	Space3DI* i;
+	THISR(Space3D)
 };
 
 class MinkowskiSpace : public Time, public Space3D
 {
-	THIS(MinkowskiSpace)
+	THISY(MinkowskiSpace)
 };
 
-class MinkowsikiSpaceI : public MinkowskiSpace
+class MinkowskiSpaceR : public R
 {
-
+	THISR(MinkowskiSpace)
 };

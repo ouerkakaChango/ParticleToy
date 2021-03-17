@@ -97,7 +97,9 @@
 int main()
 {
 	MinkowskiSpace* world = new MinkowskiSpace;
-	SayI(world);
+	MinkowskiSpaceR* op = (MinkowskiSpaceR*)world->r[0];
+	//op->PutWorldPnt(golf, "PhysicProp");
+	op->SayI();
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

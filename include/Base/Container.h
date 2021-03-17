@@ -21,4 +21,14 @@ public:
 	{
 		data_.push_back(newData_);
 	}
+
+	T operator[](int inx)
+	{
+		return data_[inx];
+	}
+
+	int size()
+	{
+		return data_.size();
+	}
 };
