@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
+#include <string>
 using std::vector;
+using std::string;
 
 template <class T>
 class arr
@@ -22,7 +24,7 @@ public:
 		data_.push_back(newData_);
 	}
 
-	T operator[](int inx)
+	T& operator[](int inx)
 	{
 		return data_[inx];
 	}
@@ -31,4 +33,16 @@ public:
 	{
 		return data_.size();
 	}
+
+	void resize(int newLen)
+	{
+		data_.resize(newLen);
+	}
+};
+
+class str
+{
+public:
+	str(const char* s):data(string(s)) {};
+	string data;
 };

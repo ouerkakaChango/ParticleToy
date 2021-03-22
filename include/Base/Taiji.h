@@ -4,14 +4,14 @@
 
 #define THISY(className) public:\
 	className();\
-	arr<void*> i; \
+	arr<ClassI*> i; \
 	arr<R*> r;
 
 #define THISR(className) public:\
 	className##R(className* y_) :y(y_) {}\
 	void SayI() override;\
 	className* y;
-
+class ClassI;
 class R
 {
 public:
@@ -43,3 +43,9 @@ class TaijiO : public Taiji
 public:
 };
 typedef TaijiO Ying;
+
+class ClassI
+{
+public:
+	virtual void Resize(int newLen) = 0;
+};

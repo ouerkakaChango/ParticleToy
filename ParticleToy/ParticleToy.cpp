@@ -92,14 +92,31 @@
 //1.2 Ying-Time
 //1.3 Minkowski = Space3D + Time
 //1.4 对Space3DI的需求分析和结构设计
+//1.5 MinkowskiSpaceR创建一个FastParticle，每一帧对world进行evolve,从0帧开始到10帧结束
 //##############################
+//100米自由落体 数据表格 (g=10)
+//时间戳 高度（100-x）
+//0		0
+//0.1	0.05
+//0.2	0.2
+//0.3	0.45
+//0.4	0.8
+//0.5	1.25
+//0.6	1.8
+//0.7	2.45
+//0.8	3.2
+//0.9	4.05
+//1		5
 
 int main()
 {
 	MinkowskiSpace* world = new MinkowskiSpace;
+	world->SetFrameSettings(10, 0.1);
 	MinkowskiSpaceR* op = (MinkowskiSpaceR*)world->r[0];
-	//op->PutWorldPnt(golf, "PhysicProp");
+	op->PutPnt("golf", P(0,0,100),"PhysicProp");
+	op->Evolve(0);
 	op->SayI();
+	//op->Say(); //将所有帧数据输出
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

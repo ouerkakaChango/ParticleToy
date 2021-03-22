@@ -1,6 +1,7 @@
 #pragma once 
 
 #include "Taiji.h"
+#include "Fast3D.h"
 
 class Space : public Yang
 {
@@ -12,10 +13,12 @@ class Time : public Ying
 	THISY(Time)
 };
 
-class TimeI
+class TimeI : public ClassI
 {
 public:
-	double ii=-1.0;
+	void Resize(int newLen) override;
+	void InitByFrameSec(double frameSec);
+	arr<double> timeStamps;
 };
 
 class TimeR :public R
@@ -44,11 +47,11 @@ class Space3DO : public Space3D
 };
 typedef Space3DO Coordinate3D;
 
-//??? 一个完整高效的三维点云集合体
-class Space3DI
+class Space3DI : public ClassI
 {
 public:
-	float ii[3] = {0,1,2};
+	void Resize(int newLen) override;
+	arr<Fast3D> spaces;
 };
 
 class Space3DR : public R
@@ -59,9 +62,17 @@ class Space3DR : public R
 class MinkowskiSpace : public Time, public Space3D
 {
 	THISY(MinkowskiSpace)
+	void SetFrameSettings(int frameNum_, double frameSec_);
+	void AddPntNow(str name, P pos);
+
+	double frameSec;
+	int frameNum;
+	int F = 0;
 };
 
 class MinkowskiSpaceR : public R
 {
 	THISR(MinkowskiSpace)
+	void PutPnt(str name, P pnt, str rule);
+	void Evolve(int begin);
 };

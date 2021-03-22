@@ -36,6 +36,9 @@
     <ClInclude Include="..\include\Base\Utility.h">
       <Filter>头文件\Base</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\Base\Fast3D.h">
+      <Filter>头文件\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -54,6 +57,9 @@
       <Filter>源文件\Base</Filter>
     </ClCompile>
     <ClCompile Include="..\include\Base\Utility.cpp">
+      <Filter>源文件\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\Fast3D.cpp">
       <Filter>源文件\Base</Filter>
     </ClCompile>
   </ItemGroup>
