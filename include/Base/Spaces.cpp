@@ -125,6 +125,12 @@ void MinkowskiSpace::AddPntNow(str name, P pos, str rule)
 	spaces[F].AddPnt(name, pos, rule);
 }
 
+void MinkowskiSpace::AddTriNow(str name, Tri tri, str rule)
+{
+	auto& spaces = Cast<Space3DI*>(i[1])->spaces;
+	spaces[F].AddTri(name, tri, rule);
+}
+
 void MinkowskiSpace::EvolveFrame(int prevFrame)
 {
 	auto& spaces = Cast<Space3DI*>(i[1])->spaces;
@@ -159,6 +165,11 @@ void MinkowskiSpaceR::SayO()
 void MinkowskiSpaceR::PutPnt(str name, P pos, str rule)
 {
 	y->AddPntNow(name, pos, rule);
+}
+
+void MinkowskiSpaceR::PutTri(str name, Tri tri, str rule)
+{
+	y->AddTriNow(name, tri, rule);
 }
 
 void MinkowskiSpaceR::Evolve(int begin)

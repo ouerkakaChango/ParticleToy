@@ -38,24 +38,22 @@ void CommonSayI(T* tt_)
 
 class TaijiI : public Taiji
 {
-
 };
 typedef TaijiI Yang;
 
 class TaijiO : public Taiji
 {
-public:
 };
 typedef TaijiO Ying;
 
 class ClassI
 {
 public:
-	virtual void Resize(int newLen) = 0;
+	virtual void Resize(int newLen) {};
 };
 
 class ClassO 
 {
 public:
-	virtual void Resize(int newLen) = 0;
+	virtual void Resize(int newLen) {};
 };

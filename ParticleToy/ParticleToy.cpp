@@ -108,6 +108,7 @@
 //2.0.1 获得此moveObj从old->prev的影响范围effectSpaceI
 //2.0.2 对于effectSpaceI，求相交的effectSpaceO,并与之affect。实际上是对Pnt检测碰撞后，调整其位置和增加瞬时加速度（力）
 //2.1 具体思路：每次verlet改变Pnt位置的时候，Pnt在SetPos时也更新其effectSpaceI，即一条线段effectLine,并在下次与effectTri求交
+//2.2 调整结构：Fast3D要从上一帧copy，因为每个Frame的Fast3D都是独立的；静态collision可用指针共享
 //##############################
 //100米自由落体 数据表格 (g=10)
 //时间戳 高度（100-x）
@@ -129,10 +130,14 @@ int main()
 	world->SetFrameSettings(61, 0.0166666);
 	MinkowskiSpaceR* op = (MinkowskiSpaceR*)world->r[0];
 	op->SetGravity(P(0.0, -9.80665, 0.0));
-	op->PutPnt("golf", P(0,0,0),"PhysicProp");
+
+	op->PutPnt("golf", P(0,0,0), "PhysicProp");
+
 	Tri tri1;
 	tri1.FromGrid(1.0, "xz", true);
-	//op->PutTri(tri1);
+	tri1.Transform(P(0, -4, 0));
+	op->PutTri("grid_up", tri1, "CollisionProp");
+
 	op->Evolve(0);
 	//p->SayI();
 	//std::cout << "\n";

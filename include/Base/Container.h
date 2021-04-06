@@ -31,7 +31,12 @@ public:
 		return data_[inx];
 	}
 
-	int size()
+	const T& operator[](int inx) const
+	{
+		return data_[inx];
+	}
+
+	int size() const
 	{
 		return data_.size();
 	}

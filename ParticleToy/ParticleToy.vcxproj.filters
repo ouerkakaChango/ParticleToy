@@ -42,6 +42,15 @@
     <ClInclude Include="..\include\Base\Evolver.h">
       <Filter>头文件\Base</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\Base\FastMath.h">
+      <Filter>头文件\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Base\FastGeo.h">
+      <Filter>头文件\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Base\EffectSpace.h">
+      <Filter>头文件\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -66,6 +75,15 @@
       <Filter>源文件\Base</Filter>
     </ClCompile>
     <ClCompile Include="..\include\Base\Evolver.cpp">
+      <Filter>源文件\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\FastMath.cpp">
+      <Filter>源文件\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\FastGeo.cpp">
+      <Filter>源文件\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\EffectSpace.cpp">
       <Filter>源文件\Base</Filter>
     </ClCompile>
   </ItemGroup>
