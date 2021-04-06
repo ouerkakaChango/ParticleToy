@@ -93,6 +93,15 @@
 //1.3 Minkowski = Space3D + Time
 //1.4 对Space3DI的需求分析和结构设计
 //1.5 MinkowskiSpaceR创建一个FastParticle，每一帧对world进行evolve,从0帧开始到10帧结束
+//1.6 Evolver-PhysicSolver-RigidSolver
+//1.7 在SetFrameSetting时初始化所有Evolver；在PutPnt时候，注意到rule里有physic，然后打开之后帧的所有Evolver里的PhysicSolver
+//1.8 Log动画数据（txt文件），然后UE4插件/Houdini播放动画
+
+//1.9 MinkowskiSpaceR创建2个“概念三角面”，也就是通用的三角面。
+//2.0 在PhysicSolver里检测碰撞，对于每个moveObj：
+//2.0.1 获得此moveObj从old->prev的影响范围effectSpaceI
+//2.0.2 对于effectSpaceI，求相交的effectSpaceO,并与之affect。实际上是对Pnt检测碰撞后，调整其位置和增加瞬时加速度（力）
+//2.1 具体思路：每次verlet改变Pnt位置的时候，Pnt在SetPos时也更新其effectSpaceI，即一条线段effectLine,并在下次与effectTri求交
 //##############################
 //100米自由落体 数据表格 (g=10)
 //时间戳 高度（100-x）
@@ -111,12 +120,20 @@
 int main()
 {
 	MinkowskiSpace* world = new MinkowskiSpace;
-	world->SetFrameSettings(10, 0.1);
+	world->SetFrameSettings(61, 0.0166666);
 	MinkowskiSpaceR* op = (MinkowskiSpaceR*)world->r[0];
-	op->PutPnt("golf", P(0,0,100),"PhysicProp");
+	op->SetGravity(P(0.0, -9.80665, 0.0));
+	op->PutPnt("golf", P(0,0,0),"PhysicProp");
+	Tri tri1;
+	tri1.FromGrid(1.0, "xz", true);
+	//op->PutTri(tri1);
 	op->Evolve(0);
-	op->SayI();
+	//p->SayI();
+	//std::cout << "\n";
+	//op->SayO();
+	//std::cout << "\n";
 	//op->Say(); //将所有帧数据输出
+	op->DebugSay();
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

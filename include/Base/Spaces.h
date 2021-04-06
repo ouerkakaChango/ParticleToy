@@ -2,6 +2,7 @@
 
 #include "Taiji.h"
 #include "Fast3D.h"
+#include "Evolver.h"
 
 class Space : public Yang
 {
@@ -41,11 +42,14 @@ class Space3D : public EuclideanSpace
 	THISY(Space3D)
 };
 
-class Space3DO : public Space3D
+class Space3DO : public ClassO
 {
-
+public:
+	void Resize(int newLen) override;
+	void InitDefault(int frameNum);
+	arr<Evolver*> evolvers;
+	Evolver defaultEvolver;
 };
-typedef Space3DO Coordinate3D;
 
 class Space3DI : public ClassI
 {
@@ -57,13 +61,17 @@ public:
 class Space3DR : public R
 {
 	THISR(Space3D)
+	void SayO() override;
 };
 
+//i:time,space3D
+//o:spaceD
 class MinkowskiSpace : public Time, public Space3D
 {
 	THISY(MinkowskiSpace)
 	void SetFrameSettings(int frameNum_, double frameSec_);
-	void AddPntNow(str name, P pos);
+	void AddPntNow(str name, P pos, str rule);
+	void EvolveFrame(int prevFrame);
 
 	double frameSec;
 	int frameNum;
@@ -73,6 +81,13 @@ class MinkowskiSpace : public Time, public Space3D
 class MinkowskiSpaceR : public R
 {
 	THISR(MinkowskiSpace)
+
 	void PutPnt(str name, P pnt, str rule);
 	void Evolve(int begin);
+	void SetGravity(P gravity);
+	void SayO() override;
+	void Say();
+	void DebugSay();
+
+protected:
 };

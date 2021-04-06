@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <sstream>
+#include <iomanip>
 using std::vector;
 using std::string;
 
@@ -38,11 +40,25 @@ public:
 	{
 		data_.resize(newLen);
 	}
+
+	void allset(T t)
+	{
+		for (auto& iter : data_)
+		{
+			iter = t;
+		}
+	}
 };
 
 class str
 {
 public:
-	str(const char* s):data(string(s)) {};
+	str() :data(string("")) {}
+	str(const char* s):data(string(s)) {}
+	void operator+=(const str& other);
+	void operator+=(double other);
+	bool operator==(const char* s);
+	void AddDouble(double other, int precision);
+	bool Has(str s);
 	string data;
 };

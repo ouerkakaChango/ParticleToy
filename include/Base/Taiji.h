@@ -5,19 +5,23 @@
 #define THISY(className) public:\
 	className();\
 	arr<ClassI*> i; \
+	arr<ClassO*> o; \
 	arr<R*> r;
 
 #define THISR(className) public:\
 	className##R(className* y_) :y(y_) {}\
 	void SayI() override;\
 	className* y;
-class ClassI;
+
 class R
 {
 public:
 	virtual void SayI()=0;
+	virtual void SayO() {};
 };
 
+class ClassI;
+class ClassO;
 class Taiji
 {
 	THISY(Taiji)
@@ -45,6 +49,12 @@ public:
 typedef TaijiO Ying;
 
 class ClassI
+{
+public:
+	virtual void Resize(int newLen) = 0;
+};
+
+class ClassO 
 {
 public:
 	virtual void Resize(int newLen) = 0;

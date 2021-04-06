@@ -148,6 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Base\Container.h" />
+    <ClInclude Include="..\include\Base\Evolver.h" />
     <ClInclude Include="..\include\Base\Fast3D.h" />
     <ClInclude Include="..\include\Base\Spaces.h" />
     <ClInclude Include="..\include\Base\Taiji.h" />
@@ -156,6 +157,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\include\Base\Container.cpp" />
+    <ClCompile Include="..\include\Base\Evolver.cpp" />
     <ClCompile Include="..\include\Base\Fast3D.cpp" />
     <ClCompile Include="..\include\Base\Spaces.cpp" />
     <ClCompile Include="..\include\Base\Taiji.cpp" />
