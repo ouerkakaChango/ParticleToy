@@ -36,22 +36,20 @@ IntersectInfo EffectSpaceI::Intersect(const Tri& tri)
 //### EffectSpaceI
 
 //### EffectLineI
-void EffectLineI::Set(P a_, P b_)
+void EffectLineI::Set(P a, P b)
 {
-	a = a_;
-	b = b_;
+	line.Set(a, b);
 }
 
 void EffectLineI::Update(P newb)
 {
-	a = b;
-	b = newb;
+	line.Update(newb);
 }
 
 IntersectInfo EffectLineI::Intersect(const Tri& tri)
 {
 	IntersectInfo re;
-	int a = 1;
+	re = tri.Intersect(line);
 	return re;
 }
 //### EffectLineI

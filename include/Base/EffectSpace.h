@@ -4,11 +4,6 @@
 #include "FastMath.h"
 #include "FastGeo.h"
 
-class IntersectInfo
-{
-
-};
-
 class EffectSpace : public Ying
 {
 	THISY(EffectSpace)
@@ -28,8 +23,8 @@ public:
 class EffectLineI : public EffectSpaceI
 {
 public:
-	void Set(P a_, P b_);
+	void Set(P a, P b);
 	void Update(P newb);
 	IntersectInfo Intersect(const Tri& tri) override;
-	P a, b;
+	Line line;
 };

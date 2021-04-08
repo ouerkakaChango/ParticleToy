@@ -33,9 +33,12 @@ void CollisionSolver::Solve(Pnt& pnt)
 	{
 		 auto& tri = (*triArr)[0];
 		 auto interInfo = pnt.effectSpace->Intersect(tri);
-		 //if (interInfo.bIntersect)
+		 if (interInfo.hit)
 		 {
+			 auto hitP = interInfo.hitP;
+			 //???
 			 //pnt.pos = calcuNewPos...(interInfo)
+			 int a = 1;
 		 }
 	}
 }
