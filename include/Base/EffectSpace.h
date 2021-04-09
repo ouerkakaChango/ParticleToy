@@ -12,6 +12,8 @@ class EffectSpace : public Ying
 	IntersectInfo Intersect(const Tri& tri);
 	inline void SetIgnore(bool isIgnore_) { isIgnore = isIgnore_; }
 	void Update(P p);
+	void SafeUpdate(P prevP, P p);
+	void ResetPrev(P p);
 
 	bool isDefined = false;
 	bool isIgnore = false;
@@ -28,7 +30,8 @@ class EffectLineI : public EffectSpaceI
 {
 public:
 	void Set(P a, P b);
-	void Update(P newb);
+	void UpdateA(P newb);
+	void UpdateB(P newb);
 	IntersectInfo Intersect(const Tri& tri) override;
-	Line line;
+	Line l;
 };

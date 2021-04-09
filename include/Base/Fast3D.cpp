@@ -1,5 +1,7 @@
 #include "Fast3D.h"
 
+#include "EffectSpace.h"
+
 //### Fast3D
 void Fast3D::AddPnt(str name, P pos, str rule)
 {
@@ -17,6 +19,16 @@ str Fast3D::InfoString(int precision)
 	for (auto& p : pnts)
 	{
 		re += p.InfoString(precision);
+	}
+	return re;
+}
+
+str Fast3D::InfoString(str filter, int precision)
+{
+	str re = "";
+	for (auto& p : pnts)
+	{
+		re += p.InfoString(filter, precision);
 	}
 	return re;
 }

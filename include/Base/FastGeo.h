@@ -1,36 +1,14 @@
 #pragma once
 #include "FastMath.h"
 
-class EffectSpace;
 class IntersectInfo;
-
-class Pnt
-{
-public:
-	Pnt();
-	Pnt(P pos_);
-	Pnt(P pos_, str rule_);
-	str InfoString(int precision = 3);
-	//### physic
-	void EffectUpdate(const Pnt& prev);
-	//### physic
-
-	P pos;
-	P v;
-	P a;
-	str rule;
-
-	//physic
-	double damp = 1.0;
-	EffectSpace* effectSpace = nullptr;
-};
 
 class Line
 {
 public:
 	P a, b;
 	void Set(P a_, P b_);
-	void Update(P newb);
+	void UpdateB(P newb);
 	P dir() const;
 
 	friend double len(const Line& l);

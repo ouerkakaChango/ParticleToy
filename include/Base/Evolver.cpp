@@ -12,8 +12,8 @@ void PhysicSolver::Solve(const Pnt& oldPnt, const Pnt& prevPnt, Pnt& newPnt, dou
 	newPnt.v += a * dt;
 	newPnt.a = a;
 
-	//update effectSpaceI
-	newPnt.EffectUpdate(prevPnt);
+	//update effectSpace
+	newPnt.effectSpace.SafeUpdate(prevPnt.pos, newPnt.pos);
 }
 
 void PhysicSolver::SolveBegin(const Pnt& prevPnt, Pnt& newPnt, double dt)
@@ -35,7 +35,7 @@ void CollisionSolver::Solve(const Pnt& prev, Pnt& newPnt, double dt)
 	for (int inx = 0; inx < triArr->size(); inx++)
 	{
 		 auto& tri = (*triArr)[0];
-		 auto interInfo = newPnt.effectSpace->Intersect(tri);
+		 auto interInfo = newPnt.effectSpace.Intersect(tri);
 		 if (interInfo.hit)
 		 {
 			 auto hitP = interInfo.hitP;
@@ -64,9 +64,12 @@ void CollisionSolver::Solve(const Pnt& prev, Pnt& newPnt, double dt)
 			 double dtr = dt - dtc;
 			 newPnt.pos = hitP + (v3*dtr + 0.5*newPnt.a*dtr*dtr);
 			 newPnt.v = v3 + newPnt.a*dtr;
-			//!!!
-			 newPnt.effectSpace->SetIgnore(true);
-			 int a = 1;
+			 newPnt.effectSpace.Update(newPnt.pos);
+			 //5.Setup breakPnt
+			 Pnt breakPnt(hitP);
+			 breakPnt.a = prev.a;
+			 breakPnt.v = v3;
+			 newPnt.SetBreakPoint(breakPnt,dtr);		
 		 }
 	}
 }
@@ -103,7 +106,14 @@ void Evolver::Evolve(const Fast3D& old, const Fast3D& prev, Fast3D& next, double
 		auto& pnt = pnts[inx];
 		if (pnt.rule.Has("PhysicProp"))
 		{
-			physic.Solve(oldPnt, prevPnt, pnt, dt);
+			if (prevPnt.IsBreakPoint())
+			{
+				physic.Solve(prevPnt.GetVirtualOldPnt(dt), prevPnt, pnt, dt);
+			}
+			else
+			{
+				physic.Solve(oldPnt, prevPnt, pnt, dt);
+			}
 			collision.Solve(prevPnt, pnt, dt);
 		}
 	}

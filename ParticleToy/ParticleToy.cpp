@@ -128,7 +128,7 @@
 int main()
 {
 	MinkowskiSpace* world = new MinkowskiSpace;
-	world->SetFrameSettings(61, 0.0166666);
+	world->SetFrameSettings(121, 0.0166666);
 	MinkowskiSpaceR* op = (MinkowskiSpaceR*)world->r[0];
 	op->SetGravity(P(0.0, -9.80665, 0.0));
 

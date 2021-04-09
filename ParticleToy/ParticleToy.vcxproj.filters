@@ -51,6 +51,9 @@
     <ClInclude Include="..\include\Base\EffectSpace.h">
       <Filter>头文件\Base</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\Base\FastPnt.h">
+      <Filter>头文件\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -84,6 +87,9 @@
       <Filter>源文件\Base</Filter>
     </ClCompile>
     <ClCompile Include="..\include\Base\EffectSpace.cpp">
+      <Filter>源文件\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\FastPnt.cpp">
       <Filter>源文件\Base</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,57 +1,5 @@
 #include "FastGeo.h"
 
-#include "EffectSpace.h"
-//### Pnt
-Pnt::Pnt()
-{
-
-}
-
-Pnt::Pnt(P pos_) :pos(pos_)
-{
-
-}
-
-Pnt::Pnt(P pos_, str rule_) : pos(pos_), rule(rule_)
-{
-
-}
-
-str Pnt::InfoString(int precision)
-{
-	str re = "";
-	re.AddDouble(pos.x, precision);
-	re += " ";
-	re.AddDouble(pos.y, precision);
-	re += " ";
-	re.AddDouble(pos.z, precision);
-
-	re += "    ";
-	re.AddDouble(v.x, precision);
-	re += " ";
-	re.AddDouble(v.y, precision);
-	re += " ";
-	re.AddDouble(v.z, precision);
-	return re;
-}
-
-void Pnt::EffectUpdate(const Pnt& prev)
-{
-	if (effectSpace == nullptr)
-	{
-		effectSpace = new EffectSpace;
-	}
-	if (!effectSpace->IsDefined())
-	{
-		effectSpace->DefineLineI(prev.pos, pos);
-	}
-	else
-	{
-		effectSpace->Update(pos);
-	}
-}
-//### Pnt
-
 //### Line
 void Line::Set(P a_, P b_)
 {
@@ -59,7 +7,7 @@ void Line::Set(P a_, P b_)
 	b = b_;
 }
 
-void Line::Update(P newb)
+void Line::UpdateB(P newb)
 {
 	a = b;
 	b = newb;

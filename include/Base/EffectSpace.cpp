@@ -32,7 +32,31 @@ void EffectSpace::Update(P p)
 		if (type == "LineI")
 		{
 			auto line = Cast<EffectLineI*>(i[0]);
-			line->Update(p);
+			line->UpdateB(p);
+		}
+	}
+}
+
+void EffectSpace::SafeUpdate(P prevP, P p)
+{
+	if (!isDefined)
+	{
+		DefineLineI(prevP, p);
+	}
+	else
+	{
+		Update(p);
+	}
+}
+
+void EffectSpace::ResetPrev(P p)
+{
+	if (!isIgnore)
+	{
+		if (type == "LineI")
+		{
+			auto line = Cast<EffectLineI*>(i[0]);
+			line->l.a = p;
 		}
 	}
 }
@@ -49,18 +73,23 @@ IntersectInfo EffectSpaceI::Intersect(const Tri& tri)
 //### EffectLineI
 void EffectLineI::Set(P a, P b)
 {
-	line.Set(a, b);
+	l.Set(a, b);
 }
 
-void EffectLineI::Update(P newb)
+void EffectLineI::UpdateA(P newb)
 {
-	line.Update(newb);
+
+}
+
+void EffectLineI::UpdateB(P newb)
+{
+	l.UpdateB(newb);
 }
 
 IntersectInfo EffectLineI::Intersect(const Tri& tri)
 {
 	IntersectInfo re;
-	re = tri.Intersect(line);
+	re = tri.Intersect(l);
 	return re;
 }
 //### EffectLineI

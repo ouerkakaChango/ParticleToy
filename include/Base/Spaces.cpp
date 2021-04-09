@@ -208,6 +208,6 @@ void MinkowskiSpaceR::DebugSay()
 	auto& spaces = Cast<Space3DI*>(y->i[1])->spaces;
 	for (int inx = 0; inx < y->frameNum; inx++)
 	{
-		std::cout << spaces[inx].InfoString(5).data << "\n";
+		std::cout << spaces[inx].InfoString("pos",5).data << "\n";
 	}
 }
