@@ -15,9 +15,10 @@ class CollisionSolver
 {
 public:
 	void Load(const arr<Tri>* triArr_);
-	void Solve(Pnt& pnt);
+	void Solve(const Pnt& prev, Pnt& newPnt, double dt);
 
 	const arr<Tri>* triArr;
+	double bounceDamp = 0.8;
 };
 
 class Evolver

@@ -5,25 +5,36 @@ EffectSpace::EffectSpace()
 {
 }
 
-void EffectSpace::Define(str type)
+void EffectSpace::DefineLineI(P a_, P b_)
 {
-	if (type == "lineI")
-	{
-		auto newI = new EffectLineI;
-		i += newI;
-	}
+	type = "LineI";
+	auto newI = new EffectLineI;
+	newI->Set(a_, b_);
+	i += newI;
 	isDefined = true;
 }
 
 IntersectInfo EffectSpace::Intersect(const Tri& tri)
 {
 	IntersectInfo re;
-	if (isDefined)
+	if (isDefined && !isIgnore)
 	{
 		auto ti = Cast<EffectSpaceI*>(i[0]);
 		re = ti->Intersect(tri);
 	}
 	return re;
+}
+
+void EffectSpace::Update(P p)
+{
+	if (!isIgnore)
+	{
+		if (type == "LineI")
+		{
+			auto line = Cast<EffectLineI*>(i[0]);
+			line->Update(p);
+		}
+	}
 }
 //### EffectSpace
 

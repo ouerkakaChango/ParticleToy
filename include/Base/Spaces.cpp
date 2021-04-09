@@ -195,7 +195,7 @@ void MinkowskiSpaceR::Say()
 	auto& times = Cast<TimeI*>(y->i[0])->timeStamps;
 	auto& spaces = Cast<Space3DI*>(y->i[1])->spaces;
 	std::cout << "3\n";
-	std::cout << "frame    t    pos\n";
+	std::cout << "frame    t    pos    v\n";
 	for (int inx = 0; inx < y->frameNum; inx++)
 	{
 		std::cout << inx << "    " << times[inx]<<"    "<<spaces[inx].InfoString().data<<"\n";

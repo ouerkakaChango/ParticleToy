@@ -8,10 +8,14 @@ class EffectSpace : public Ying
 {
 	THISY(EffectSpace)
 	inline bool IsDefined() { return isDefined; }
-	void Define(str type);
+	void DefineLineI(P a_, P b_);
 	IntersectInfo Intersect(const Tri& tri);
+	inline void SetIgnore(bool isIgnore_) { isIgnore = isIgnore_; }
+	void Update(P p);
 
 	bool isDefined = false;
+	bool isIgnore = false;
+	str type;
 };
 
 class EffectSpaceI : public ClassI

@@ -16,6 +16,8 @@ public:
 	//### physic
 
 	P pos;
+	P v;
+	P a;
 	str rule;
 
 	//physic

@@ -113,4 +113,52 @@ P norm(const P& p)
 		return P(0, 0, 0);
 	}
 }
+
+P reflect(const P& i, const P& n)
+{
+	//https://www.cnblogs.com/graphics/archive/2013/02/21/2920627.html
+	return i - 2 * dot(i, n)*n;
+}
 //### Global P
+
+//### Global Utility
+bool SolveQuadra(double a, double b, double c, double& x1, double& x2)
+{
+	if (abs(a) < 0.00001)
+	{
+		return false;
+	}
+	else 
+	{
+		double delta = b * b - 4 * a*c;
+		if (delta < 0)
+		{
+			return false;
+		}
+		else
+		{
+			double invDeno = 0.5 / a;
+			delta = sqrt(delta);
+			x1 = invDeno * (-b + delta);
+			x2 = invDeno * (-b - delta);
+		}
+	}
+	return true;
+}
+
+bool SolveQuadra(P a, P b, P c, double& x1, double& x2)
+{
+	bool success = false;
+	if (!SolveQuadra(a.x, b.x, c.x, x1, x2))
+	{
+		if (!SolveQuadra(a.y, b.y, c.y, x1, x2))
+		{
+			if (!SolveQuadra(a.z, b.z, c.z, x1, x2))
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+//### Global Utility

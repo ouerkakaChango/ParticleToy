@@ -25,6 +25,13 @@ str Pnt::InfoString(int precision)
 	re.AddDouble(pos.y, precision);
 	re += " ";
 	re.AddDouble(pos.z, precision);
+
+	re += "    ";
+	re.AddDouble(v.x, precision);
+	re += " ";
+	re.AddDouble(v.y, precision);
+	re += " ";
+	re.AddDouble(v.z, precision);
 	return re;
 }
 
@@ -36,14 +43,11 @@ void Pnt::EffectUpdate(const Pnt& prev)
 	}
 	if (!effectSpace->IsDefined())
 	{
-		effectSpace->Define("lineI");
-		auto line = Cast<EffectLineI*>(effectSpace->i[0]);
-		line->Set(prev.pos, pos);
+		effectSpace->DefineLineI(prev.pos, pos);
 	}
 	else
 	{
-		auto line = Cast<EffectLineI*>(effectSpace->i[0]);
-		line->Update(pos);
+		effectSpace->Update(pos);
 	}
 }
 //### Pnt
@@ -92,7 +96,7 @@ IntersectInfo Plane::Intersect(const Line& l) const
 	//‘≠¿Ì£∫https://blog.csdn.net/qq_41524721/article/details/103490144
 	P T = l.a - p;
 	double d = -dot(l.a - p, n) / dot(l.dir(), n);
-	if (d <= len(l))
+	if (d <= len(l) && d>=0)
 	{
 		re.hit = true;
 		re.d = d;

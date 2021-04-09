@@ -109,6 +109,7 @@
 //2.0.2 对于effectSpaceI，求相交的effectSpaceO,并与之affect。实际上是对Pnt检测碰撞后，调整其位置和增加瞬时加速度（力）
 //2.1 具体思路：每次verlet改变Pnt位置的时候，Pnt在SetPos时也更新其effectSpaceI，即一条线段effectLine,并在下次与effectTri求交
 //2.2 调整结构：Fast3D要从上一帧copy，因为每个Frame的Fast3D都是独立的；静态collision可用指针共享
+//2.3 bounce：verlet时存储v
 //##############################
 //100米自由落体 数据表格 (g=10)
 //时间戳 高度（100-x）
@@ -143,8 +144,8 @@ int main()
 	//std::cout << "\n";
 	//op->SayO();
 	//std::cout << "\n";
-	//op->Say(); //将所有帧数据输出
-	op->DebugSay();
+	op->Say(); //将所有帧数据输出
+	//op->DebugSay();
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

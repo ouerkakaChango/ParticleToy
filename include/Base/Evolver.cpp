@@ -6,8 +6,11 @@ void PhysicSolver::Solve(const Pnt& oldPnt, const Pnt& prevPnt, Pnt& newPnt, dou
 {
 	P a = g;
 
-	//verlet
+	//verlet pos
 	newPnt.pos = prevPnt.pos + newPnt.damp * (prevPnt.pos - oldPnt.pos) + a*dt*dt;
+	//verlet v
+	newPnt.v += a * dt;
+	newPnt.a = a;
 
 	//update effectSpaceI
 	newPnt.EffectUpdate(prevPnt);
@@ -27,17 +30,42 @@ void CollisionSolver::Load(const arr<Tri>* triArr_)
 	triArr = triArr_;
 }
 
-void CollisionSolver::Solve(Pnt& pnt)
+void CollisionSolver::Solve(const Pnt& prev, Pnt& newPnt, double dt)
 {
 	for (int inx = 0; inx < triArr->size(); inx++)
 	{
 		 auto& tri = (*triArr)[0];
-		 auto interInfo = pnt.effectSpace->Intersect(tri);
+		 auto interInfo = newPnt.effectSpace->Intersect(tri);
 		 if (interInfo.hit)
 		 {
 			 auto hitP = interInfo.hitP;
-			 //???
-			 //pnt.pos = calcuNewPos...(interInfo)
+			 //1-2.
+			 double dtc=-1.0;//delta time until collision
+			 double x1=0.0, x2=0.0;
+			 SolveQuadra(prev.a / 2, prev.v, prev.pos - hitP,x1,x2);
+			 if (x1 * x2>0)
+			 {//好像不可能存在这种情况
+				 abort();
+			 }
+			 //选择正值
+			 dtc = x1;
+			 if (x1 < 0)
+			 {
+				 dtc = x2;
+			 }
+			 if (dtc >= dt)
+			 {//好像不可能存在这种情况
+				 abort();
+			 }
+			 //3.
+			 P v2 = prev.v + prev.a*dtc;
+			 P v3 = reflect(v2, tri.n)*bounceDamp;
+			 //4.
+			 double dtr = dt - dtc;
+			 newPnt.pos = hitP + (v3*dtr + 0.5*newPnt.a*dtr*dtr);
+			 newPnt.v = v3 + newPnt.a*dtr;
+			//!!!
+			 newPnt.effectSpace->SetIgnore(true);
 			 int a = 1;
 		 }
 	}
@@ -57,7 +85,7 @@ void Evolver::EvolveBegin(const Fast3D& prev, Fast3D& next, double dt)
 		if (pnt.rule.Has("PhysicProp"))
 		{
 			physic.SolveBegin(prevPnt, pnt, dt);
-			collision.Solve(pnt);
+			collision.Solve(prevPnt, pnt, dt);
 		}
 	}
 }
@@ -76,7 +104,7 @@ void Evolver::Evolve(const Fast3D& old, const Fast3D& prev, Fast3D& next, double
 		if (pnt.rule.Has("PhysicProp"))
 		{
 			physic.Solve(oldPnt, prevPnt, pnt, dt);
-			collision.Solve(pnt);
+			collision.Solve(prevPnt, pnt, dt);
 		}
 	}
 }
