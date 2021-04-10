@@ -87,6 +87,8 @@ class MinkowskiSpaceR : public R
 	void PutTri(str name, Tri tri, str rule);
 	void Evolve(int begin);
 	void SetGravity(P gravity);
+	void PntInsForce(int F, str name, P force);
+
 	void SayO() override;
 	void Say();
 	void DebugSay();

@@ -24,6 +24,7 @@ public:
 	P operator/(double s) const;
 	void operator+=(const P& p);
 	void operator-=(const P& p);
+	void operator*=(double s);
 	friend P operator*(double s, const P& p);
 };
 

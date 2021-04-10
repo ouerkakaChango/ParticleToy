@@ -28,6 +28,7 @@ class Tri:public Plane
 {
 public:
 	void FromGrid(double len, str filter, bool isUpTri);
+	void Scale(double s);
 	void Transform(P offset);
 	void CalculateNormal();
 	bool IsPointInside(P p) const;

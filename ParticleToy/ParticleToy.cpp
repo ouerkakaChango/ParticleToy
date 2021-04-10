@@ -128,7 +128,7 @@
 int main()
 {
 	MinkowskiSpace* world = new MinkowskiSpace;
-	world->SetFrameSettings(121, 0.0166666);
+	world->SetFrameSettings(361, 0.0166666);
 	MinkowskiSpaceR* op = (MinkowskiSpaceR*)world->r[0];
 	op->SetGravity(P(0.0, -9.80665, 0.0));
 
@@ -136,16 +136,19 @@ int main()
 
 	Tri tri1;
 	tri1.FromGrid(1.0, "xz", true);
+	tri1.Scale(100.0);
 	tri1.Transform(P(0, -4, 0));
 	op->PutTri("grid_up", tri1, "CollisionProp");
+
+	op->PntInsForce(0, "golf", P(900.0, 400.0, 1000.0));
 
 	op->Evolve(0);
 	//p->SayI();
 	//std::cout << "\n";
 	//op->SayO();
 	//std::cout << "\n";
-	op->Say(); //将所有帧数据输出
-	//op->DebugSay();
+	//op->Say(); //将所有帧数据输出
+	op->DebugSay();
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

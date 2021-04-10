@@ -2,9 +2,10 @@
 
 #include "EffectSpace.h"
 
+//### PhysicSolver
 void PhysicSolver::Solve(const Pnt& oldPnt, const Pnt& prevPnt, Pnt& newPnt, double dt)
 {
-	P a = g;
+	P a = A();
 
 	//verlet pos
 	newPnt.pos = prevPnt.pos + newPnt.damp * (prevPnt.pos - oldPnt.pos) + a*dt*dt;
@@ -14,16 +15,31 @@ void PhysicSolver::Solve(const Pnt& oldPnt, const Pnt& prevPnt, Pnt& newPnt, dou
 
 	//update effectSpace
 	newPnt.effectSpace.SafeUpdate(prevPnt.pos, newPnt.pos);
+
+	insForces.clear();
 }
 
 void PhysicSolver::SolveBegin(const Pnt& prevPnt, Pnt& newPnt, double dt)
 {
 	//verlet
-	P a = g;
+	P a = A();
 	Pnt oldPnt = prevPnt;
-	oldPnt.pos = prevPnt.pos + 0.5 *a *dt*dt;
+	//oldPnt.pos = prevPnt.pos + 0.5 *a *dt*dt;
+	oldPnt.pos -= dt * prevPnt.v;
 	Solve(oldPnt, prevPnt, newPnt, dt);
 }
+
+P PhysicSolver::A()
+{
+	P finalForce = g;
+	for (int inx = 0;inx<insForces.size();inx++)
+	{
+		const P& f = insForces[inx];
+		finalForce += f;
+	}
+	return finalForce / m;
+}
+//### PhysicSolver
 
 void CollisionSolver::Load(const arr<Tri>* triArr_)
 {
@@ -35,6 +51,13 @@ void CollisionSolver::Solve(const Pnt& prev, Pnt& newPnt, double dt)
 	for (int inx = 0; inx < triArr->size(); inx++)
 	{
 		 auto& tri = (*triArr)[0];
+		 //???
+		 auto l = Cast<EffectLineI*>(newPnt.effectSpace.i[0])->l;
+		 if (l.b.y < -4)
+		 {
+			 int aaa = 1;
+		 }
+		 //___
 		 auto interInfo = newPnt.effectSpace.Intersect(tri);
 		 if (interInfo.hit)
 		 {

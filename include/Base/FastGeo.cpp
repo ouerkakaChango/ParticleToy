@@ -73,6 +73,13 @@ void Tri::FromGrid(double len, str filter, bool isUpTri)
 	Plane::Define(n, p1);
 }
 
+void Tri::Scale(double s)
+{
+	p1 *= s;
+	p2 *= s;
+	p3 *= s;
+}
+
 void Tri::Transform(P offset)
 {
 	Plane::Transform(offset);

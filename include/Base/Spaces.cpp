@@ -190,6 +190,12 @@ void MinkowskiSpaceR::SetGravity(P gravity)
 	evolver.physic.g = gravity;
 }
 
+void MinkowskiSpaceR::PntInsForce(int F, str name, P force)
+{
+	auto& evolver = Cast<Space3DO*>(y->o[0])->evolvers[F];
+	evolver->physic.insForces += force;
+}
+
 void MinkowskiSpaceR::Say()
 {
 	auto& times = Cast<TimeI*>(y->i[0])->timeStamps;

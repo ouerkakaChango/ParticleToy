@@ -46,6 +46,11 @@ public:
 		data_.resize(newLen);
 	}
 
+	void clear()
+	{
+		data_.clear();
+	}
+
 	void allset(T t)
 	{
 		for (auto& iter : data_)

@@ -73,6 +73,12 @@ void P::operator-=(const P& p)
 	z -= p.z;
 }
 
+void P::operator*=(double s)
+{
+	x *= s;
+	y *= s;
+	z *= s;
+}
 //### P
 
 //### Global P

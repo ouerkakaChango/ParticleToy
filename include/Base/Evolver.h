@@ -7,8 +7,11 @@ class PhysicSolver
 public:
 	void Solve(const Pnt& oldPnt, const Pnt& prevPnt, Pnt& newPnt, double dt);
 	void SolveBegin(const Pnt& prevPnt, Pnt& newPnt, double dt);
+	P A();
 	//Ä¬ÈÏÎªUE4µÄ-980
 	P g=P(0.0,0.0,-980.0);
+	arr<P> insForces;
+	double m=1.0;
 };
 
 class CollisionSolver
