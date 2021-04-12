@@ -110,6 +110,25 @@
 //2.1 具体思路：每次verlet改变Pnt位置的时候，Pnt在SetPos时也更新其effectSpaceI，即一条线段effectLine,并在下次与effectTri求交
 //2.2 调整结构：Fast3D要从上一帧copy，因为每个Frame的Fast3D都是独立的；静态collision可用指针共享
 //2.3 bounce：verlet时存储v
+
+//2.4 方案一
+//Yang-Data-GridData
+//Ying-Arrangement-Arrange3D(3DSpaceY)-Terrain3D(参数diamond displacement) 
+//--WorldR.Put3DPnts(Terrain3D(diamond))
+//WorldR.PutTri(Terrain3D(diamond).GetTri())
+
+//2.5 方案二
+//FastGrid:包含arr2<P>
+//FastGrid grid(...);FastTerrainAlgo terrainAlgo(...);
+//...
+//grid.BindArrangeMent(terrainAlgo);
+//WorldR.PutTri(grid.GetTri());
+
+//2.6 方案三
+//Y:EuclideanSpace-Grid3D
+//I:Grid3DI-FastGrid3D
+//O:Grid3DO(别名Arrangement)-TerrainAlgo-DiamondTerrainAlgo
+//WorldR.PutTri(grid.GetTri());
 //##############################
 //100米自由落体 数据表格 (g=10)
 //时间戳 高度（100-x）
@@ -134,11 +153,19 @@ int main()
 
 	op->PutPnt("golf", P(0,0,0), "PhysicProp");
 
-	Tri tri1;
-	tri1.FromGrid(1.0, "xz", true);
-	tri1.Scale(100.0);
-	tri1.Transform(P(0, -4, 0));
-	op->PutTri("grid_up", tri1, "CollisionProp");
+	
+	//Tri tri1;
+	//tri1.FromGrid(1.0, "xz", true);
+	//tri1.Scale(100.0);
+	//tri1.Transform(P(0, -4, 0));
+	//op->PutTri("grid_up", tri1, "CollisionProp");
+
+	//Terrain
+	Grid3D* terrain = new Grid3D;
+	terrain->SetGridSettings(2, 1.0);//edgeNumX/Y=1,cellLength = 1.0
+	Grid3DR* op2 = (Grid3DR*)terrain->r[0];
+	op2->SayI();
+	//op2->DiamondTerrain(1);//terrain detail level = 1;
 
 	op->PntInsForce(0, "golf", P(900.0, 400.0, 1000.0));
 
@@ -148,7 +175,7 @@ int main()
 	//op->SayO();
 	//std::cout << "\n";
 	//op->Say(); //将所有帧数据输出
-	op->DebugSay();
+	//op->DebugSay();
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

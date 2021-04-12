@@ -54,6 +54,9 @@
     <ClInclude Include="..\include\Base\FastPnt.h">
       <Filter>头文件\Base</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\Base\FastGrid.h">
+      <Filter>头文件\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -90,6 +93,9 @@
       <Filter>源文件\Base</Filter>
     </ClCompile>
     <ClCompile Include="..\include\Base\FastPnt.cpp">
+      <Filter>源文件\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\FastGrid.cpp">
       <Filter>源文件\Base</Filter>
     </ClCompile>
   </ItemGroup>

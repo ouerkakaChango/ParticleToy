@@ -3,6 +3,7 @@
 #include "Taiji.h"
 #include "Fast3D.h"
 #include "Evolver.h"
+#include "FastGrid.h"
 
 class Space : public Yang
 {
@@ -92,6 +93,30 @@ class MinkowskiSpaceR : public R
 	void SayO() override;
 	void Say();
 	void DebugSay();
-
-protected:
 };
+
+//### Grid3D
+class Grid3D : public EuclideanSpace
+{
+	THISY(Grid3D)
+	void SetGridSettings(int edgeNum, double cellLength);
+};
+
+class Grid3DI : public ClassI
+{
+public:
+	FastGrid grid;
+};
+
+class Grid3DO : public ClassO
+{
+public:
+
+};
+
+class Grid3DR : public R
+{
+	THISR(Grid3D)
+	void DiamondTerrain(int detailLevel);
+};
+//### Grid3D

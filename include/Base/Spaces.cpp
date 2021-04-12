@@ -217,3 +217,42 @@ void MinkowskiSpaceR::DebugSay()
 		std::cout << spaces[inx].InfoString("pos",5).data << "\n";
 	}
 }
+
+//### Grid3D
+Grid3D::Grid3D()
+{
+	//Set I
+	auto ti = new Grid3DI;
+	i += ti;
+
+	//Set R
+	r += new Grid3DR(this);
+}
+
+void Grid3D::SetGridSettings(int edgeNum, double cellLength)
+{
+	auto& grid = Cast<Grid3DI*>(i[0])->grid;
+	grid.SetSize(edgeNum, cellLength);
+}
+//### Grid3D
+
+//### Grid3DR
+void Grid3DR::SayI()
+{
+	auto& pnts = Cast<Grid3DI*>(y->i[0])->grid.pnts;
+	for (int j = 0; j < pnts.y; j++)
+	{
+		for (int i = 0; i < pnts.x; i++)
+		{
+			auto& p = pnts[i][j];
+			std::cout <<"("<< p.ToStr().data<<") ";
+		}
+		std::cout << "\n";
+	}
+}
+
+void Grid3DR::DiamondTerrain(int detailLevel)
+{
+
+}
+//### Grid3DR

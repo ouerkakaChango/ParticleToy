@@ -51,13 +51,6 @@ void CollisionSolver::Solve(const Pnt& prev, Pnt& newPnt, double dt)
 	for (int inx = 0; inx < triArr->size(); inx++)
 	{
 		 auto& tri = (*triArr)[0];
-		 //???
-		 auto l = Cast<EffectLineI*>(newPnt.effectSpace.i[0])->l;
-		 if (l.b.y < -4)
-		 {
-			 int aaa = 1;
-		 }
-		 //___
 		 auto interInfo = newPnt.effectSpace.Intersect(tri);
 		 if (interInfo.hit)
 		 {

@@ -5,6 +5,11 @@ P2::P2(int x_, int y_) :x(x_), y(y_)
 {
 
 }
+
+P2::P2(double x_, double y_) : x(x_), y(y_)
+{
+
+}
 //### P2
 
 //### P
@@ -31,6 +36,11 @@ P::P(P2 p2, str filter)
 	{
 		x = p2.x;
 		z = p2.y;
+	}
+	else if (filter == "zx")
+	{
+		z = p2.x;
+		x = p2.y;
 	}
 }
 
@@ -78,6 +88,17 @@ void P::operator*=(double s)
 	x *= s;
 	y *= s;
 	z *= s;
+}
+
+str P::ToStr()
+{
+	str re;
+	re += x;
+	re += " ";
+	re += y;
+	re += " ";
+	re += z;
+	return re;
 }
 //### P
 

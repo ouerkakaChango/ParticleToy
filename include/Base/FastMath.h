@@ -5,7 +5,8 @@ class P2
 {
 public:
 	P2(int x_, int y_);
-	int x, y;
+	P2(double x_, double y_);
+	double x, y;
 };
 
 class P
@@ -26,6 +27,8 @@ public:
 	void operator-=(const P& p);
 	void operator*=(double s);
 	friend P operator*(double s, const P& p);
+
+	str ToStr();
 };
 
 P operator*(double s, const P& p);

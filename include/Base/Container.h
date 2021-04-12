@@ -60,6 +60,33 @@ public:
 	}
 };
 
+template <class T>
+class arr2
+{
+public:
+
+	void resize(int x_, int y_)
+	{
+		x = x_;
+		y = y_;
+		data_.resize(y);
+		for (int j = 0; j < y; j++)
+		{
+			for (int i = 0; i < x; i++)
+			{
+				data_[j].resize(x);
+			}
+		}
+	}
+
+	arr<T>& operator[](int inx)
+	{
+		return data_[inx];
+	}
+	arr<arr<T>> data_;
+	int x, y;
+};
+
 class str
 {
 public:

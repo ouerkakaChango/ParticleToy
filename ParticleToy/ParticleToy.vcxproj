@@ -152,6 +152,7 @@
     <ClInclude Include="..\include\Base\Evolver.h" />
     <ClInclude Include="..\include\Base\Fast3D.h" />
     <ClInclude Include="..\include\Base\FastGeo.h" />
+    <ClInclude Include="..\include\Base\FastGrid.h" />
     <ClInclude Include="..\include\Base\FastMath.h" />
     <ClInclude Include="..\include\Base\FastPnt.h" />
     <ClInclude Include="..\include\Base\Spaces.h" />
@@ -165,6 +166,7 @@
     <ClCompile Include="..\include\Base\Evolver.cpp" />
     <ClCompile Include="..\include\Base\Fast3D.cpp" />
     <ClCompile Include="..\include\Base\FastGeo.cpp" />
+    <ClCompile Include="..\include\Base\FastGrid.cpp" />
     <ClCompile Include="..\include\Base\FastMath.cpp" />
     <ClCompile Include="..\include\Base\FastPnt.cpp" />
     <ClCompile Include="..\include\Base\Spaces.cpp" />
