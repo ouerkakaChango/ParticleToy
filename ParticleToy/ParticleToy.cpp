@@ -161,9 +161,9 @@ int main()
 	//op->PutTri("grid_up", tri1, "CollisionProp");
 
 	//Terrain
-	Grid3D* terrain = new Grid3D;
-	terrain->SetGridSettings(2, 1.0);//edgeNumX/Y=1,cellLength = 1.0
-	Grid3DR* op2 = (Grid3DR*)terrain->r[0];
+	Grid* terrain = new Grid;
+	terrain->SetGridSettings<double>(2, 1.0);//edgeNumX/Y=1,cellLength = 1.0
+	GridR* op2 = (GridR*)terrain->r[0];
 	op2->SayI();
 	//op2->DiamondTerrain(1);//terrain detail level = 1;
 

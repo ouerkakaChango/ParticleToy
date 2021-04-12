@@ -95,28 +95,36 @@ class MinkowskiSpaceR : public R
 	void DebugSay();
 };
 
-//### Grid3D
-class Grid3D : public EuclideanSpace
+//### Grid
+class Grid : public EuclideanSpace
 {
-	THISY(Grid3D)
-	void SetGridSettings(int edgeNum, double cellLength);
+	THISY(Grid)
+	template<class DataClass>
+	void SetGridSettings(int edgeNum, double cellLength)
+	{
+		auto ti = new GridI<DataClass>;
+		i += ti;
+		auto& grid = ti->grid;
+		grid.SetSize(edgeNum, cellLength);
+	}
 };
 
-class Grid3DI : public ClassI
+template <class DataClass>
+class GridI : public ClassI
 {
 public:
-	FastGrid grid;
+	FastGrid<DataClass> grid;
 };
 
-class Grid3DO : public ClassO
+class GridO : public ClassO
 {
 public:
 
 };
 
-class Grid3DR : public R
+class GridR : public R
 {
-	THISR(Grid3D)
+	THISR(Grid)
 	void DiamondTerrain(int detailLevel);
 };
 //### Grid3D

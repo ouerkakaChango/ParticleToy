@@ -10,6 +10,15 @@ P2::P2(double x_, double y_) : x(x_), y(y_)
 {
 
 }
+
+str P2::ToStr()
+{
+	str re;
+	re += x;
+	re += " ";
+	re += y;
+	return re;
+}
 //### P2
 
 //### P

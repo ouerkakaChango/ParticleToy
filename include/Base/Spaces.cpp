@@ -218,41 +218,45 @@ void MinkowskiSpaceR::DebugSay()
 	}
 }
 
-//### Grid3D
-Grid3D::Grid3D()
+//### Grid
+Grid::Grid()
 {
 	//Set I
-	auto ti = new Grid3DI;
-	i += ti;
+	//auto ti = new GridI;
+	//i += ti;
 
 	//Set R
-	r += new Grid3DR(this);
+	r += new GridR(this);
 }
 
-void Grid3D::SetGridSettings(int edgeNum, double cellLength)
-{
-	auto& grid = Cast<Grid3DI*>(i[0])->grid;
-	grid.SetSize(edgeNum, cellLength);
-}
-//### Grid3D
+//template<class DataClass>
+//void Grid::SetGridSettings(int edgeNum, double cellLength)
+//{
+//	auto ti = new GridI<DataClass>;
+//	i += ti;
+//	auto& grid = ti->grid;
+//	grid.SetSize(edgeNum, cellLength);
+//}
+//### Grid
 
-//### Grid3DR
-void Grid3DR::SayI()
+//### GridR
+void GridR::SayI()
 {
-	auto& pnts = Cast<Grid3DI*>(y->i[0])->grid.pnts;
+	auto& grid = Cast<GridI<double>*>(y->i[0])->grid;
+	auto& pnts = grid.pnts;
 	for (int j = 0; j < pnts.y; j++)
 	{
 		for (int i = 0; i < pnts.x; i++)
 		{
 			auto& p = pnts[i][j];
-			std::cout <<"("<< p.ToStr().data<<") ";
+			std::cout <<"("<< p.ToStr().data<<"):"<< grid.datas[i][j]<<" ";
 		}
 		std::cout << "\n";
 	}
 }
 
-void Grid3DR::DiamondTerrain(int detailLevel)
+void GridR::DiamondTerrain(int detailLevel)
 {
 
 }
-//### Grid3DR
+//### GridR

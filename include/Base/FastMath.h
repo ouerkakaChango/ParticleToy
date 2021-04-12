@@ -4,9 +4,11 @@
 class P2
 {
 public:
+	P2() {}
 	P2(int x_, int y_);
 	P2(double x_, double y_);
-	double x, y;
+	str ToStr();
+	double x=0.0, y=0.0;
 };
 
 class P
