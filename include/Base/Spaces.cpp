@@ -230,7 +230,7 @@ Grid::Grid()
 //### EasyTerrainAlgo
 void EasyTerrainAlgo::Create(GridI<double>* terrain, int detailLevel_, double maxH_)
 {
-	if (detailLevel_ = 0)
+	if (detailLevel_ == 0)
 	{
 		abort();
 		return;
@@ -316,7 +316,7 @@ void EasyTerrainAlgo::Square(int edgeNum)
 			inxStart += P2(1, 0)*stepSize;
 		}
 		inxStart.x = 0;
-		inxStart.y += 1;
+		inxStart.y += stepSize;
 	}
 }
 
@@ -374,7 +374,7 @@ void EasyTerrainAlgo::Diamond(int edgeNum)
 			inxStart += P2(1, 0)*stepSize;
 		}
 		inxStart.x = 0;
-		inxStart.y += 1;
+		inxStart.y += stepSize;
 	}
 }
 
