@@ -9,6 +9,7 @@ public:
 	{
 		SetSize(edgeNum, edgeNum, cellLength, cellLength);
 	}
+
 	void SetSize(int edgeX, int edgeY, double cellX, double cellY)
 	{
 		pnts.resize(edgeX + 1, edgeY + 1);
@@ -25,6 +26,17 @@ public:
 			}
 		}
 	}
+
+	void Set(const P2& inx, DataClass data)
+	{
+		datas[inx.IntX()][inx.IntY()] = data;
+	}
+
+	DataClass Get(const P2& inx)
+	{
+		return datas[inx.IntX()][inx.IntY()];
+	}
+
 	arr2<P2> pnts;
 	arr2<DataClass> datas;
 };

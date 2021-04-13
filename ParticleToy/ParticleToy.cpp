@@ -164,17 +164,19 @@ int main()
 	Grid* terrain = new Grid;
 	terrain->SetGridSettings<double>(2, 1.0);//edgeNumX/Y=1,cellLength = 1.0
 	GridR* op2 = (GridR*)terrain->r[0];
-	op2->SayI();
-	//op2->DiamondTerrain(1);//terrain detail level = 1;
+	op2->EasyTerrain(1, 1.0);//terrain detail level = 1,maxH=1.0
+	//op2->SayI();
+	op2->DebugSay();
 
-	op->PntInsForce(0, "golf", P(900.0, 400.0, 1000.0));
+	//op->PntInsForce(0, "golf", P(900.0, 400.0, 1000.0));
+	//op->Evolve(0);
 
-	op->Evolve(0);
 	//p->SayI();
 	//std::cout << "\n";
 	//op->SayO();
 	//std::cout << "\n";
 	//op->Say(); //将所有帧数据输出
+
 	//op->DebugSay();
 }
 

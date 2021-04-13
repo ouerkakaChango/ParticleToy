@@ -1,5 +1,6 @@
 #include "FastMath.h"
 
+#include <random>
 //### P2
 P2::P2(int x_, int y_) :x(x_), y(y_)
 {
@@ -9,6 +10,42 @@ P2::P2(int x_, int y_) :x(x_), y(y_)
 P2::P2(double x_, double y_) : x(x_), y(y_)
 {
 
+}
+
+P2 P2::operator+(const P2& p) const
+{
+	return P2(x + p.x, y + p.y);
+}
+
+P2 P2::operator-(const P2& p) const
+{
+	return P2(x - p.x, y - p.y);
+}
+
+P2 P2::operator*(double s) const
+{
+	return P2(x*s, y*s);
+}
+
+P2 P2::operator/(double s) const
+{
+	return P2(x/s, y/s);
+}
+
+void P2::operator+=(const P2& p)
+{
+	x += p.x;
+	y += p.y;
+}
+
+bool P2::operator>=(const P2& p) const
+{
+	return x >= p.x && y >= p.y;
+}
+
+bool P2::operator<(const P2& p) const
+{
+	return x < p.x && y < p.y;
 }
 
 str P2::ToStr()
@@ -196,5 +233,13 @@ bool SolveQuadra(P a, P b, P c, double& x1, double& x2)
 		}
 	}
 	return true;
+}
+
+double rand01()
+{
+	static std::default_random_engine e;        // 生成无符号随机整数
+	// 0 到 1 （包含）的均匀分布
+	static std::uniform_real_distribution<double>u(0, 1);
+	return u(e);
 }
 //### Global Utility

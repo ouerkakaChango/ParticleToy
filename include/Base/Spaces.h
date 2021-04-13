@@ -122,9 +122,32 @@ public:
 
 };
 
+class TerrainAlgo : public GridO
+{
+public:
+};
+
+class EasyTerrainAlgo : public TerrainAlgo
+{
+public:
+	void Create(GridI<double>* terrain, int detailLevel_, double maxH_);
+	void InitCorner(double h);
+	void Square(int edgeNum);
+	void Diamond(int edgeNum);
+	void SubDiamond(const P2& inx1,const P2& inx2, const P2& inxCenter,
+		double h1,double h2,double hc);
+
+	FastGrid<double>* grid;
+	int detailLevel;
+	double maxH;
+	bool bMaxFrac=false;
+	double scale = 1;
+};
+
 class GridR : public R
 {
 	THISR(Grid)
-	void DiamondTerrain(int detailLevel);
+	void EasyTerrain(int detailLevel, double maxH);
+	void DebugSay();
 };
 //### Grid3D

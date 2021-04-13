@@ -221,23 +221,174 @@ void MinkowskiSpaceR::DebugSay()
 //### Grid
 Grid::Grid()
 {
-	//Set I
-	//auto ti = new GridI;
-	//i += ti;
-
 	//Set R
 	r += new GridR(this);
 }
-
-//template<class DataClass>
-//void Grid::SetGridSettings(int edgeNum, double cellLength)
-//{
-//	auto ti = new GridI<DataClass>;
-//	i += ti;
-//	auto& grid = ti->grid;
-//	grid.SetSize(edgeNum, cellLength);
-//}
 //### Grid
+
+//### EasyTerrainAlgo
+void EasyTerrainAlgo::Create(GridI<double>* terrain, int detailLevel_, double maxH_)
+{
+	if (terrain == nullptr)
+	{
+		abort();
+		return;
+	}
+	detailLevel = detailLevel_;
+	maxH = maxH_;
+	grid = &terrain->grid;
+	
+	InitCorner(maxH_/2.0);
+
+	bool bLoop = true;
+	int detailInx = 0;
+	while (bLoop)
+	{
+		Square(detailInx+1);
+		if (bMaxFrac)
+		{
+			break;
+		}
+		Diamond(detailInx+1);
+		if (bMaxFrac)
+		{
+			break;
+		}
+		detailInx += 1;
+		if (detailInx == detailLevel)
+		{
+			break;
+		}
+	}
+}
+
+void EasyTerrainAlgo::InitCorner(double h)
+{
+	int stepSize = grid->datas.x - 1;
+	P2 inx1 = P2(0, 0);
+	P2 inx2 = P2(0, 0) + P2(1, 0)*stepSize;
+	P2 inx3 = P2(0, 0) + P2(1, 1)*stepSize;
+	P2 inx4 = P2(0, 0) + P2(0, 1)*stepSize;
+
+	grid->Set(inx1, h);
+	grid->Set(inx2, h);
+	grid->Set(inx3, h);
+	grid->Set(inx4, h);
+}
+
+void EasyTerrainAlgo::Square(int edgeNum)
+{
+	int stepSize = grid->datas.x / edgeNum - 1;
+	if (stepSize < 2)
+	{
+		bMaxFrac = true;
+		return;
+	}
+	P2 inxStart(0, 0);
+	for (int j = 0; j < edgeNum; j++)
+	{
+		for (int i = 0; i < edgeNum; i++)
+		{
+			P2 inx1 = inxStart;
+			P2 inx2 = inxStart + P2(1, 0)*stepSize;
+			P2 inx3 = inxStart + P2(1, 1)*stepSize;
+			P2 inx4 = inxStart + P2(0, 1)*stepSize;
+			P2 inxCenter = inxStart + P2(0.5, 0.5)*stepSize;
+			//???
+			//P2 p1 = grid->pnts[inx1.IntX()][inx1.IntY()];
+			//P2 p2 = grid->pnts[inx2.IntX()][inx2.IntY()];
+			//P2 p3 = grid->pnts[inx3.IntX()][inx3.IntY()];
+			//P2 p4 = grid->pnts[inx4.IntX()][inx4.IntY()];
+			//___
+			double h1 = grid->Get(inx1);
+			double h2 = grid->Get(inx2);
+			double h3 = grid->Get(inx3);
+			double h4 = grid->Get(inx4);
+			double offset = (rand01() * 2 - 1)/2 * scale * maxH;
+			double h = (h1 + h2 + h3 + h4) / 4+offset;
+			grid->Set(inxCenter, h);
+			inxStart += P2(1, 0)*stepSize;
+		}
+		inxStart.x = 0;
+		inxStart.y += 1;
+	}
+}
+
+void EasyTerrainAlgo::Diamond(int edgeNum)
+{
+	int stepSize = grid->datas.x / edgeNum - 1;
+	if (stepSize < 2)
+	{
+		bMaxFrac = true;
+		return;
+	}
+	P2 inxStart(0, 0);
+	for (int j = 0; j < edgeNum; j++)
+	{
+		for (int i = 0; i < edgeNum; i++)
+		{
+			P2 inx1 = inxStart;
+			P2 inx2 = inxStart + P2(1, 0)*stepSize;
+			P2 inx3 = inxStart + P2(1, 1)*stepSize;
+			P2 inx4 = inxStart + P2(0, 1)*stepSize;
+			P2 inxCenter = inxStart + P2(0.5, 0.5)*stepSize;
+			//???
+			//P2 p1 = grid->pnts[inx1.IntX()][inx1.IntY()];
+			//P2 p2 = grid->pnts[inx2.IntX()][inx2.IntY()];
+			//P2 p3 = grid->pnts[inx3.IntX()][inx3.IntY()];
+			//P2 p4 = grid->pnts[inx4.IntX()][inx4.IntY()];
+			//___
+			double h1 = grid->Get(inx1);
+			double h2 = grid->Get(inx2);
+			double h3 = grid->Get(inx3);
+			double h4 = grid->Get(inx4);
+			double hc = grid->Get(inxCenter);
+
+			//dia1:1-2-c
+			SubDiamond(inx1,inx2,inxCenter,h1,h2,hc);
+
+			//dia2:2-3-c
+			SubDiamond(inx2, inx3, inxCenter, h2, h3, hc);
+			//double offset2 = (rand01() * 2 - 1) / 2 * scale * maxH;
+			//P2 inxC2 = (inx2 + inx3) / 2;
+			//grid->Set(inxC2, (h2 + h3 + hc) / 3 + offset2);
+
+			//dia3:3-4-c
+			SubDiamond(inx3, inx4, inxCenter, h3, h4, hc);
+			//double offset3 = (rand01() * 2 - 1) / 2 * scale * maxH;
+			//P2 inxC3 = (inx3 + inx4) / 2;
+			//grid->Set(inxC3, (h3 + h4 + hc) / 3 + offset3);
+
+			//dia4:4-1-c
+			SubDiamond(inx4, inx1, inxCenter, h4, h1, hc);
+			//double offset4 = (rand01() * 2 - 1) / 2 * scale * maxH;
+			//P2 inxC4 = (inx4 + inx1) / 2;
+			//grid->Set(inxC4, (h4 + h1 + hc) / 3 + offset4);
+			
+			inxStart += P2(1, 0)*stepSize;
+		}
+		inxStart.x = 0;
+		inxStart.y += 1;
+	}
+}
+
+void EasyTerrainAlgo::SubDiamond(const P2& inx1, const P2& inx2, const P2& inxCenter,
+	double h1, double h2, double hc)
+{
+	double offset1 = (rand01() * 2 - 1) / 2 * scale * maxH;
+	P2 inxC1 = (inx1 + inx2) / 2;
+	P2 inxO1 = inxC1 * 2 - inxCenter;
+	if (inxO1 >= P2(0, 0) && inxO1 < P2(grid->datas.x,grid->datas.y))
+	{
+		double ho = grid->Get(inxO1);
+		grid->Set(inxC1, (h1 + h2 + hc + ho) / 4 + offset1);
+	}
+	else
+	{
+		grid->Set(inxC1, (h1 + h2 + hc) / 3 + offset1);
+	}
+}
+//### EasyTerrainAlgo
 
 //### GridR
 void GridR::SayI()
@@ -255,8 +406,26 @@ void GridR::SayI()
 	}
 }
 
-void GridR::DiamondTerrain(int detailLevel)
+void GridR::EasyTerrain(int detailLevel, double maxH)
 {
+	auto to = new EasyTerrainAlgo;
+	y->o += to;
 
+	auto grid = Cast<GridI<double>*>(y->i[0]);
+	to->Create(grid, detailLevel, maxH);
+}
+
+void GridR::DebugSay()
+{
+	auto& grid = Cast<GridI<double>*>(y->i[0])->grid;
+	for (int j = 0; j < grid.datas.y; j++)
+	{
+		for (int i = 0; i < grid.datas.x; i++)
+		{
+			P p(grid.pnts[i][j], "zx");
+			p.y = grid.datas[i][j];
+			std::cout << p.ToStr().data << "\n";
+		}
+	}
 }
 //### GridR

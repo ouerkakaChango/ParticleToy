@@ -7,6 +7,15 @@ public:
 	P2() {}
 	P2(int x_, int y_);
 	P2(double x_, double y_);
+	P2 operator+(const P2& p) const;
+	P2 operator-(const P2& p) const;
+	P2 operator*(double s) const;
+	P2 operator/(double s) const;
+	void operator+=(const P2& p);
+	bool operator>=(const P2& p) const;
+	bool operator<(const P2& p) const;
+	inline int IntX() const { return static_cast<int>(x); }
+	inline int IntY() const { return static_cast<int>(y); }
 	str ToStr();
 	double x=0.0, y=0.0;
 };
@@ -42,3 +51,4 @@ P reflect(const P& i, const P& n);
 
 bool SolveQuadra(double a, double b, double c, double& x1, double& x2);
 bool SolveQuadra(P a, P b, P c, double& x1, double& x2);
+double rand01();
