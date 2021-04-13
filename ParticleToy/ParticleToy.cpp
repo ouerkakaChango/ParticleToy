@@ -162,7 +162,7 @@ int main()
 
 	//Terrain
 	Grid* terrain = new Grid;
-	terrain->SetGridSettings<double>(2, 1.0);//edgeNumX/Y=1,cellLength = 1.0
+	terrain->SetGridSettings<double>(3, 1.0);//edgeNumX/Y=1,cellLength = 1.0
 	GridR* op2 = (GridR*)terrain->r[0];
 	op2->EasyTerrain(1, 1.0);//terrain detail level = 1,maxH=1.0
 	//op2->SayI();

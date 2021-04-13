@@ -29,7 +29,38 @@ public:
 
 	void Set(const P2& inx, DataClass data)
 	{
-		datas[inx.IntX()][inx.IntY()] = data;
+		if (inx.x < 0 || inx.y < 0 || inx.x >= datas.x || inx.y >= datas.y)
+		{
+			abort();
+			return;
+		}
+		bool bXMid = inx.x - inx.IntX() != 0;
+		bool bYMid = inx.y - inx.IntY() != 0;
+		if (bXMid || bYMid)
+		{
+			int ix = inx.IntX(), iy = inx.IntY();
+			if (bXMid && !bYMid)
+			{
+				datas[ix][iy] = data;
+				datas[ix + 1][iy] = data;
+			}
+			else if (!bXMid && bYMid)
+			{
+				datas[ix][iy] = data;
+				datas[ix][iy+1] = data;
+			}
+			else
+			{
+				datas[ix][iy] = data;
+				datas[ix + 1][iy] = data;
+				datas[ix + 1][iy + 1] = data;
+				datas[ix][iy + 1] = data;
+			}
+		}
+		else
+		{
+			datas[inx.IntX()][inx.IntY()] = data;
+		}
 	}
 
 	DataClass Get(const P2& inx)

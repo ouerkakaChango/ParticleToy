@@ -1,7 +1,8 @@
 #include "Spaces.h"
-#include "Utility.h"
 
+#include "Utility.h"
 #include <iostream>
+#include <cmath>
 
 Time::Time()
 {
@@ -229,6 +230,11 @@ Grid::Grid()
 //### EasyTerrainAlgo
 void EasyTerrainAlgo::Create(GridI<double>* terrain, int detailLevel_, double maxH_)
 {
+	if (detailLevel_ = 0)
+	{
+		abort();
+		return;
+	}
 	if (terrain == nullptr)
 	{
 		abort();
@@ -278,7 +284,7 @@ void EasyTerrainAlgo::InitCorner(double h)
 
 void EasyTerrainAlgo::Square(int edgeNum)
 {
-	int stepSize = grid->datas.x / edgeNum - 1;
+	double stepSize = (grid->datas.x - 1) / std::pow(2, edgeNum-1);
 	if (stepSize < 2)
 	{
 		bMaxFrac = true;
@@ -316,7 +322,7 @@ void EasyTerrainAlgo::Square(int edgeNum)
 
 void EasyTerrainAlgo::Diamond(int edgeNum)
 {
-	int stepSize = grid->datas.x / edgeNum - 1;
+	double stepSize = (grid->datas.x - 1)/ std::pow(2,edgeNum-1);
 	if (stepSize < 2)
 	{
 		bMaxFrac = true;
@@ -408,6 +414,11 @@ void GridR::SayI()
 
 void GridR::EasyTerrain(int detailLevel, double maxH)
 {
+	if (detailLevel == 0)
+	{
+		abort();
+		return;
+	}
 	auto to = new EasyTerrainAlgo;
 	y->o += to;
 
