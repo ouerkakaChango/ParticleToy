@@ -282,15 +282,27 @@ void EasyTerrainAlgo::InitCorner(double h)
 	grid->Set(inx4, h);
 }
 
-void EasyTerrainAlgo::Square(int edgeNum)
+double EasyTerrainAlgo::Offset()
 {
-	double stepSize = (grid->datas.x - 1) / std::pow(2, edgeNum-1);
+	return scale * (2 * rand01() - 1);
+	//return rand01() * maxH;
+}
+
+double EasyTerrainAlgo::H(double h1, double h2, double h3, double h4)
+{
+	return (h1 + h2 + h3 + h4) / 4 + Offset();
+}
+
+void EasyTerrainAlgo::Square(int deep)
+{
+	double stepSize = (grid->datas.x - 1) / std::pow(2, deep -1);
 	if (stepSize < 2)
 	{
 		bMaxFrac = true;
 		return;
 	}
 	P2 inxStart(0, 0);
+	int edgeNum = Cast<int>((grid->datas.x - 1) / stepSize);
 	for (int j = 0; j < edgeNum; j++)
 	{
 		for (int i = 0; i < edgeNum; i++)
@@ -310,8 +322,7 @@ void EasyTerrainAlgo::Square(int edgeNum)
 			double h2 = grid->Get(inx2);
 			double h3 = grid->Get(inx3);
 			double h4 = grid->Get(inx4);
-			double offset = (rand01() * 2 - 1)/2 * scale * maxH;
-			double h = (h1 + h2 + h3 + h4) / 4+offset;
+			double h = H(h1, h2, h3, h4);
 			grid->Set(inxCenter, h);
 			inxStart += P2(1, 0)*stepSize;
 		}
@@ -320,15 +331,16 @@ void EasyTerrainAlgo::Square(int edgeNum)
 	}
 }
 
-void EasyTerrainAlgo::Diamond(int edgeNum)
+void EasyTerrainAlgo::Diamond(int deep)
 {
-	double stepSize = (grid->datas.x - 1)/ std::pow(2,edgeNum-1);
+	double stepSize = (grid->datas.x - 1)/ std::pow(2,deep-1);
 	if (stepSize < 2)
 	{
 		bMaxFrac = true;
 		return;
 	}
 	P2 inxStart(0, 0);
+	int edgeNum = Cast<int>((grid->datas.x - 1) / stepSize);
 	for (int j = 0; j < edgeNum; j++)
 	{
 		for (int i = 0; i < edgeNum; i++)
@@ -355,21 +367,12 @@ void EasyTerrainAlgo::Diamond(int edgeNum)
 
 			//dia2:2-3-c
 			SubDiamond(inx2, inx3, inxCenter, h2, h3, hc);
-			//double offset2 = (rand01() * 2 - 1) / 2 * scale * maxH;
-			//P2 inxC2 = (inx2 + inx3) / 2;
-			//grid->Set(inxC2, (h2 + h3 + hc) / 3 + offset2);
 
 			//dia3:3-4-c
 			SubDiamond(inx3, inx4, inxCenter, h3, h4, hc);
-			//double offset3 = (rand01() * 2 - 1) / 2 * scale * maxH;
-			//P2 inxC3 = (inx3 + inx4) / 2;
-			//grid->Set(inxC3, (h3 + h4 + hc) / 3 + offset3);
 
 			//dia4:4-1-c
 			SubDiamond(inx4, inx1, inxCenter, h4, h1, hc);
-			//double offset4 = (rand01() * 2 - 1) / 2 * scale * maxH;
-			//P2 inxC4 = (inx4 + inx1) / 2;
-			//grid->Set(inxC4, (h4 + h1 + hc) / 3 + offset4);
 			
 			inxStart += P2(1, 0)*stepSize;
 		}
@@ -381,17 +384,16 @@ void EasyTerrainAlgo::Diamond(int edgeNum)
 void EasyTerrainAlgo::SubDiamond(const P2& inx1, const P2& inx2, const P2& inxCenter,
 	double h1, double h2, double hc)
 {
-	double offset1 = (rand01() * 2 - 1) / 2 * scale * maxH;
 	P2 inxC1 = (inx1 + inx2) / 2;
 	P2 inxO1 = inxC1 * 2 - inxCenter;
 	if (inxO1 >= P2(0, 0) && inxO1 < P2(grid->datas.x,grid->datas.y))
 	{
 		double ho = grid->Get(inxO1);
-		grid->Set(inxC1, (h1 + h2 + hc + ho) / 4 + offset1);
+		grid->Set(inxC1, H(h1, h2, hc, ho));
 	}
 	else
 	{
-		grid->Set(inxC1, (h1 + h2 + hc) / 3 + offset1);
+		grid->Set(inxC1, H(h1, h2, hc));
 	}
 }
 //### EasyTerrainAlgo
@@ -426,7 +428,7 @@ void GridR::EasyTerrain(int detailLevel, double maxH)
 	to->Create(grid, detailLevel, maxH);
 }
 
-void GridR::DebugSay()
+void GridR::DebugSay(int mode)
 {
 	auto& grid = Cast<GridI<double>*>(y->i[0])->grid;
 	for (int j = 0; j < grid.datas.y; j++)
@@ -435,7 +437,14 @@ void GridR::DebugSay()
 		{
 			P p(grid.pnts[i][j], "zx");
 			p.y = grid.datas[i][j];
-			std::cout << p.ToStr().data << "\n";
+			if (mode == 1)
+			{
+				std::cout << p.ToStr().data << "\n";
+			}
+			else if (mode == 2)
+			{
+				std::cout << p.ToStr().data << "--- "<<P2(i,j).ToStr().data<< "\n";
+			}
 		}
 	}
 }

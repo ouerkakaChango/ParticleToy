@@ -48,6 +48,11 @@ bool P2::operator<(const P2& p) const
 	return x < p.x && y < p.y;
 }
 
+bool P2::operator==(const P2& p) const
+{
+	return x == p.x && y == p.y;
+}
+
 str P2::ToStr()
 {
 	str re;
@@ -241,5 +246,20 @@ double rand01()
 	// 0 到 1 （包含）的均匀分布
 	static std::uniform_real_distribution<double>u(0, 1);
 	return u(e);
+}
+
+double equal(double a, double b, double tolerance)
+{
+	return std::abs(a - b) < tolerance;
+}
+
+bool zero(double n)
+{
+	return equal(n, 0.0);
+}
+
+bool zero(const P2& p)
+{
+	return equal(p.x, 0) && equal(p.y, 0);
 }
 //### Global Utility

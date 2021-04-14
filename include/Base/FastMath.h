@@ -14,8 +14,11 @@ public:
 	void operator+=(const P2& p);
 	bool operator>=(const P2& p) const;
 	bool operator<(const P2& p) const;
+	bool operator==(const P2& p) const;
 	inline int IntX() const { return static_cast<int>(x); }
 	inline int IntY() const { return static_cast<int>(y); }
+	inline int RoundX() const { return static_cast<int>(x + 0.5); }
+	inline int RoundY() const { return static_cast<int>(y + 0.5); }
 	str ToStr();
 	double x=0.0, y=0.0;
 };
@@ -52,3 +55,6 @@ P reflect(const P& i, const P& n);
 bool SolveQuadra(double a, double b, double c, double& x1, double& x2);
 bool SolveQuadra(P a, P b, P c, double& x1, double& x2);
 double rand01();
+double equal(double a, double b, double tolerance = 0.00001);
+bool zero(double n);
+bool zero(const P2& p);
