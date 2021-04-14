@@ -162,11 +162,12 @@ int main()
 
 	//Terrain
 	Grid* terrain = new Grid;
-	terrain->SetGridSettings<double>(20, 1.0);//edgeNumX/Y=1,cellLength = 1.0
+	terrain->SetGridSettings<double>(80, 1.0);//edgeNumX/Y=1,cellLength = 1.0
 	GridR* op2 = (GridR*)terrain->r[0];
-	op2->EasyTerrain(100, 2.5);//terrain detail level = 1,maxH=1.0
+	op2->EasyTerrain(3.0,0.1);//terrain detail level = 1,initH=1.0
 	//op2->SayI();
-	op2->DebugSay();
+	//op2->DebugSay();
+	op2->DebugOutput("C:/HoudiniProjects/PToyScene/t80.txt");
 
 	//op->PntInsForce(0, "golf", P(900.0, 400.0, 1000.0));
 	//op->Evolve(0);

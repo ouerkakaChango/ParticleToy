@@ -2,6 +2,7 @@
 
 #include "Utility.h"
 #include <iostream>
+#include <fstream>
 #include <cmath>
 
 Time::Time()
@@ -228,9 +229,9 @@ Grid::Grid()
 //### Grid
 
 //### EasyTerrainAlgo
-void EasyTerrainAlgo::Create(GridI<double>* terrain, int detailLevel_, double maxH_)
+void EasyTerrainAlgo::Create(GridI<double>* terrain, int detailLevel_, double initH_, double roughness_)
 {
-	if (detailLevel_ == 0)
+	if (detailLevel_ <= 0 || roughness_<0)
 	{
 		abort();
 		return;
@@ -241,21 +242,23 @@ void EasyTerrainAlgo::Create(GridI<double>* terrain, int detailLevel_, double ma
 		return;
 	}
 	detailLevel = detailLevel_;
-	maxH = maxH_;
+	initH = initH_;
+	roughness = roughness_;
 	grid = &terrain->grid;
 	
-	InitCorner(maxH_/2.0);
+	InitCorner(initH_/2.0);
 
 	bool bLoop = true;
 	int detailInx = 0;
 	while (bLoop)
 	{
-		Square(detailInx+1);
+		stepSize = (grid->datas.x - 1) / std::pow(2, detailInx);
+		Square();
 		if (bMaxFrac)
 		{
 			break;
 		}
-		Diamond(detailInx+1);
+		Diamond();
 		if (bMaxFrac)
 		{
 			break;
@@ -284,8 +287,7 @@ void EasyTerrainAlgo::InitCorner(double h)
 
 double EasyTerrainAlgo::Offset()
 {
-	return scale * (2 * rand01() - 1);
-	//return rand01() * maxH;
+	return roughness * stepSize * (2 * rand01() - 1)* initH;
 }
 
 double EasyTerrainAlgo::H(double h1, double h2, double h3, double h4)
@@ -293,9 +295,8 @@ double EasyTerrainAlgo::H(double h1, double h2, double h3, double h4)
 	return (h1 + h2 + h3 + h4) / 4 + Offset();
 }
 
-void EasyTerrainAlgo::Square(int deep)
+void EasyTerrainAlgo::Square()
 {
-	double stepSize = (grid->datas.x - 1) / std::pow(2, deep -1);
 	if (stepSize < 2)
 	{
 		bMaxFrac = true;
@@ -312,12 +313,7 @@ void EasyTerrainAlgo::Square(int deep)
 			P2 inx3 = inxStart + P2(1, 1)*stepSize;
 			P2 inx4 = inxStart + P2(0, 1)*stepSize;
 			P2 inxCenter = inxStart + P2(0.5, 0.5)*stepSize;
-			//???
-			//P2 p1 = grid->pnts[inx1.IntX()][inx1.IntY()];
-			//P2 p2 = grid->pnts[inx2.IntX()][inx2.IntY()];
-			//P2 p3 = grid->pnts[inx3.IntX()][inx3.IntY()];
-			//P2 p4 = grid->pnts[inx4.IntX()][inx4.IntY()];
-			//___
+
 			double h1 = grid->Get(inx1);
 			double h2 = grid->Get(inx2);
 			double h3 = grid->Get(inx3);
@@ -331,9 +327,8 @@ void EasyTerrainAlgo::Square(int deep)
 	}
 }
 
-void EasyTerrainAlgo::Diamond(int deep)
+void EasyTerrainAlgo::Diamond()
 {
-	double stepSize = (grid->datas.x - 1)/ std::pow(2,deep-1);
 	if (stepSize < 2)
 	{
 		bMaxFrac = true;
@@ -350,12 +345,7 @@ void EasyTerrainAlgo::Diamond(int deep)
 			P2 inx3 = inxStart + P2(1, 1)*stepSize;
 			P2 inx4 = inxStart + P2(0, 1)*stepSize;
 			P2 inxCenter = inxStart + P2(0.5, 0.5)*stepSize;
-			//???
-			//P2 p1 = grid->pnts[inx1.IntX()][inx1.IntY()];
-			//P2 p2 = grid->pnts[inx2.IntX()][inx2.IntY()];
-			//P2 p3 = grid->pnts[inx3.IntX()][inx3.IntY()];
-			//P2 p4 = grid->pnts[inx4.IntX()][inx4.IntY()];
-			//___
+
 			double h1 = grid->Get(inx1);
 			double h2 = grid->Get(inx2);
 			double h3 = grid->Get(inx3);
@@ -414,7 +404,7 @@ void GridR::SayI()
 	}
 }
 
-void GridR::EasyTerrain(int detailLevel, double maxH)
+void GridR::EasyTerrain(double initH, double roughness, int detailLevel)
 {
 	if (detailLevel == 0)
 	{
@@ -425,7 +415,7 @@ void GridR::EasyTerrain(int detailLevel, double maxH)
 	y->o += to;
 
 	auto grid = Cast<GridI<double>*>(y->i[0]);
-	to->Create(grid, detailLevel, maxH);
+	to->Create(grid, detailLevel, initH, roughness);
 }
 
 void GridR::DebugSay(int mode)
@@ -447,5 +437,22 @@ void GridR::DebugSay(int mode)
 			}
 		}
 	}
+}
+
+void GridR::DebugOutput(const str& filePath)
+{
+	std::cout << "Writing File...\n";
+	std::ofstream f(filePath.data,std::ios::out);
+	auto& grid = Cast<GridI<double>*>(y->i[0])->grid;
+	for (int j = 0; j < grid.datas.y; j++)
+	{
+		for (int i = 0; i < grid.datas.x; i++)
+		{
+			P p(grid.pnts[i][j], "zx");
+			p.y = grid.datas[i][j];
+			f << p.ToStr().data << std::endl;
+		}
+	}
+	std::cout << "File write done at "<<filePath.data<<"\n";
 }
 //### GridR

@@ -130,10 +130,10 @@ public:
 class EasyTerrainAlgo : public TerrainAlgo
 {
 public:
-	void Create(GridI<double>* terrain, int detailLevel_, double maxH_);
+	void Create(GridI<double>* terrain, int detailLevel_, double initH_, double roughness_);
 	void InitCorner(double h);
-	void Square(int deep);
-	void Diamond(int deep);
+	void Square();
+	void Diamond();
 	void SubDiamond(const P2& inx1,const P2& inx2, const P2& inxCenter,
 		double h1,double h2,double hc);
 	double Offset();
@@ -141,15 +141,17 @@ public:
 
 	FastGrid<double>* grid;
 	int detailLevel;
-	double maxH;
+	double initH;
 	bool bMaxFrac=false;
-	double scale = 1;
+	double stepSize = -10000.0;
+	double roughness = 0.3;
 };
 
 class GridR : public R
 {
 	THISR(Grid)
-	void EasyTerrain(int detailLevel, double maxH);
+	void EasyTerrain(double initH, double roughness, int detailLevel = 100);
 	void DebugSay(int mode=1);
+	void DebugOutput(const str& filePath);
 };
 //### Grid3D
