@@ -78,80 +78,6 @@ public:
 		}
 	}
 
-	void SetDirectly(const P2& inx, DataClass data)
-	{
-		if (inx.x < 0 || inx.y < 0 || inx.x >= datas.x || inx.y >= datas.y)
-		{
-			abort();
-			return;
-		}
-
-		int ix = inx.IntX(), iy = inx.IntY();
-		double fx = inx.x - ix;
-		double fy = inx.y - iy;
-
-		bool doublex = equal(fx, 0.5);
-		bool doubley = equal(fy, 0.5);
-
-		if (!doublex && !doubley)
-		{
-			if (!zero(datas[inx.RoundX()][inx.RoundY()]))
-			{
-				abort();
-			}
-			datas[inx.RoundX()][inx.RoundY()] = data;
-		}
-		else if (doublex && !doubley)
-		{
-			if (!zero(datas[ix][inx.RoundY()]))
-			{
-				abort();
-			}
-			if (!zero(datas[ix + 1][inx.RoundY()]))
-			{
-				abort();
-			}
-			datas[ix][inx.RoundY()] = data;
-			datas[ix+1][inx.RoundY()] = data;
-		}
-		else if (!doublex && doubley)
-		{
-			if (!zero(datas[inx.RoundX()][iy]))
-			{
-				abort();
-			}
-			if (!zero(datas[inx.RoundX()][iy + 1]))
-			{
-				abort();
-			}
-			datas[inx.RoundX()][iy] = data;
-			datas[inx.RoundX()][iy+1] = data;
-		}
-		else
-		{
-			if (!zero(datas[ix][iy]))
-			{
-				abort();
-			}
-			if (!zero(datas[ix][iy + 1]))
-			{
-				abort();
-			}
-			if (!zero(datas[ix + 1][iy]))
-			{
-				abort();
-			}
-			if (!zero(datas[ix + 1][iy + 1]))
-			{
-				abort();
-			}
-			datas[ix][iy] = data;
-			datas[ix][iy + 1] = data;
-			datas[ix + 1][iy] = data;
-			datas[ix + 1][iy + 1] = data;
-		}
-	}
-
 	DataClass Get(const P2& inx)
 	{
 		DataClass re;
@@ -196,3 +122,6 @@ public:
 	arr2<P2> pnts;
 	arr2<DataClass> datas;
 };
+
+class Tri;
+void FastGridToTri(const FastGrid<double>& grid, arr<Tri>& triArr);

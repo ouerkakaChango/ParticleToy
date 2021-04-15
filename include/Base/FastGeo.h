@@ -27,6 +27,8 @@ public:
 class Tri:public Plane
 {
 public:
+	Tri();
+	Tri(const P& p1_, const P& p2_, const P& p3_);
 	void FromGrid(double len, str filter, bool isUpTri);
 	void Scale(double s);
 	void Transform(P offset);

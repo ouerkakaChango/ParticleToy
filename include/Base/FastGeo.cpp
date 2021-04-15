@@ -55,6 +55,18 @@ IntersectInfo Plane::Intersect(const Line& l) const
 //### Plane
 
 //### Tri
+Tri::Tri()
+{
+
+}
+
+Tri::Tri(const P& p1_, const P& p2_, const P& p3_):
+	p1(p1_),p2(p2_),p3(p3_)
+{
+	CalculateNormal();
+	Plane::Define(n, p1);
+}
+
 void Tri::FromGrid(double len, str filter, bool isUpTri)
 {
 	if (isUpTri)

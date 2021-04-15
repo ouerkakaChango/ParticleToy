@@ -83,6 +83,12 @@ public:
 	{
 		return data_[inx];
 	}
+
+	const arr<T>& operator[](int inx) const
+	{
+		return data_[inx];
+	}
+
 	arr<arr<T>> data_;
 	int x, y;
 };

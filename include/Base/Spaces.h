@@ -72,7 +72,7 @@ class MinkowskiSpace : public Time, public Space3D
 	THISY(MinkowskiSpace)
 	void SetFrameSettings(int frameNum_, double frameSec_);
 	void AddPntNow(str name, P pos, str rule);
-	void AddTriNow(str name, Tri tri, str rule);
+	void AddTriNow(str name, const Tri& tri, str rule);
 	void EvolveFrame(int prevFrame);
 
 	double frameSec;
@@ -85,7 +85,8 @@ class MinkowskiSpaceR : public R
 	THISR(MinkowskiSpace)
 
 	void PutPnt(str name, P pnt, str rule);
-	void PutTri(str name, Tri tri, str rule);
+	void PutTri(str name, const Tri& tri, str rule);
+	void PutTri(str name, const arr<Tri>& tris, str rule);
 	void Evolve(int begin);
 	void SetGravity(P gravity);
 	void PntInsForce(int F, str name, P force);
@@ -93,6 +94,7 @@ class MinkowskiSpaceR : public R
 	void SayO() override;
 	void Say();
 	void DebugSay();
+	void DebugOutput(const str& filePath);
 };
 
 //### Grid
@@ -151,6 +153,7 @@ class GridR : public R
 {
 	THISR(Grid)
 	void EasyTerrain(double initH, double roughness, int detailLevel = 100);
+	void TerrainToTri(arr<Tri>& triArr);
 	void DebugSay(int mode=1);
 	void DebugOutput(const str& filePath);
 };

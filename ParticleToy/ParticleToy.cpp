@@ -61,30 +61,6 @@
 //只能通过指定顶点，然后数学计算surface碰撞
 //所以，在电脑世界中，Surface也作为一个实物存在
 
-//测试场景1：简单4顶点地面+重力小球
-//WorldR.Put3DPnt(vert1);
-//WorldR.Put3DPnt(vert2);
-//WorldR.Put3DPnt(vert3);
-//WorldR.Put3DPnt(vert4);
-//WorldR.PutSurface(1,2,3);
-//WorldR.PutSurface(2,3,4);
-//WorldR.PutWorldPnt(golf,"PhysicProp");
-//（由于WorldPnt为时空点，所以其自然有一串时空轨迹。
-//在代码上，显示为其自更新，自管理）
-//golf.GetRecord(0,120,"s",0.01); //120s的0.01s间隔帧数据，共12000个
-
-/////////////////////////////////////////////////////////////
-//1.不同PC同步测试
-//2.代码构建步骤:重力小球，地面
-////////////////////////////////////////////////////////////
-
-//--操作0:准备3DSpaceR
-//--操作1:Put3DPoint，参数Terrain3D，迭代1
-//--操作2:Put3DPoint，参数Terrain3D，迭代2
-
-//#############################
-//同步测试
-//1:2021.03.08 from SQ
 //##############################
 //最新规则改动
 //1.无生阴阳的太极本物，本来规定后缀为Y，现在直接不加。
@@ -102,7 +78,6 @@
 //1.6 Evolver-PhysicSolver-RigidSolver
 //1.7 在SetFrameSetting时初始化所有Evolver；在PutPnt时候，注意到rule里有physic，然后打开之后帧的所有Evolver里的PhysicSolver
 //1.8 Log动画数据（txt文件），然后UE4插件/Houdini播放动画
-
 //1.9 MinkowskiSpaceR创建2个“概念三角面”，也就是通用的三角面。
 //2.0 在PhysicSolver里检测碰撞，对于每个moveObj：
 //2.0.1 获得此moveObj从old->prev的影响范围effectSpaceI
@@ -110,39 +85,23 @@
 //2.1 具体思路：每次verlet改变Pnt位置的时候，Pnt在SetPos时也更新其effectSpaceI，即一条线段effectLine,并在下次与effectTri求交
 //2.2 调整结构：Fast3D要从上一帧copy，因为每个Frame的Fast3D都是独立的；静态collision可用指针共享
 //2.3 bounce：verlet时存储v
-
 //2.4 方案一
 //Yang-Data-GridData
 //Ying-Arrangement-Arrange3D(3DSpaceY)-Terrain3D(参数diamond displacement) 
 //--WorldR.Put3DPnts(Terrain3D(diamond))
 //WorldR.PutTri(Terrain3D(diamond).GetTri())
-
 //2.5 方案二
 //FastGrid:包含arr2<P>
 //FastGrid grid(...);FastTerrainAlgo terrainAlgo(...);
 //...
 //grid.BindArrangeMent(terrainAlgo);
 //WorldR.PutTri(grid.GetTri());
-
 //2.6 方案三
 //Y:EuclideanSpace-Grid3D
 //I:Grid3DI-FastGrid3D
 //O:Grid3DO(别名Arrangement)-TerrainAlgo-DiamondTerrainAlgo
 //WorldR.PutTri(grid.GetTri());
 //##############################
-//100米自由落体 数据表格 (g=10)
-//时间戳 高度（100-x）
-//0		0
-//0.1	0.05
-//0.2	0.2
-//0.3	0.45
-//0.4	0.8
-//0.5	1.25
-//0.6	1.8
-//0.7	2.45
-//0.8	3.2
-//0.9	4.05
-//1		5
 
 int main()
 {
@@ -151,34 +110,42 @@ int main()
 	MinkowskiSpaceR* op = (MinkowskiSpaceR*)world->r[0];
 	op->SetGravity(P(0.0, -9.80665, 0.0));
 
-	op->PutPnt("golf", P(0,0,0), "PhysicProp");
+	//op->PutPnt("golf", P(1.5,4.0,1.5), "PhysicProp");
+	op->PutPnt("golf", P(-2.8, 4.0, -2.8), "PhysicProp");
 
-	
 	//Tri tri1;
 	//tri1.FromGrid(1.0, "xz", true);
 	//tri1.Scale(100.0);
 	//tri1.Transform(P(0, -4, 0));
+	//!!! 三角面的name和rule还没管
 	//op->PutTri("grid_up", tri1, "CollisionProp");
 
 	//Terrain
 	Grid* terrain = new Grid;
-	terrain->SetGridSettings<double>(80, 1.0);//edgeNumX/Y=1,cellLength = 1.0
+	//terrain->SetGridSettings<double>(8, 1.0);
+	terrain->SetGridSettings<double>(2, 3.0);
 	GridR* op2 = (GridR*)terrain->r[0];
-	op2->EasyTerrain(3.0,0.1);//terrain detail level = 1,initH=1.0
+	op2->EasyTerrain(3.0,0.1);//terrain initH=3.0,roughness=0.1,detialLevel=MAX(100)
 	//op2->SayI();
-	//op2->DebugSay();
-	op2->DebugOutput("C:/HoudiniProjects/PToyScene/t80.txt");
+	op2->DebugSay();
+	op2->DebugOutput("C:/HoudiniProjects/PToyScene/ttest.txt");
+	arr<Tri> triArr;
+	op2->TerrainToTri(triArr);
+	op->PutTri("terrain", triArr, "CollisionProp");
 
 	//op->PntInsForce(0, "golf", P(900.0, 400.0, 1000.0));
-	//op->Evolve(0);
+	op->Evolve(0);
 
 	//p->SayI();
 	//std::cout << "\n";
 	//op->SayO();
 	//std::cout << "\n";
-	//op->Say(); //将所有帧数据输出
 
+	//op->Say(); //将所有帧数据输出
 	//op->DebugSay();
+	op->DebugOutput("C:/HoudiniProjects/PToyScene/dd.txt");
+
+	int aa = 1;
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

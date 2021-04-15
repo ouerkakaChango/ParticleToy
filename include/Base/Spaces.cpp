@@ -127,7 +127,7 @@ void MinkowskiSpace::AddPntNow(str name, P pos, str rule)
 	spaces[F].AddPnt(name, pos, rule);
 }
 
-void MinkowskiSpace::AddTriNow(str name, Tri tri, str rule)
+void MinkowskiSpace::AddTriNow(str name, const Tri& tri, str rule)
 {
 	auto& spaces = Cast<Space3DI*>(i[1])->spaces;
 	spaces[F].AddTri(name, tri, rule);
@@ -169,9 +169,18 @@ void MinkowskiSpaceR::PutPnt(str name, P pos, str rule)
 	y->AddPntNow(name, pos, rule);
 }
 
-void MinkowskiSpaceR::PutTri(str name, Tri tri, str rule)
+void MinkowskiSpaceR::PutTri(str name, const Tri& tri, str rule)
 {
 	y->AddTriNow(name, tri, rule);
+}
+
+void MinkowskiSpaceR::PutTri(str name, const arr<Tri>& tris, str rule)
+{
+	for (int inx = 0;inx<tris.size();inx++)
+	{
+		auto& tri = tris[inx];
+		y->AddTriNow(name, tri, rule);
+	}
 }
 
 void MinkowskiSpaceR::Evolve(int begin)
@@ -220,6 +229,19 @@ void MinkowskiSpaceR::DebugSay()
 	}
 }
 
+void MinkowskiSpaceR::DebugOutput(const str& filePath)
+{
+	auto& times = Cast<TimeI*>(y->i[0])->timeStamps;
+	auto& spaces = Cast<Space3DI*>(y->i[1])->spaces;
+
+	std::cout << "Writing File...\n";
+	std::ofstream f(filePath.data, std::ios::out);
+	for (int inx = 0; inx < y->frameNum; inx++)
+	{
+		f << spaces[inx].InfoString("pos", 5).data << "\n";
+	}
+	std::cout << "File write done at " << filePath.data << "\n";
+}
 //### Grid
 Grid::Grid()
 {
@@ -416,6 +438,12 @@ void GridR::EasyTerrain(double initH, double roughness, int detailLevel)
 
 	auto grid = Cast<GridI<double>*>(y->i[0]);
 	to->Create(grid, detailLevel, initH, roughness);
+}
+
+void GridR::TerrainToTri(arr<Tri>& triArr)
+{
+	auto& fGrid = Cast<GridI<double>*>(y->i[0])->grid;
+	FastGridToTri(fGrid, triArr);
 }
 
 void GridR::DebugSay(int mode)

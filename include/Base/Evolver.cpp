@@ -50,7 +50,7 @@ void CollisionSolver::Solve(const Pnt& prev, Pnt& newPnt, double dt)
 {
 	for (int inx = 0; inx < triArr->size(); inx++)
 	{
-		 auto& tri = (*triArr)[0];
+		 auto& tri = (*triArr)[inx];
 		 auto interInfo = newPnt.effectSpace.Intersect(tri);
 		 if (interInfo.hit)
 		 {
