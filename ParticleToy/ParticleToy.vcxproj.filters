@@ -98,5 +98,8 @@
     <ClCompile Include="..\include\Base\FastGrid.cpp">
       <Filter>源文件\Base</Filter>
     </ClCompile>
+    <ClCompile Include="..\Backup\golf.cpp">
+      <Filter>资源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

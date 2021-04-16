@@ -161,6 +161,7 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Backup\golf.cpp" />
     <ClCompile Include="..\include\Base\Container.cpp" />
     <ClCompile Include="..\include\Base\EffectSpace.cpp" />
     <ClCompile Include="..\include\Base\Evolver.cpp" />
