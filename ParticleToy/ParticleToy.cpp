@@ -21,6 +21,6 @@
 
 int main()
 {
-
+	std::cout << "SunMoon\n";
 	return 0;
 }
