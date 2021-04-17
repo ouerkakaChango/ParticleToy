@@ -10,6 +10,7 @@ class Fast3D
 {
 public:
 	void AddPnt(str name, P pos, str rule);
+	void AddPnt(const Pnt& pnt);
 	void AddTri(str name, const Tri& tri, str rule);
 	str InfoString(int precision=3);
 	str InfoString(str filter, int precision=3);

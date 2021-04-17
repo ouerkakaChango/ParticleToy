@@ -152,3 +152,10 @@ IntersectInfo Tri::Intersect(const Line& l) const
 	return re;
 }
 //### Tri
+
+//### Sphere
+Sphere::Sphere(double r_):r(r_)
+{
+
+}
+//### Sphere

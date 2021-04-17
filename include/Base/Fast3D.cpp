@@ -5,7 +5,12 @@
 //### Fast3D
 void Fast3D::AddPnt(str name, P pos, str rule)
 {
-	pnts += Pnt(pos,rule);
+	pnts += Pnt(pos, name, rule);
+}
+
+void Fast3D::AddPnt(const Pnt& pnt)
+{
+	pnts += pnt;
 }
 
 void Fast3D::AddTri(str name, const Tri& tri, str rule)

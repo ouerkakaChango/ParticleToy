@@ -5,6 +5,7 @@
 #include <iomanip>
 using std::vector;
 using std::string;
+using std::ostream;
 
 template <class T>
 class arr
@@ -101,7 +102,9 @@ public:
 	void operator+=(const str& other);
 	void operator+=(double other);
 	bool operator==(const char* s);
+	friend ostream & operator <<(ostream & os, const str & s);
 	void AddDouble(double other, int precision);
 	bool Has(str s);
 	string data;
 };
+ostream& operator <<(ostream & os, const str & s);

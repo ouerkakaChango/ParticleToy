@@ -71,6 +71,7 @@ class MinkowskiSpace : public Time, public Space3D
 {
 	THISY(MinkowskiSpace)
 	void SetFrameSettings(int frameNum_, double frameSec_);
+	void AddPntNow(const Pnt& pnt);
 	void AddPntNow(str name, P pos, str rule);
 	void AddTriNow(str name, const Tri& tri, str rule);
 	void EvolveFrame(int prevFrame);
@@ -84,7 +85,8 @@ class MinkowskiSpaceR : public R
 {
 	THISR(MinkowskiSpace)
 
-	void PutPnt(str name, P pnt, str rule);
+	void PutPnt(const Pnt& pnt);
+	void PutPnt(str name, P pos, str rule);
 	void PutTri(str name, const Tri& tri, str rule);
 	void PutTri(str name, const arr<Tri>& tris, str rule);
 	void Evolve(int begin);

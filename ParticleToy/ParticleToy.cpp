@@ -4,6 +4,8 @@
 #include "pch.h"
 #include <iostream>
 
+#include "../include/Base/Spaces.h"
+
 //ParticleToy第二期应用：星球轨道
 //一：双星（日月）轨迹
 //1.使用MinkowskiSpace，添加两个星球（带outer的Pnt,此时两个质点的outerd都是Sphere）
@@ -21,6 +23,18 @@
 
 int main()
 {
-	std::cout << "SunMoon\n";
+	MinkowskiSpace* world = new MinkowskiSpace;
+	world->SetFrameSettings(361, 0.0166666);
+	MinkowskiSpaceR* op = (MinkowskiSpaceR*)world->r[0];
+	op->SetGravity(P(0.0, -9.80665, 0.0));
+
+	Pnt sun(P(1,0,0));
+	sun.name = "sun";
+	sun.rule = "space colliMerged";
+	sun.SetMass(10.0);
+	sun.SetVel(P(0,0,1));
+	sun.SetSphereOuter(1.0);
+	op->PutPnt(sun);
+	std::cout << sun.InfoString();
 	return 0;
 }

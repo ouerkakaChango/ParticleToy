@@ -3,7 +3,20 @@
 
 class IntersectInfo;
 
-class Line
+class Shape
+{
+
+};
+
+class IntersectInfo
+{
+public:
+	bool hit = false;
+	double d;
+	P hitP;
+};
+
+class Line : public Shape
 {
 public:
 	P a, b;
@@ -15,7 +28,7 @@ public:
 };
 double len(const Line& l);
 
-class Plane
+class Plane : public Shape
 {
 public:
 	P p, n;
@@ -38,10 +51,9 @@ public:
 	P p1, p2, p3;
 };
 
-class IntersectInfo
+class Sphere:public Shape
 {
 public:
-	bool hit = false;
-	double d;
-	P hitP;
+	Sphere(double r_);
+	double r;
 };

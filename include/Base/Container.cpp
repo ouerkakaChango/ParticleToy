@@ -1,5 +1,6 @@
 #include "Container.h"
 
+//### str
 void str::operator+=(const str& other)
 {
 	data += other.data;
@@ -26,3 +27,11 @@ bool str::Has(str s)
 {
 	return data.find(s.data) != std::string::npos;
 }
+//### str
+
+//### global str
+ostream& operator <<(ostream & os, const str & s)
+{
+	return os << s.data;
+}
+//### global str

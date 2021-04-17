@@ -11,9 +11,19 @@ Pnt::Pnt(P pos_) :pos(pos_)
 
 }
 
-Pnt::Pnt(P pos_, str rule_) : pos(pos_), rule(rule_)
+Pnt::Pnt(P pos_, str name_, str rule_) : 
+	pos(pos_), name(name_), rule(rule_)
 {
 
+}
+
+void Pnt::SetSphereOuter(double r)
+{
+	if (outer != nullptr)
+	{
+		abort();
+	}
+	outer = new Sphere(r);
 }
 
 str Pnt::InfoString(int precision)

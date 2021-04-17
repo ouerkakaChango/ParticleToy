@@ -121,6 +121,12 @@ void MinkowskiSpace::SetFrameSettings(int frameNum_, double frameSec_)
 	timeI->InitByFrameSec(frameSec);
 }
 
+void MinkowskiSpace::AddPntNow(const Pnt& pnt)
+{
+	auto& spaces = Cast<Space3DI*>(i[1])->spaces;
+	spaces[F].AddPnt(pnt);
+}
+
 void MinkowskiSpace::AddPntNow(str name, P pos, str rule)
 {
 	auto& spaces = Cast<Space3DI*>(i[1])->spaces;
@@ -162,6 +168,11 @@ void MinkowskiSpaceR::SayO()
 	{
 		y->r[inx]->SayO();
 	}
+}
+
+void MinkowskiSpaceR::PutPnt(const Pnt& pnt)
+{
+	y->AddPntNow(pnt);
 }
 
 void MinkowskiSpaceR::PutPnt(str name, P pos, str rule)
