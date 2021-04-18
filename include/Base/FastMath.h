@@ -51,6 +51,7 @@ double dot(const P& p1, const P& p2);
 double len(const P& p);
 P norm(const P& p);
 P reflect(const P& i, const P& n);
+double dis2(const P& p1, const P& p2);
 
 bool SolveQuadra(double a, double b, double c, double& x1, double& x2);
 bool SolveQuadra(P a, P b, P c, double& x1, double& x2);

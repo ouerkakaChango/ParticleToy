@@ -2,10 +2,14 @@
 
 #include "EffectSpace.h"
 
+//### ExtraInfo
+ExtraInfo ExtraInfo::empty;
+//### ExtraInfo
+
 //### PhysicSolver
-void PhysicSolver::Solve(const Pnt& oldPnt, const Pnt& prevPnt, Pnt& newPnt, double dt)
+void PhysicSolver::Solve(const Pnt& oldPnt, const Pnt& prevPnt, Pnt& newPnt, double dt, ExtraInfo& info)
 {
-	P a = A();
+	P a = A(newPnt, info);
 
 	//verlet pos
 	newPnt.pos = prevPnt.pos + newPnt.damp * (prevPnt.pos - oldPnt.pos) + a*dt*dt;
@@ -19,17 +23,15 @@ void PhysicSolver::Solve(const Pnt& oldPnt, const Pnt& prevPnt, Pnt& newPnt, dou
 	insForces.clear();
 }
 
-void PhysicSolver::SolveBegin(const Pnt& prevPnt, Pnt& newPnt, double dt)
+void PhysicSolver::SolveBegin(const Pnt& prevPnt, Pnt& newPnt, double dt, ExtraInfo& info)
 {
-	//verlet
-	P a = A();
+	//verlet begin: virtual oldPnt
 	Pnt oldPnt = prevPnt;
-	//oldPnt.pos = prevPnt.pos + 0.5 *a *dt*dt;
 	oldPnt.pos -= dt * prevPnt.v;
-	Solve(oldPnt, prevPnt, newPnt, dt);
+	Solve(oldPnt, prevPnt, newPnt, dt, info);
 }
 
-P PhysicSolver::A()
+P PhysicSolver::A(const Pnt& pnt, ExtraInfo info)
 {
 	P finalForce = g;
 	for (int inx = 0;inx<insForces.size();inx++)
@@ -37,7 +39,36 @@ P PhysicSolver::A()
 		const P& f = insForces[inx];
 		finalForce += f;
 	}
-	return finalForce / m;
+	if (pnt.rule.Has("Space"))
+	{
+		finalForce += UniversalG(pnt, info);
+	}
+	return finalForce / pnt.mass;
+}
+
+P PhysicSolver::UniversalG(const Pnt& pnt, ExtraInfo info)
+{
+	P re;
+	for (int inx = 0; inx < spaceInxs.size(); inx++)
+	{
+		auto& p2 = (*info.pnts)[inx];
+		if (info.pntNum != spaceInxs[inx])
+		{
+			re += norm(p2.pos - pnt.pos) * G * p2.mass * pnt.mass / dis2(p2.pos, pnt.pos);
+		}
+	}
+
+	return re;
+}
+
+void PhysicSolver::InitSpace()
+{
+	g = P(0, 0, 0);
+}
+
+void PhysicSolver::AddSpacePnt(int inx)
+{
+	spaceInxs += inx;
 }
 //### PhysicSolver
 
@@ -97,6 +128,22 @@ void Evolver::EvolveBegin(const Fast3D& prev, Fast3D& next, double dt)
 
 	auto& pnts = next.pnts;
 
+	static bool initSpace = true;
+	//Init Space
+	for (int inx = 0; inx < pnts.size(); inx++)
+	{
+		auto& pnt = pnts[inx];
+		if (pnt.rule.Has("Space"))
+		{
+			if (initSpace)
+			{
+				physic.InitSpace();
+				initSpace = false;
+			}
+			physic.AddSpacePnt(inx);
+		}
+	}
+
 	for (int inx = 0; inx < pnts.size(); inx++)
 	{
 		const Pnt& prevPnt = prev.pnts[inx];
@@ -105,6 +152,13 @@ void Evolver::EvolveBegin(const Fast3D& prev, Fast3D& next, double dt)
 		{
 			physic.SolveBegin(prevPnt, pnt, dt);
 			collision.Solve(prevPnt, pnt, dt);
+		}
+		else if (pnt.rule.Has("Space"))
+		{
+			ExtraInfo info;
+			info.pntNum = inx;
+			info.pnts = &prev.pnts;
+			physic.SolveBegin(prevPnt, pnt, dt, info);
 		}
 	}
 }
@@ -131,6 +185,13 @@ void Evolver::Evolve(const Fast3D& old, const Fast3D& prev, Fast3D& next, double
 				physic.Solve(oldPnt, prevPnt, pnt, dt);
 			}
 			collision.Solve(prevPnt, pnt, dt);
+		}
+		else if (pnt.rule.Has("Space"))
+		{
+			ExtraInfo info;
+			info.pntNum = inx;
+			info.pnts = &prev.pnts;
+			physic.Solve(oldPnt, prevPnt, pnt, dt, info);
 		}
 	}
 }

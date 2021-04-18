@@ -34,6 +34,7 @@ str Fast3D::InfoString(str filter, int precision)
 	for (auto& p : pnts)
 	{
 		re += p.InfoString(filter, precision);
+		re += " ";
 	}
 	return re;
 }

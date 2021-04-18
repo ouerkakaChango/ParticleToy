@@ -197,6 +197,12 @@ P reflect(const P& i, const P& n)
 	//https://www.cnblogs.com/graphics/archive/2013/02/21/2920627.html
 	return i - 2 * dot(i, n)*n;
 }
+
+double dis2(const P& p1, const P& p2)
+{
+	P d = p2 - p1;
+	return dot(d, d);
+}
 //### Global P
 
 //### Global Utility

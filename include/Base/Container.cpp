@@ -23,7 +23,7 @@ void str::AddDouble(double other, int precision)
 	data += ss.str();
 }
 
-bool str::Has(str s)
+bool str::Has(str s) const
 {
 	return data.find(s.data) != std::string::npos;
 }

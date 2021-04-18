@@ -104,7 +104,7 @@ public:
 	bool operator==(const char* s);
 	friend ostream & operator <<(ostream & os, const str & s);
 	void AddDouble(double other, int precision);
-	bool Has(str s);
+	bool Has(str s) const;
 	string data;
 };
 ostream& operator <<(ostream & os, const str & s);

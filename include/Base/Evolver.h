@@ -2,16 +2,29 @@
 
 #include "Fast3D.h"
 
+class ExtraInfo
+{
+public:
+	int pntNum = -1;
+	static ExtraInfo empty;
+	const arr<Pnt> * pnts = nullptr;
+};
+
 class PhysicSolver
 {
 public:
-	void Solve(const Pnt& oldPnt, const Pnt& prevPnt, Pnt& newPnt, double dt);
-	void SolveBegin(const Pnt& prevPnt, Pnt& newPnt, double dt);
-	P A();
+	void Solve(const Pnt& oldPnt, const Pnt& prevPnt, Pnt& newPnt, double dt, ExtraInfo& info = ExtraInfo::empty);
+	void SolveBegin(const Pnt& prevPnt, Pnt& newPnt, double dt, ExtraInfo& info = ExtraInfo::empty);
+	P A(const Pnt& pnt, ExtraInfo info);
+	P UniversalG(const Pnt& pnt, ExtraInfo info);
+	void InitSpace();
+	void AddSpacePnt(int inx);
+
 	//Ä¬ÈÏÎªUE4µÄ-980
 	P g=P(0.0,0.0,-980.0);
+	double G = 1.0; //???
 	arr<P> insForces;
-	double m=1.0;
+	arr<int> spaceInxs;
 };
 
 class CollisionSolver
