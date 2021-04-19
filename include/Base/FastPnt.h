@@ -9,8 +9,11 @@ public:
 	Pnt(P pos_);
 	Pnt(P pos_, str name_, str rule_);
 	void SetSphereOuter(double r);
-	str InfoString(int precision = 3);
-	str InfoString(str filter, int precision = 3);
+	//### info
+	str InfoString(int precision = 5);
+	str InfoString(str filter, int precision = 5);
+	str TxtHeadString();
+	//### info
 	//### physic
 	inline void SetMass(double mass_) { mass = mass_; }
 	inline void SetVel(const P& v_) { v = v_; }

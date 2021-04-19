@@ -5,7 +5,8 @@ class IntersectInfo;
 
 class Shape
 {
-
+public:
+	virtual str TxtHeadString();
 };
 
 class IntersectInfo
@@ -55,5 +56,7 @@ class Sphere:public Shape
 {
 public:
 	Sphere(double r_);
+	str TxtHeadString() override;
+
 	double r;
 };

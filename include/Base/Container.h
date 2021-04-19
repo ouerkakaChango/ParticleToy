@@ -101,10 +101,22 @@ public:
 	str(const char* s):data(string(s)) {}
 	void operator+=(const str& other);
 	void operator+=(double other);
+	void operator+=(int other);
 	bool operator==(const char* s);
+	bool operator==(const str& str);
 	friend ostream & operator <<(ostream & os, const str & s);
 	void AddDouble(double other, int precision);
 	bool Has(str s) const;
 	string data;
 };
 ostream& operator <<(ostream & os, const str & s);
+
+class int2
+{
+public:
+	int2();
+	int2(int x_, int y_);
+	int2 operator+(const int2& t);
+	str ToStr();
+	int x=0, y=0;
+};

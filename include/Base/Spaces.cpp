@@ -5,6 +5,9 @@
 #include <fstream>
 #include <cmath>
 
+using std::endl;
+using std::cout;
+
 Time::Time()
 {
 	auto ti = new TimeI;
@@ -172,6 +175,8 @@ void MinkowskiSpaceR::SayO()
 
 void MinkowskiSpaceR::PutPnt(const Pnt& pnt)
 {
+	recordPnts += pnt;
+	pntFrames += int2(y->F,y->frameNum);
 	y->AddPntNow(pnt);
 }
 
@@ -230,13 +235,37 @@ void MinkowskiSpaceR::Say()
 	}
 }
 
+void MinkowskiSpaceR::OutputPntTrajTxt(const str& filePath)
+{
+	auto& times = Cast<TimeI*>(y->i[0])->timeStamps;
+	auto& spaces = Cast<Space3DI*>(y->i[1])->spaces;
+
+	std::cout << "Writing File...\n";
+	std::ofstream f(filePath.data, std::ios::out);
+	//###
+	f << recordPnts.size() <<endl;
+	for (int pntInx = 0; pntInx < recordPnts.size(); pntInx++)
+	{
+		auto& pnt = recordPnts[pntInx];
+		auto& pntFrame = pntFrames[pntInx];
+		//输出txt帧号从1开始（Houdini方式）
+		f << pnt.TxtHeadString() <<" "<< (pntFrame+int2(1,0)).ToStr()<<endl;
+		for (int inx = pntFrame.x; inx < pntFrame.y; inx++)
+		{
+			f << spaces[inx].PntInfo(pnt.name, "pos") << endl;
+		}
+	}
+	//###
+	std::cout << "File write done at " << filePath.data << "\n";
+}
+
 void MinkowskiSpaceR::DebugSay()
 {
 	auto& times = Cast<TimeI*>(y->i[0])->timeStamps;
 	auto& spaces = Cast<Space3DI*>(y->i[1])->spaces;
 	for (int inx = 0; inx < y->frameNum; inx++)
 	{
-		std::cout << spaces[inx].InfoString("pos",5).data << "\n";
+		std::cout << spaces[inx].InfoString("pos") << "\n";
 	}
 }
 

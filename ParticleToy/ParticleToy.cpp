@@ -17,22 +17,21 @@
 //一：双星（日月）轨迹
 //1.使用MinkowskiSpace，添加两个星球（带outer的Pnt,此时两个质点的outerd都是Sphere）
 //其中日的质量比月的大，所以发生碰撞时，月的质量直接给到日，速度也给到
-//2.万有引力的G，量纲的转换？
+//2.万有引力的G的标准值？量纲的转换？
+//3.制定一个规范的txt文件格式使用。（由于两星球相撞后，卫星的信息在接下来的帧里就没了）
 
 int main()
 {
 	MinkowskiSpace* world = new MinkowskiSpace;
 	world->SetFrameSettings(361, 0.0166666);
 	MinkowskiSpaceR* op = (MinkowskiSpaceR*)world->r[0];
-	//??? 点的rule为space了，就不用刻意关闭g了
-	op->SetGravity(P(0.0, 0.0, 0.0));
 
 	Pnt sun(P(1,0,0));
 	sun.name = "sun";
 	sun.rule = "Space ColliMerged";
 	sun.SetMass(10.0);
 	sun.SetVel(P(0.0, 0.0, 0.2));
-	sun.SetSphereOuter(1.0);
+	sun.SetSphereOuter(0.3);
 	op->PutPnt(sun);
 
 	Pnt moon(P(-1, 0, 0));
@@ -46,6 +45,7 @@ int main()
 	op->Evolve(0);
 
 	//op->SayI();
-	op->DebugSay();
+	//op->DebugSay();
+	op->OutputPntTrajTxt("C:/HoudiniProjects/PToyScene/sunMoonTraj.txt");
 	return 0;
 }

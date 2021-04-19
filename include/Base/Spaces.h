@@ -95,8 +95,13 @@ class MinkowskiSpaceR : public R
 
 	void SayO() override;
 	void Say();
+	void OutputPntTrajTxt(const str& filePath);
 	void DebugSay();
 	void DebugOutput(const str& filePath);
+
+	//记录所有加入的点的初态
+	arr<Pnt> recordPnts;
+	arr<int2> pntFrames;
 };
 
 //### Grid

@@ -46,7 +46,7 @@ str Pnt::InfoString(int precision)
 
 str Pnt::InfoString(str filter, int precision)
 {
-	str re = "";
+	str re;
 	if (filter == "pos")
 	{
 		re.AddDouble(pos.x, precision);
@@ -56,6 +56,18 @@ str Pnt::InfoString(str filter, int precision)
 		re.AddDouble(pos.z, precision);
 	}
 
+	return re;
+}
+
+str Pnt::TxtHeadString()
+{
+	str re;
+	re += name;
+	re += " ";
+	if (outer != nullptr)
+	{
+		re += outer->TxtHeadString();
+	}
 	return re;
 }
 

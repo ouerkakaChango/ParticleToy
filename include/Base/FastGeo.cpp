@@ -1,5 +1,13 @@
 #include "FastGeo.h"
 
+//### Shape
+str Shape::TxtHeadString()
+{
+	str re;
+	return re;
+}
+//### Shape
+
 //### Line
 void Line::Set(P a_, P b_)
 {
@@ -157,5 +165,12 @@ IntersectInfo Tri::Intersect(const Line& l) const
 Sphere::Sphere(double r_):r(r_)
 {
 
+}
+
+str Sphere::TxtHeadString()
+{
+	str re;
+	re.AddDouble(r, 5);
+	return re;
 }
 //### Sphere

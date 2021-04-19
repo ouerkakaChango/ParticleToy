@@ -18,6 +18,16 @@ void Fast3D::AddTri(str name, const Tri& tri, str rule)
 	triArr += tri;
 }
 
+void Fast3D::CopyFrom(const Fast3D& prev)
+{
+	pnts = prev.pnts;
+	for (int inx = 0; inx < pnts.size(); inx++)
+	{
+		pnts[inx].isBreakPnt = false;
+	}
+	triArr = prev.triArr;
+}
+
 str Fast3D::InfoString(int precision)
 {
 	str re = "";
@@ -39,14 +49,14 @@ str Fast3D::InfoString(str filter, int precision)
 	return re;
 }
 
-void Fast3D::CopyFrom(const Fast3D& prev)
+str Fast3D::PntInfo(const str& name, const str& attrib)
 {
-	pnts = prev.pnts;
-	//!!!
-	for (int inx = 0; inx < pnts.size(); inx++)
+	for (auto& p : pnts)
 	{
-		pnts[inx].isBreakPnt = false;
+		if (p.name == name)
+		{
+			return p.InfoString(attrib);
+		}
 	}
-	triArr = prev.triArr;
 }
 //### Fast3D
