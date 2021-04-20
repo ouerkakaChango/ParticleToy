@@ -65,13 +65,9 @@ void PhysicSolver::InitSpace()
 {
 	g = P(0, 0, 0);
 }
-
-void PhysicSolver::AddSpacePnt(int inx)
-{
-	spaceInxs += inx;
-}
 //### PhysicSolver
 
+//### CollisionSolver
 void CollisionSolver::Load(const arr<Tri>* triArr_)
 {
 	triArr = triArr_;
@@ -120,30 +116,29 @@ void CollisionSolver::Solve(const Pnt& prev, Pnt& newPnt, double dt)
 		 }
 	}
 }
+//### CollisionSolver
 
+//### ColliMergeSolver
+void ColliMergeSolver::Clear()
+{
+	toMergeArr.clear();
+	mergedArr.clear();
+}
+//### ColliMergeSolver
+
+//### Evolver
 void Evolver::EvolveBegin(const Fast3D& prev, Fast3D& next, double dt)
 {
 	next.CopyFrom(prev);
+	//!!!
 	collision.Load(&prev.triArr);
 
 	auto& pnts = next.pnts;
 
-	static bool initSpace = true;
-	//Init Space
-	for (int inx = 0; inx < pnts.size(); inx++)
-	{
-		auto& pnt = pnts[inx];
-		if (pnt.rule.Has("Space"))
-		{
-			if (initSpace)
-			{
-				physic.InitSpace();
-				initSpace = false;
-			}
-			physic.AddSpacePnt(inx);
-		}
-	}
+	InitSpace(next);
+	InitColliMerge(next);
 
+	//### Solve
 	for (int inx = 0; inx < pnts.size(); inx++)
 	{
 		const Pnt& prevPnt = prev.pnts[inx];
@@ -169,6 +164,10 @@ void Evolver::Evolve(const Fast3D& old, const Fast3D& prev, Fast3D& next, double
 
 	auto& pnts = next.pnts;
 
+	InitSpace(next);
+	InitColliMerge(next);
+
+	//### Solve
 	for (int inx = 0; inx < pnts.size(); inx++)
 	{
 		auto& oldPnt = old.pnts[inx];
@@ -193,5 +192,55 @@ void Evolver::Evolve(const Fast3D& old, const Fast3D& prev, Fast3D& next, double
 			info.pnts = &prev.pnts;
 			physic.Solve(oldPnt, prevPnt, pnt, dt, info);
 		}
+		//if (pnt.rule.Has("ColliMerge"))
+		//{
+		//	if (pnt.rule.Has("ColliMerged"))
+		//	{
+		//
+		//	}
+		//}
 	}
 }
+
+void Evolver::InitSpace(Fast3D& next)
+{
+	auto& pnts = next.pnts;
+	bool initSpace = true;
+	physic.spaceInxs.clear();
+	for (int inx = 0; inx < pnts.size(); inx++)
+	{
+		auto& pnt = pnts[inx];
+		if (pnt.rule.Has("Space"))
+		{
+			if (initSpace)
+			{
+				physic.InitSpace();
+				initSpace = false;
+			}
+			physic.spaceInxs += inx;
+		}
+	}
+}
+
+void Evolver::InitColliMerge(Fast3D& next)
+{
+	auto& pnts = next.pnts;
+	bool initColliMerge = true;
+	colliMerge.Clear();
+	for (int inx = 0; inx < pnts.size(); inx++)
+	{
+		auto& pnt = pnts[inx];
+		if (pnt.rule.Has("ColliMerge"))
+		{
+			if (pnt.rule.Has("ColliMerged"))
+			{
+				colliMerge.mergedArr += inx;
+			}
+			else
+			{
+				colliMerge.toMergeArr += inx;
+			}
+		}
+	}
+}
+//### Evolver

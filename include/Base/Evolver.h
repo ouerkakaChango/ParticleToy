@@ -18,7 +18,6 @@ public:
 	P A(const Pnt& pnt, ExtraInfo info);
 	P UniversalG(const Pnt& pnt, ExtraInfo info);
 	void InitSpace();
-	void AddSpacePnt(int inx);
 
 	//Ä¬ÈÏÎªUE4µÄ-980
 	P g=P(0.0,0.0,-980.0);
@@ -37,11 +36,24 @@ public:
 	double bounceDamp = 0.8;
 };
 
+class ColliMergeSolver
+{
+public:
+	void Clear();
+
+	arr<int> toMergeArr;
+	arr<int> mergedArr;
+};
+
 class Evolver
 {
 public:
 	void EvolveBegin(const Fast3D& prev, Fast3D& next, double dt);
 	void Evolve(const Fast3D& old, const Fast3D& prev, Fast3D& next, double dt);
+	void InitSpace(Fast3D& next);
+	void InitColliMerge(Fast3D& next);
+
 	PhysicSolver physic;
 	CollisionSolver collision;
+	ColliMergeSolver colliMerge;
 };
