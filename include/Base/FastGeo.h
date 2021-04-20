@@ -6,7 +6,10 @@ class IntersectInfo;
 class Shape
 {
 public:
+	virtual bool Collide(const Shape* other);
 	virtual str TxtHeadString();
+
+	str type;
 };
 
 class IntersectInfo
@@ -56,7 +59,11 @@ class Sphere:public Shape
 {
 public:
 	Sphere(double r_);
+	bool Collide(const Shape* other) override;;
 	str TxtHeadString() override;
 
 	double r;
+	P center;
 };
+
+bool Intersect(const Sphere& s1, const Sphere& s2);

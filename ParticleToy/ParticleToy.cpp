@@ -21,7 +21,7 @@
 //3.制定一个规范的txt文件格式使用。（由于两星球相撞后，卫星的信息在接下来的帧里就没了）
 //4.由于日月双方有ColliMerge(d)属性，在physicSolver后，
 //接colliMergeSolver，计算非弹性碰撞。之所以单独提出来，不合在collisionSolver里，
-//是因为它是一定会merge的，不十分“游戏物理”
+//是因为它是一定会merge的，和传统碰撞Solver不一样
 
 int main()
 {

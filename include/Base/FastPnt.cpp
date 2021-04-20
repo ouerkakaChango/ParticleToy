@@ -26,6 +26,34 @@ void Pnt::SetSphereOuter(double r)
 	outer = new Sphere(r);
 }
 
+void Pnt::UpdateOuter() const
+{
+	if (outer == nullptr)
+	{
+		abort();
+	}
+	if (outer->type == "Sphere")
+	{
+		auto s = static_cast<Sphere*>(outer);
+		s->center = pos;
+	}
+}
+
+bool Pnt::Collide(const Pnt& pnt)
+{
+	UpdateOuter();
+	pnt.UpdateOuter();
+
+	if (outer == nullptr || pnt.outer == nullptr)
+	{
+		abort();
+	}
+	else
+	{
+		return outer->Collide(pnt.outer);
+	}
+}
+
 str Pnt::InfoString(int precision)
 {
 	str re = "";

@@ -1,6 +1,15 @@
 #include "FastGeo.h"
 
 //### Shape
+bool Shape::Collide(const Shape* other)
+{
+	if (other == nullptr)
+	{
+		abort();
+	}
+	return false;
+}
+
 str Shape::TxtHeadString()
 {
 	str re;
@@ -164,7 +173,17 @@ IntersectInfo Tri::Intersect(const Line& l) const
 //### Sphere
 Sphere::Sphere(double r_):r(r_)
 {
+	type = "Sphere";
+}
 
+bool Sphere::Collide(const Shape* other)
+{
+	if (other->type == "Sphere")
+	{
+		auto s2 = static_cast<const Sphere*>(other);
+		return Intersect(*this, *s2);
+	}
+	return false;
 }
 
 str Sphere::TxtHeadString()
@@ -174,3 +193,10 @@ str Sphere::TxtHeadString()
 	return re;
 }
 //### Sphere
+
+//### Global Sphere 
+bool Intersect(const Sphere& s1, const Sphere& s2)
+{
+	return dis(s1.center, s2.center) < (s1.r + s2.r);
+}
+//### Global Sphere 

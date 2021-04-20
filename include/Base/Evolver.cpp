@@ -51,8 +51,8 @@ P PhysicSolver::UniversalG(const Pnt& pnt, ExtraInfo info)
 	P re;
 	for (int inx = 0; inx < spaceInxs.size(); inx++)
 	{
-		auto& p2 = (*info.pnts)[inx];
-		if (info.pntNum != spaceInxs[inx])
+		auto& p2 = (*info.prevPnts)[inx];
+		if (info.pntInx != spaceInxs[inx])
 		{
 			re += norm(p2.pos - pnt.pos) * G * p2.mass * pnt.mass / dis2(p2.pos, pnt.pos);
 		}
@@ -124,6 +124,43 @@ void ColliMergeSolver::Clear()
 	toMergeArr.clear();
 	mergedArr.clear();
 }
+
+void ColliMergeSolver::Solve(ExtraInfo& info)
+{
+	int inx1 = -1, inx2 = -1;
+	auto& pnts = *info.newPnts;
+	if (info.colliMergeMode == 0)
+	{
+		inx1 = info.pntInx;
+		//遍历mergedArr，如果第二点不被标记删除且两点碰撞，则SolveColi
+		//并标记toMergeInx已被删除，但不立即删除，因为会有inx相关麻烦
+		//在Evolver的Solve中后面一并删除
+		for (int i = 0; i < mergedArr.size(); i++)
+		{
+			inx2 = mergedArr[i];
+			if (!delArr.Has(i) && pnts[inx1].Collide(pnts[inx2]))
+			{
+				int aa = 1;
+			}
+		}
+	}
+	else if (info.colliMergeMode == 1)
+	{
+		inx2 = info.pntInx;
+		for (int i = 0; i < toMergeArr.size(); i++)
+		{
+			inx1 = toMergeArr[i];
+			if (!delArr.Has(i) && pnts[inx2].Collide(pnts[inx1]))
+			{
+				int aa = 1;
+			}
+		}
+	}
+	else
+	{
+		abort();
+	}
+}
 //### ColliMergeSolver
 
 //### Evolver
@@ -151,8 +188,8 @@ void Evolver::EvolveBegin(const Fast3D& prev, Fast3D& next, double dt)
 		else if (pnt.rule.Has("Space"))
 		{
 			ExtraInfo info;
-			info.pntNum = inx;
-			info.pnts = &prev.pnts;
+			info.pntInx = inx;
+			info.prevPnts = &prev.pnts;
 			physic.SolveBegin(prevPnt, pnt, dt, info);
 		}
 	}
@@ -188,17 +225,23 @@ void Evolver::Evolve(const Fast3D& old, const Fast3D& prev, Fast3D& next, double
 		else if (pnt.rule.Has("Space"))
 		{
 			ExtraInfo info;
-			info.pntNum = inx;
-			info.pnts = &prev.pnts;
+			info.pntInx = inx;
+			info.prevPnts = &prev.pnts;
 			physic.Solve(oldPnt, prevPnt, pnt, dt, info);
 		}
-		//if (pnt.rule.Has("ColliMerge"))
-		//{
-		//	if (pnt.rule.Has("ColliMerged"))
-		//	{
-		//
-		//	}
-		//}
+	}
+	//### Solve colliMerge
+	for (int inx = 0; inx < pnts.size(); inx++)
+	{
+		auto& pnt = pnts[inx];
+		if (pnt.rule.Has("ColliMerge"))
+		{
+			ExtraInfo info;
+			info.pntInx = inx;
+			info.colliMergeMode = pnt.rule.Has("ColliMerged") ? 1 : 0;
+			info.newPnts = &pnts;
+			colliMerge.Solve(info);
+		}
 	}
 }
 

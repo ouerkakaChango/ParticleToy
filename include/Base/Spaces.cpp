@@ -144,6 +144,12 @@ void MinkowskiSpace::AddTriNow(str name, const Tri& tri, str rule)
 
 void MinkowskiSpace::EvolveFrame(int prevFrame)
 {
+	//??? debug
+	if (prevFrame == 61)
+	{
+		int aa = 1;
+	}
+	//___
 	auto& spaces = Cast<Space3DI*>(i[1])->spaces;
 	auto& evolvers = Cast<Space3DO*>(o[0])->evolvers;
 	if (prevFrame == 0)

@@ -58,5 +58,6 @@ str Fast3D::PntInfo(const str& name, const str& attrib)
 			return p.InfoString(attrib);
 		}
 	}
+	return "";
 }
 //### Fast3D

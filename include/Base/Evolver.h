@@ -5,9 +5,11 @@
 class ExtraInfo
 {
 public:
-	int pntNum = -1;
+	int pntInx = -1;
+	int colliMergeMode = -1;//0:toMerge,1:merged
 	static ExtraInfo empty;
-	const arr<Pnt> * pnts = nullptr;
+	const arr<Pnt> * prevPnts = nullptr;
+	arr<Pnt> * newPnts = nullptr;
 };
 
 class PhysicSolver
@@ -40,9 +42,11 @@ class ColliMergeSolver
 {
 public:
 	void Clear();
+	void Solve(ExtraInfo& info);
 
 	arr<int> toMergeArr;
 	arr<int> mergedArr;
+	arr<int> delArr;
 };
 
 class Evolver

@@ -59,6 +59,18 @@ public:
 			iter = t;
 		}
 	}
+
+	bool Has(T t)
+	{
+		for (auto& iter : data_)
+		{
+			if (iter == t)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 };
 
 template <class T>
@@ -102,8 +114,8 @@ public:
 	void operator+=(const str& other);
 	void operator+=(double other);
 	void operator+=(int other);
-	bool operator==(const char* s);
-	bool operator==(const str& str);
+	bool operator==(const char* s) const;
+	bool operator==(const str& str) const;
 	friend ostream & operator <<(ostream & os, const str & s);
 	void AddDouble(double other, int precision);
 	bool Has(str s) const;

@@ -198,6 +198,11 @@ P reflect(const P& i, const P& n)
 	return i - 2 * dot(i, n)*n;
 }
 
+double dis(const P& p1, const P& p2)
+{
+	return sqrt(dis2(p1, p2));
+}
+
 double dis2(const P& p1, const P& p2)
 {
 	P d = p2 - p1;

@@ -16,12 +16,12 @@ void str::operator+=(int other)
 	data += std::to_string(other);
 }
 
-bool str::operator==(const char* s)
+bool str::operator==(const char* s) const
 {
 	return data == string(s);
 }
 
-bool str::operator==(const str& str)
+bool str::operator==(const str& str) const
 {
 	return data == str.data;
 }

@@ -8,7 +8,11 @@ public:
 	Pnt();
 	Pnt(P pos_);
 	Pnt(P pos_, str name_, str rule_);
+	//### Shape
 	void SetSphereOuter(double r);
+	void UpdateOuter() const;
+	bool Collide(const Pnt& pnt);
+	//### Shape
 	//### info
 	str InfoString(int precision = 5);
 	str InfoString(str filter, int precision = 5);
