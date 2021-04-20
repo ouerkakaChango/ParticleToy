@@ -71,6 +71,11 @@ public:
 		}
 		return false;
 	}
+
+	void delAt(int inx)
+	{
+		data_.erase(data_.begin()+inx);
+	}
 };
 
 template <class T>
@@ -116,6 +121,7 @@ public:
 	void operator+=(int other);
 	bool operator==(const char* s) const;
 	bool operator==(const str& str) const;
+	bool operator!=(const char* s) const;
 	friend ostream & operator <<(ostream & os, const str & s);
 	void AddDouble(double other, int precision);
 	bool Has(str s) const;

@@ -32,16 +32,16 @@ int main()
 	Pnt sun(P(1,0,0));
 	sun.name = "sun";
 	sun.rule = "Space ColliMerged";
-	sun.SetMass(10.0);
-	sun.SetVel(P(0.0, 0.0, 0.2));
+	sun.mass = 10.0;
+	sun.v = P(0.0, 0.0, 0.2);
 	sun.SetSphereOuter(0.3);
 	op->PutPnt(sun);
 
 	Pnt moon(P(-1, 0, 0));
 	moon.name = "moon";
 	moon.rule = "Space ColliMerge";
-	moon.SetMass(0.1);
-	moon.SetVel(P(0, 0, 1));
+	moon.mass = 0.1;
+	moon.v = P(0, 0, 1);
 	moon.SetSphereOuter(0.1);
 	op->PutPnt(moon);
 

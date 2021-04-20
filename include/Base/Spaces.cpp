@@ -182,7 +182,7 @@ void MinkowskiSpaceR::SayO()
 void MinkowskiSpaceR::PutPnt(const Pnt& pnt)
 {
 	recordPnts += pnt;
-	pntFrames += int2(y->F,y->frameNum);
+	pntFrames += int2(y->F,y->frameNum-1);
 	y->AddPntNow(pnt);
 }
 
@@ -254,12 +254,35 @@ void MinkowskiSpaceR::OutputPntTrajTxt(const str& filePath)
 	{
 		auto& pnt = recordPnts[pntInx];
 		auto& pntFrame = pntFrames[pntInx];
-		//输出txt帧号从1开始（Houdini方式）
-		f << pnt.TxtHeadString() <<" "<< (pntFrame+int2(1,0)).ToStr()<<endl;
-		for (int inx = pntFrame.x; inx < pntFrame.y; inx++)
+
+		arr<str> traj;
+		int startFrame = pntFrame.x, endFrame = pntFrame.y;
+		bool bFirstHasLine = true;
+		for (int inx = pntFrame.x; inx <= pntFrame.y; inx++)
 		{
-			f << spaces[inx].PntInfo(pnt.name, "pos") << endl;
+			str info = spaces[inx].PntInfo(pnt.name, "pos");
+			if (info != "")
+			{
+				if (bFirstHasLine)
+				{
+					startFrame = inx;
+					bFirstHasLine = false;
+				}
+				traj += info;
+			}
+			else if(!bFirstHasLine)
+			{
+				endFrame = inx-1;
+				break;
+			}
 		}
+		//输出txt帧号从1开始（Houdini方式）
+		f << pnt.TxtHeadString() << " " << (int2(startFrame,endFrame) + int2(1, 1)).ToStr() << endl;
+		for (auto& line : traj)
+		{
+			f << line << endl;
+		}
+		f << endl;
 	}
 	//###
 	std::cout << "File write done at " << filePath.data << "\n";

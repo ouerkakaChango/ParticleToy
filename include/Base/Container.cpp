@@ -26,6 +26,11 @@ bool str::operator==(const str& str) const
 	return data == str.data;
 }
 
+bool str::operator!=(const char* s) const
+{
+	return data != string(s);
+}
+
 void str::AddDouble(double other, int precision)
 {
 	std::stringstream ss;

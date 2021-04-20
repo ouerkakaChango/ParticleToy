@@ -19,8 +19,6 @@ public:
 	str TxtHeadString();
 	//### info
 	//### physic
-	inline void SetMass(double mass_) { mass = mass_; }
-	inline void SetVel(const P& v_) { v = v_; }
 	bool IsBreakPoint() const;
 	void SetBreakPoint(const Pnt& pnt, double dtr_);
 	Pnt GetBreakPnt() const;
