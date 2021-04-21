@@ -20,7 +20,13 @@ void Fast3D::AddTri(str name, const Tri& tri, str rule)
 
 void Fast3D::CopyFrom(const Fast3D& prev)
 {
+	if (pnts.size() != 0)
+	{
+		int aa = 1;
+	}
+	auto pntsToAdd = pnts;
 	pnts = prev.pnts;
+	pnts += pntsToAdd;
 	for (int inx = 0; inx < pnts.size(); inx++)
 	{
 		pnts[inx].isBreakPnt = false;

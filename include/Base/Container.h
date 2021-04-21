@@ -27,6 +27,14 @@ public:
 		data_.push_back(newData_);
 	}
 
+	void operator+=(const arr<T>& other)
+	{
+		for (auto& t : other.data_)
+		{
+			*this += t;
+		}
+	}
+
 	T& operator[](int inx)
 	{
 		return data_[inx];

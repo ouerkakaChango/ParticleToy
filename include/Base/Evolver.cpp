@@ -188,26 +188,13 @@ void Evolver::EvolveBegin(const Fast3D& prev, Fast3D& next, double dt)
 
 	auto& pnts = next.pnts;
 
-	InitSpace(next);
+	InitSpace(prev);
 	InitColliMerge(next);
 
 	//### Solve
 	for (int inx = 0; inx < pnts.size(); inx++)
 	{
-		const Pnt& prevPnt = prev.pnts[inx];
-		auto& pnt = pnts[inx];
-		if (pnt.rule.Has("PhysicProp"))
-		{
-			physic.SolveBegin(prevPnt, pnt, dt);
-			collision.Solve(prevPnt, pnt, dt);
-		}
-		else if (pnt.rule.Has("Space"))
-		{
-			ExtraInfo info;
-			info.pntInx = inx;
-			info.prevPnts = &prev.pnts;
-			physic.SolveBegin(prevPnt, pnt, dt, info);
-		}
+		SolvePntBegin(inx, prev.pnts, pnts, dt);
 	}
 }
 
@@ -217,33 +204,26 @@ void Evolver::Evolve(const Fast3D& old, const Fast3D& prev, Fast3D& next, double
 
 	auto& pnts = next.pnts;
 
-	InitSpace(next);
+	InitSpace(prev);
 	InitColliMerge(next);
 
 	//### Solve
 	for (int inx = 0; inx < pnts.size(); inx++)
 	{
-		auto& oldPnt = old.pnts[inx];
-		auto& prevPnt = prev.pnts[inx];
-		auto& pnt = pnts[inx];
-		if (pnt.rule.Has("PhysicProp"))
+		if (inx >= old.pnts.size())
 		{
-			if (prevPnt.IsBreakPoint())
+			if (inx >= prev.pnts.size())
 			{
-				physic.Solve(prevPnt.GetVirtualOldPnt(dt), prevPnt, pnt, dt);
+				//don't solve newly added pnt now,solveBegin it at next frame
 			}
 			else
 			{
-				physic.Solve(oldPnt, prevPnt, pnt, dt);
+				SolvePntBegin(inx, prev.pnts, pnts, dt);
 			}
-			collision.Solve(prevPnt, pnt, dt);
 		}
-		else if (pnt.rule.Has("Space"))
+		else
 		{
-			ExtraInfo info;
-			info.pntInx = inx;
-			info.prevPnts = &prev.pnts;
-			physic.Solve(oldPnt, prevPnt, pnt, dt, info);
+			SolvePnt(inx, old.pnts, prev.pnts, pnts, dt);
 		}
 	}
 	//### Solve colliMerge
@@ -265,9 +245,53 @@ void Evolver::Evolve(const Fast3D& old, const Fast3D& prev, Fast3D& next, double
 	}
 }
 
-void Evolver::InitSpace(Fast3D& next)
+void Evolver::SolvePntBegin(int inx, const arr<Pnt>& prevPnts, arr<Pnt>& pnts, double dt)
 {
-	auto& pnts = next.pnts;
+	const Pnt& prevPnt = prevPnts[inx];
+	auto& pnt = pnts[inx];
+	if (pnt.rule.Has("PhysicProp"))
+	{
+		physic.SolveBegin(prevPnt, pnt, dt);
+		collision.Solve(prevPnt, pnt, dt);
+	}
+	else if (pnt.rule.Has("Space"))
+	{
+		ExtraInfo info;
+		info.pntInx = inx;
+		info.prevPnts = &prevPnts;
+		physic.SolveBegin(prevPnt, pnt, dt, info);
+	}
+}
+
+void Evolver::SolvePnt(int inx, const arr<Pnt>& oldPnts, const arr<Pnt>& prevPnts, arr<Pnt>& pnts, double dt)
+{
+	auto& oldPnt = oldPnts[inx];
+	auto& prevPnt = prevPnts[inx];
+	auto& pnt = pnts[inx];
+	if (pnt.rule.Has("PhysicProp"))
+	{
+		if (prevPnt.IsBreakPoint())
+		{
+			physic.Solve(prevPnt.GetVirtualOldPnt(dt), prevPnt, pnt, dt);
+		}
+		else
+		{
+			physic.Solve(oldPnt, prevPnt, pnt, dt);
+		}
+		collision.Solve(prevPnt, pnt, dt);
+	}
+	else if (pnt.rule.Has("Space"))
+	{
+		ExtraInfo info;
+		info.pntInx = inx;
+		info.prevPnts = &prevPnts;
+		physic.Solve(oldPnt, prevPnt, pnt, dt, info);
+	}
+}
+
+void Evolver::InitSpace(const Fast3D& prev)
+{
+	auto& pnts = prev.pnts;
 	bool initSpace = true;
 	physic.spaceInxs.clear();
 	for (int inx = 0; inx < pnts.size(); inx++)

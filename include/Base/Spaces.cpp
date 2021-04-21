@@ -229,6 +229,11 @@ void MinkowskiSpaceR::PntInsForce(int F, str name, P force)
 	evolver->physic.insForces += force;
 }
 
+void MinkowskiSpaceR::MoveToFrame(int F)
+{
+	y->F = F;
+}
+
 void MinkowskiSpaceR::Say()
 {
 	auto& times = Cast<TimeI*>(y->i[0])->timeStamps;

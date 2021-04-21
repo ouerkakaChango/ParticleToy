@@ -92,6 +92,7 @@ class MinkowskiSpaceR : public R
 	void Evolve(int begin);
 	void SetGravity(P gravity);
 	void PntInsForce(int F, str name, P force);
+	void MoveToFrame(int F);
 
 	void SayO() override;
 	void Say();
