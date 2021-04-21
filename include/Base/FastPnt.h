@@ -27,6 +27,7 @@ public:
 
 	P pos;
 	str name, rule;
+	int inxOffset = 0;
 	Shape* outer = nullptr;
 	//### physic
 	P v;

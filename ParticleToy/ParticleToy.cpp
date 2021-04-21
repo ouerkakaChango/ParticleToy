@@ -26,7 +26,7 @@
 int main()
 {
 	MinkowskiSpace* world = new MinkowskiSpace;
-	world->SetFrameSettings(361, 0.0166666);
+	world->SetFrameSettings(1000, 0.0166666);
 	MinkowskiSpaceR* op = (MinkowskiSpaceR*)world->r[0];
 
 	Pnt sun(P(1,0,0));

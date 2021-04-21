@@ -59,6 +59,7 @@ public:
 	void InitColliMerge(Fast3D& next);
 	void SolvePntBegin(int inx, const arr<Pnt>& prevPnts, arr<Pnt>& pnts, double dt);
 	void SolvePnt(int inx, const arr<Pnt>& oldPnts, const arr<Pnt>& prevPnts, arr<Pnt>& pnts, double dt);
+	void Clear(arr<Pnt>& pnts);
 
 	PhysicSolver physic;
 	CollisionSolver collision;

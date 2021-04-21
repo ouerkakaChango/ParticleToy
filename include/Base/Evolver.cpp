@@ -239,6 +239,24 @@ void Evolver::Evolve(const Fast3D& old, const Fast3D& prev, Fast3D& next, double
 			colliMerge.Solve(info);
 		}
 	}
+
+	Clear(pnts);
+}
+
+void Evolver::Clear(arr<Pnt>& pnts)
+{
+	for (int i = 0; i < pnts.size(); i++)
+	{
+		pnts[i].inxOffset = 0;
+	}
+
+	for (auto& delInx : colliMerge.delArr)
+	{
+		for (int i = delInx + 1; i < pnts.size(); i++)
+		{
+			pnts[i].inxOffset += 1;
+		}
+	}
 	for (auto& delInx : colliMerge.delArr)
 	{
 		pnts.delAt(delInx);
@@ -265,9 +283,9 @@ void Evolver::SolvePntBegin(int inx, const arr<Pnt>& prevPnts, arr<Pnt>& pnts, d
 
 void Evolver::SolvePnt(int inx, const arr<Pnt>& oldPnts, const arr<Pnt>& prevPnts, arr<Pnt>& pnts, double dt)
 {
-	auto& oldPnt = oldPnts[inx];
-	auto& prevPnt = prevPnts[inx];
 	auto& pnt = pnts[inx];
+	auto& oldPnt = oldPnts[inx + pnt.inxOffset];
+	auto& prevPnt = prevPnts[inx];
 	if (pnt.rule.Has("PhysicProp"))
 	{
 		if (prevPnt.IsBreakPoint())
