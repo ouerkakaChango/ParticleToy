@@ -40,7 +40,7 @@ int main()
 	Pnt moon(P(-1, 0, 0));
 	moon.name = "moon";
 	moon.rule = "Space ColliMerge";
-	moon.mass = 0.1;
+	moon.mass = 5;
 	moon.v = P(0, 0, 1);
 	moon.SetSphereOuter(0.1);
 	op->PutPnt(moon);
