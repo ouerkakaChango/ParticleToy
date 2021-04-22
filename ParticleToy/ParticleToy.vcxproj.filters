@@ -101,6 +101,9 @@
     <ClCompile Include="..\Backup\golf.cpp">
       <Filter>资源文件</Filter>
     </ClCompile>
+    <ClCompile Include="..\Backup\threebody.cpp">
+      <Filter>资源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Backup\testStandard.txt">
