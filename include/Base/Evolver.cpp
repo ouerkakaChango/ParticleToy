@@ -257,8 +257,10 @@ void Evolver::Clear(arr<Pnt>& pnts)
 			pnts[i].inxOffset += 1;
 		}
 	}
-	for (auto& delInx : colliMerge.delArr)
+
+	for (int i = colliMerge.delArr.size() - 1; i >= 0; i--)
 	{
+		int delInx = colliMerge.delArr[i];
 		pnts.delAt(delInx);
 	}
 }

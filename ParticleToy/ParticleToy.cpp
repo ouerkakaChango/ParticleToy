@@ -29,29 +29,29 @@ int main()
 	world->SetFrameSettings(1000, 0.0166666);
 	MinkowskiSpaceR* op = (MinkowskiSpaceR*)world->r[0];
 
-	Pnt sun(P(1,0,0));
+	Pnt sun(P(0,0,0));
 	sun.name = "sun";
 	sun.rule = "Space ColliMerged";
 	sun.mass = 10.0;
-	sun.v = P(0.0, 0.0, 0.2);
-	sun.SetSphereOuter(0.3);
+	sun.v = P(0.0, 0.0, 0.0);
+	sun.SetSphereOuter(0.1);
 	op->PutPnt(sun);
 
-	Pnt moon(P(-1, 0, 0));
+	Pnt moon(P(0, 0, -1));
 	moon.name = "moon";
 	moon.rule = "Space ColliMerge";
 	moon.mass = 1;
-	moon.v = P(0, 0, 1);
+	moon.v = P(1, 0, 1);
 	moon.SetSphereOuter(0.1);
 	op->PutPnt(moon);
 
-	Pnt moon2(P(-2, 0, 0));
+	Pnt moon2(P(0, 0, 1));
 	moon2.name = "moon2";
 	moon2.rule = "Space ColliMerge";
-	moon2.mass = 5;
-	moon2.v = P(0, 0, 2);
+	moon2.mass = 1;
+	moon2.v = P(-1, 0, -1);
 	moon2.SetSphereOuter(0.1);
-	op->MoveToFrame(40);
+	//op->MoveToFrame(40);
 	op->PutPnt(moon2);
 
 	op->Evolve(0);
