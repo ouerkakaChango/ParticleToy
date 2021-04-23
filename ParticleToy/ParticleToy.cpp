@@ -15,5 +15,29 @@
 
 int main()
 {
+	MinkowskiSpace* world = new MinkowskiSpace;
+	world->SetFrameSettings(361, 0.0166666);
+	MinkowskiSpaceR* op = (MinkowskiSpaceR*)world->r[0];
+	op->SetGravity(P(0.0, -9.80665, 0.0));
+
+	Pnt atom1(P(0,5,0));
+	atom1.name = "atom1";
+	atom1.rule = "PhysicProp";
+	atom1.SetSphereOuter(1.0);
+	op->PutPnt(atom1);
+
+	Grid* terrain = new Grid;
+	terrain->SetGridSettings<double>(2, 3.0);
+	arr<Tri> triArr;
+	GridR* op2 = (GridR*)terrain->r[0];
+
+	//op2->DebugOutput("C:/HoudiniProjects/PToyScene/atomPlane.txt");
+
+	op2->TerrainToTri(triArr);
+	op->PutTri("terrain", triArr, "CollisionProp");
+
+	op->Evolve(0);
+
+	op->OutputPntTrajTxt("C:/HoudiniProjects/PToyScene/golfBall.txt");
 	return 0;
 }

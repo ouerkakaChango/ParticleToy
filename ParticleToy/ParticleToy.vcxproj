@@ -155,6 +155,10 @@
     <ClInclude Include="..\include\Base\FastGrid.h" />
     <ClInclude Include="..\include\Base\FastMath.h" />
     <ClInclude Include="..\include\Base\FastPnt.h" />
+    <ClInclude Include="..\include\Base\Solvers\ColliMergeSolver.h" />
+    <ClInclude Include="..\include\Base\Solvers\CollisionSolver.h" />
+    <ClInclude Include="..\include\Base\Solvers\PhysicSolver.h" />
+    <ClInclude Include="..\include\Base\Solvers\SolverUtility.h" />
     <ClInclude Include="..\include\Base\Spaces.h" />
     <ClInclude Include="..\include\Base\Taiji.h" />
     <ClInclude Include="..\include\Base\Utility.h" />
@@ -171,6 +175,10 @@
     <ClCompile Include="..\include\Base\FastGrid.cpp" />
     <ClCompile Include="..\include\Base\FastMath.cpp" />
     <ClCompile Include="..\include\Base\FastPnt.cpp" />
+    <ClCompile Include="..\include\Base\Solvers\ColliMergeSolver.cpp" />
+    <ClCompile Include="..\include\Base\Solvers\CollisionSolver.cpp" />
+    <ClCompile Include="..\include\Base\Solvers\PhysicSolver.cpp" />
+    <ClCompile Include="..\include\Base\Solvers\SolverUtility.cpp" />
     <ClCompile Include="..\include\Base\Spaces.cpp" />
     <ClCompile Include="..\include\Base\Taiji.cpp" />
     <ClCompile Include="..\include\Base\Utility.cpp" />
