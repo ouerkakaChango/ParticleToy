@@ -4,15 +4,18 @@
 #include "FastMath.h"
 #include "FastGeo.h"
 
+class Pnt;
 class EffectSpace : public Ying
 {
 	THISY(EffectSpace)
 	inline bool IsDefined() { return isDefined; }
-	void DefineLineI(P a_, P b_);
+	void DefineLineI(P a, P b);
+	void DefineCapsuleI(P a, P b, double r);
 	IntersectInfo Intersect(const Tri& tri);
 	inline void SetIgnore(bool isIgnore_) { isIgnore = isIgnore_; }
-	void Update(P p);
-	void SafeUpdate(P prevP, P p);
+	void Update(const Pnt& pnt);
+	void Update(P pos)=delete;
+	void SafeUpdate(const Pnt& prevPnt,Pnt& pnt);
 	void ResetPrev(P p);
 
 	bool isDefined = false;
@@ -30,8 +33,16 @@ class EffectLineI : public EffectSpaceI
 {
 public:
 	void Set(P a, P b);
-	void UpdateA(P newb);
 	void UpdateB(P newb);
 	IntersectInfo Intersect(const Tri& tri) override;
 	Line l;
+};
+
+class EffectCapsuleI : public EffectSpaceI
+{
+public:
+	void Set(P a, P b, double r);
+	void UpdateB(P newb);
+	IntersectInfo Intersect(const Tri& tri) override;
+	Capsule capsule;
 };

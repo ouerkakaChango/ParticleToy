@@ -26,6 +26,10 @@ void Line::Set(P a_, P b_)
 
 void Line::UpdateB(P newb)
 {
+	if (equal(b.y, newb.y))
+	{
+		int aa = 1;
+	}
 	a = b;
 	b = newb;
 }
@@ -42,6 +46,15 @@ double len(const Line& l)
 	return len(l.b - l.a);
 }
 //### Global Line
+
+//### Capsule
+void Capsule::Set(P a_, P b_, double r_)
+{
+	a = a_;
+	b = b_;
+	r = r_;
+}
+//### Capsule
 
 //### Plane
 void Plane::Define(P n_, P p_)

@@ -8,6 +8,7 @@ void CollisionSolver::Load(const arr<Tri>* triArr_)
 
 void CollisionSolver::Solve(const Pnt& prev, Pnt& newPnt, double dt)
 {
+	//Solve点轨迹：射线段与tri的碰撞
 	for (int inx = 0; inx < triArr->size(); inx++)
 	{
 		auto& tri = (*triArr)[inx];
@@ -40,7 +41,7 @@ void CollisionSolver::Solve(const Pnt& prev, Pnt& newPnt, double dt)
 			double dtr = dt - dtc;
 			newPnt.pos = hitP + (v3*dtr + 0.5*newPnt.a*dtr*dtr);
 			newPnt.v = v3 + newPnt.a*dtr;
-			newPnt.effectSpace.Update(newPnt.pos);
+			newPnt.effectSpace.Update(newPnt);
 			//5.Setup breakPnt
 			Pnt breakPnt(hitP);
 			breakPnt.a = prev.a;

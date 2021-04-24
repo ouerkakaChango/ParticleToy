@@ -6,7 +6,6 @@
 void Evolver::EvolveBegin(const Fast3D& prev, Fast3D& next, double dt)
 {
 	next.CopyFrom(prev);
-	//!!!
 	collision.Load(&prev.triArr);
 
 	auto& pnts = next.pnts;
@@ -24,6 +23,7 @@ void Evolver::EvolveBegin(const Fast3D& prev, Fast3D& next, double dt)
 void Evolver::Evolve(const Fast3D& old, const Fast3D& prev, Fast3D& next, double dt)
 {
 	next.CopyFrom(prev);
+	collision.Load(&prev.triArr);
 
 	auto& pnts = next.pnts;
 

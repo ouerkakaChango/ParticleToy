@@ -32,6 +32,13 @@ public:
 };
 double len(const Line& l);
 
+class Capsule : public Line
+{
+public:
+	double r;
+	void Set(P a_, P b_, double r_);
+};
+
 class Plane : public Shape
 {
 public:
@@ -65,5 +72,4 @@ public:
 	double r;
 	P center;
 };
-
 bool Intersect(const Sphere& s1, const Sphere& s2);

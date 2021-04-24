@@ -130,6 +130,7 @@ public:
 	bool operator==(const char* s) const;
 	bool operator==(const str& str) const;
 	bool operator!=(const char* s) const;
+	bool operator!=(const str& str) const;
 	friend ostream & operator <<(ostream & os, const str & s);
 	void AddDouble(double other, int precision);
 	bool Has(str s) const;

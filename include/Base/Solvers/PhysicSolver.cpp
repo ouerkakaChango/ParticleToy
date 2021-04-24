@@ -12,7 +12,7 @@ void PhysicSolver::Solve(const Pnt& oldPnt, const Pnt& prevPnt, Pnt& newPnt, dou
 	newPnt.a = a;
 
 	//update effectSpace
-	newPnt.effectSpace.SafeUpdate(prevPnt.pos, newPnt.pos);
+	newPnt.effectSpace.SafeUpdate(prevPnt, newPnt);
 
 	insForces.clear();
 }
