@@ -276,7 +276,7 @@ IntersectInfo Tri::Collide(const Sphere& s) const
 	//判断相交的办法有很多，我用一种“杂糅法”
 	//1.判断投影竖直方向上相交
 	//2.判断球心和三角形的Mincowsky sum（三角面+球）是否相交，那么判断：
-	//点在三角形内 || （点在3球||3圆柱内）
+	//投影点在三角形内 || （点在3球||3圆柱内）
 
 	//球/三角面相交的返回值：
 	//1.球投影在平面上的圆心位置
@@ -292,10 +292,10 @@ IntersectInfo Tri::Collide(const Sphere& s) const
 		return re;
 	}
 	//2.判断Mincowsky sum
-	bool b1 = IsPointInside(s.center);
+	bool b1 = IsPointInside(re.hitP);
 	bool b2 = M_Add(*this,s).IsPointInside(s.center);
 	re.result = b1 || b2;
-	//???
+	//??? debug
 	if (re.result)
 	{
 		int aa = 1;
