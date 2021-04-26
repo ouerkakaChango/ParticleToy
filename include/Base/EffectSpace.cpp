@@ -24,13 +24,13 @@ void EffectSpace::DefineCapsuleI(P a, P b, double r)
 	isDefined = true;
 }
 
-IntersectInfo EffectSpace::Intersect(const Tri& tri)
+IntersectInfo EffectSpace::Collide(const Tri& tri)
 {
 	IntersectInfo re;
 	if (isDefined && !isIgnore)
 	{
 		auto ti = Cast<EffectSpaceI*>(i[0]);
-		re = ti->Intersect(tri);
+		re = ti->Collide(tri);
 	}
 	return re;
 }
@@ -64,13 +64,14 @@ void EffectSpace::SafeUpdate(const Pnt& prevPnt, Pnt& pnt)
 		{//一者outer非空一者空，abort
 			abort();
 		}
-		else if (prevPnt.outer->type != pnt.outer->type)
+		else if (typeid(*prevPnt.outer).name() != typeid(*pnt.outer).name())
 		{//!!! 两者outer形状不一样
 			abort();
 		}
 		else
 		{
-			if (prevPnt.outer->type == "Sphere")
+			auto aa = typeid(*prevPnt.outer).name();
+			if (str(typeid(*prevPnt.outer).name()) == "class Sphere")
 			{
 				auto sphere1 = static_cast<Sphere*>(prevPnt.outer);
 				auto sphere2 = static_cast<Sphere*>(pnt.outer);
@@ -110,7 +111,7 @@ void EffectSpace::ResetPrev(P p)
 //### EffectSpace
 
 //### EffectSpaceI
-IntersectInfo EffectSpaceI::Intersect(const Tri& tri)
+IntersectInfo EffectSpaceI::Collide(const Tri& tri)
 {
 	IntersectInfo re;
 	return re;
@@ -128,10 +129,10 @@ void EffectLineI::UpdateB(P newb)
 	l.UpdateB(newb);
 }
 
-IntersectInfo EffectLineI::Intersect(const Tri& tri)
+IntersectInfo EffectLineI::Collide(const Tri& tri)
 {
 	IntersectInfo re;
-	re = tri.Intersect(l);
+	re = tri.Collide(l);
 	return re;
 }
 //### EffectLineI
@@ -147,10 +148,10 @@ void EffectCapsuleI::UpdateB(P newb)
 	capsule.UpdateB(newb);
 }
 
-IntersectInfo EffectCapsuleI::Intersect(const Tri& tri)
+IntersectInfo EffectCapsuleI::Collide(const Tri& tri)
 {
 	IntersectInfo re;
-	re = tri.Intersect(capsule);
+	re = tri.Collide(capsule);
 	return re;
 }
 //### EffectCapsuleI

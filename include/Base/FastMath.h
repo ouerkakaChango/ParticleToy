@@ -60,3 +60,15 @@ double rand01();
 double equal(double a, double b, double tolerance = 0.00001);
 bool zero(double n);
 bool zero(const P2& p);
+double side(double hypotenuse, double side1);
+template <class T,class T2>
+T lerp(T a, T b, T2 k)
+{
+	return a + k * (b - a);
+}
+template <class T, class T2>
+T lerpRate(T a, T b, T2 re)
+{
+	//a+k*(b-a)=re
+	return (re - a) / (b - a);
+}

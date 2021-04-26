@@ -32,7 +32,7 @@ void Pnt::UpdateOuter() const
 	{
 		abort();
 	}
-	if (outer->type == "Sphere")
+	if (typeid(outer).name() == "class Sphere")
 	{
 		auto s = static_cast<Sphere*>(outer);
 		s->center = pos;

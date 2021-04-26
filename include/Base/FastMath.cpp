@@ -273,4 +273,9 @@ bool zero(const P2& p)
 {
 	return equal(p.x, 0) && equal(p.y, 0);
 }
+
+double side(double hypotenuse, double side1)
+{
+	return hypotenuse * hypotenuse - side1 * side1;
+}
 //### Global Utility
