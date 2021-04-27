@@ -42,6 +42,8 @@ public:
 	void operator*=(double s);
 	friend P operator*(double s, const P& p);
 
+	double len() const;
+
 	str ToStr();
 };
 

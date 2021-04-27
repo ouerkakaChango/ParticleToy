@@ -41,13 +41,57 @@ void CollisionSolver::Solve(const Pnt& prev, Pnt& newPnt, double dt)
 			double dtr = dt - dtc;
 			newPnt.pos = hitP + (v3*dtr + 0.5*newPnt.a*dtr*dtr);
 			newPnt.v = v3 + newPnt.a*dtr;
+			//!!!
+			//照理来说，解算后的点不会低于碰撞面；
+			//但由于verlert的误差原因（比如落下后慢慢停下的小球），导致v3项(?)不够精确，然后位置不对
+			if (tri.IsPointUnder(newPnt.pos, newPnt.outer))
+			{
+				newPnt.pos = hitP;
+				newPnt.v = P(0, 0, 0);
+			}
+			//___
 			newPnt.effectSpace.Update(newPnt);
 			//5.Setup breakPnt
 			Pnt breakPnt(hitP);
 			breakPnt.a = prev.a;
 			breakPnt.v = v3;
-			newPnt.SetBreakPoint(breakPnt, dtr);
+			newPnt.SetBreakPoint(tri.uid, breakPnt, dtr);
 		}
 	}
+}
+
+const Tri& CollisionSolver::GetTri(int uid) const
+{
+	for (int inx = 0; inx < triArr->size(); inx++)
+	{
+		auto& tri = (*triArr)[inx];
+		if (tri.uid == uid)
+		{
+			return tri;
+		}
+	}
+	abort();
+	return (*triArr)[0];
+}
+
+Pnt CollisionSolver::GetVirtualOldPnt(const Pnt& prev, double dt) const
+{
+	if (!prev.isBreakPnt)
+	{
+		abort();
+	}
+	Pnt re = prev;
+	re.v -= prev.a * dt;
+	re.pos -= re.v*dt + 0.5 * prev.a *dt*dt;
+	auto& tri = GetTri(prev.uid_breakPlane);
+	//???
+	double dp = (re.pos - prev.pos).len();
+	//??? 改成通过dt计算准确的dp下限，而不是0.001
+	if (dp < 0.001)
+	{
+		auto aa = 1;
+	}
+	//___
+	return re;
 }
 //### CollisionSolver

@@ -115,7 +115,8 @@ void Evolver::SolvePnt(int inx, const arr<Pnt>& oldPnts, const arr<Pnt>& prevPnt
 	{
 		if (prevPnt.IsBreakPoint())
 		{
-			physic.Solve(prevPnt.GetVirtualOldPnt(dt), prevPnt, pnt, dt);
+			auto oldPnt = collision.GetVirtualOldPnt(prevPnt, dt);
+			physic.Solve(oldPnt, prevPnt, pnt, dt);
 		}
 		else
 		{

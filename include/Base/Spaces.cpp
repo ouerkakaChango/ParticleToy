@@ -145,7 +145,7 @@ void MinkowskiSpace::AddTriNow(str name, const Tri& tri, str rule)
 void MinkowskiSpace::EvolveFrame(int prevFrame)
 {
 	//??? debug
-	if (prevFrame == 60)
+	if (prevFrame == 69)
 	{
 		int aa = 1;
 	}
@@ -299,7 +299,7 @@ void MinkowskiSpaceR::DebugSay()
 	auto& spaces = Cast<Space3DI*>(y->i[1])->spaces;
 	for (int inx = 0; inx < y->frameNum; inx++)
 	{
-		std::cout << spaces[inx].InfoString("pos") << "\n";
+		std::cout << spaces[inx].InfoString("pos v") << "\n";
 	}
 }
 

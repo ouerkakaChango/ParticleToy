@@ -20,9 +20,9 @@ public:
 	//### info
 	//### physic
 	bool IsBreakPoint() const;
-	void SetBreakPoint(const Pnt& pnt, double dtr_);
+	void SetBreakPoint(int planeuid, const Pnt& pnt, double dtr_);
 	Pnt GetBreakPnt() const;
-	Pnt GetVirtualOldPnt(double dt) const;
+	//Pnt GetVirtualOldPnt(double dt) const;
 	//### physic
 
 	P pos;
@@ -38,5 +38,6 @@ public:
 	EffectSpace effectSpace;
 	Pnt* breakPnt=nullptr;
 	bool isBreakPnt = false;
+	int uid_breakPlane = -1;
 	//### physic
 };

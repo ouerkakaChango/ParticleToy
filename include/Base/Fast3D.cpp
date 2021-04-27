@@ -31,6 +31,7 @@ void Fast3D::CopyFrom(const Fast3D& prev)
 	{
 		pnts[inx].isBreakPnt = false;
 	}
+
 	triArr = prev.triArr;
 }
 

@@ -32,7 +32,7 @@ void Pnt::UpdateOuter() const
 	{
 		abort();
 	}
-	if (typeid(outer).name() == "class Sphere")
+	if (typeStr(outer) == "class Sphere")
 	{
 		auto s = static_cast<Sphere*>(outer);
 		s->center = pos;
@@ -75,15 +75,24 @@ str Pnt::InfoString(int precision)
 str Pnt::InfoString(str filter, int precision)
 {
 	str re;
-	if (filter == "pos")
+	if (filter.Has("pos"))
 	{
 		re.AddDouble(pos.x, precision);
 		re += " ";
 		re.AddDouble(pos.y, precision);
 		re += " ";
 		re.AddDouble(pos.z, precision);
+		re += " ";
 	}
-
+	if (filter.Has("v"))
+	{
+		re.AddDouble(v.x, precision);
+		re += " ";
+		re.AddDouble(v.y, precision);
+		re += " ";
+		re.AddDouble(v.z, precision);
+		re += " ";
+	}
 	return re;
 }
 
@@ -104,7 +113,7 @@ bool Pnt::IsBreakPoint() const
 	return isBreakPnt;
 }
 
-void Pnt::SetBreakPoint(const Pnt& pnt, double dtr_)
+void Pnt::SetBreakPoint(int planeuid, const Pnt& pnt, double dtr_)
 {
 	dtr = dtr_;
 	if (dtr < 0)
@@ -115,6 +124,7 @@ void Pnt::SetBreakPoint(const Pnt& pnt, double dtr_)
 	breakPnt = new Pnt;
 	(*breakPnt) = pnt;
 	isBreakPnt = true;
+	uid_breakPlane = planeuid;
 }
 
 Pnt Pnt::GetBreakPnt() const
@@ -122,16 +132,15 @@ Pnt Pnt::GetBreakPnt() const
 	return *breakPnt;
 }
 
-Pnt Pnt::GetVirtualOldPnt(double dt) const
-{
-	if (!isBreakPnt)
-	{
-		abort();
-	}
-	Pnt re = *this;
-	re.v -= a * dt;
-	//dr = v0*dt+0.5*a*dt^2
-	re.pos -= re.v*dt + 0.5 * a *dt*dt;
-	return re;
-}
+//Pnt Pnt::GetVirtualOldPnt(double dt) const
+//{
+//	if (!isBreakPnt)
+//	{
+//		abort();
+//	}
+//	Pnt re = *this;
+//	re.v -= a * dt;
+//	re.pos -= re.v*dt + 0.5 * a *dt*dt;
+//	return re;
+//}
 //### Pnt

@@ -137,6 +137,7 @@ public:
 	string data;
 };
 ostream& operator <<(ostream & os, const str & s);
+#define typeStr(obj) str(typeid(obj).name())
 
 class int2
 {

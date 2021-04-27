@@ -64,14 +64,14 @@ void EffectSpace::SafeUpdate(const Pnt& prevPnt, Pnt& pnt)
 		{//一者outer非空一者空，abort
 			abort();
 		}
-		else if (typeid(*prevPnt.outer).name() != typeid(*pnt.outer).name())
+		else if (typeStr(*prevPnt.outer) != typeid(*pnt.outer).name())
 		{//!!! 两者outer形状不一样
 			abort();
 		}
 		else
 		{
-			auto aa = typeid(*prevPnt.outer).name();
-			if (str(typeid(*prevPnt.outer).name()) == "class Sphere")
+			auto aa = typeStr(*prevPnt.outer);
+			if (typeStr(*prevPnt.outer) == "class Sphere")
 			{
 				auto sphere1 = static_cast<Sphere*>(prevPnt.outer);
 				auto sphere2 = static_cast<Sphere*>(pnt.outer);

@@ -6,6 +6,9 @@ void PhysicSolver::Solve(const Pnt& oldPnt, const Pnt& prevPnt, Pnt& newPnt, dou
 	P a = A(newPnt, info);
 
 	//verlet pos
+	//???
+	double dp = (prevPnt.pos - oldPnt.pos).len();
+	//___
 	newPnt.pos = prevPnt.pos + newPnt.damp * (prevPnt.pos - oldPnt.pos) + a * dt*dt;
 	//verlet v
 	newPnt.v += a * dt;

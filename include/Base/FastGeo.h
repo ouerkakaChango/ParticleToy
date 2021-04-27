@@ -6,9 +6,13 @@ class IntersectInfo;
 class Shape
 {
 public:
+	Shape();
 	virtual bool Collide(const Shape* other);
 	virtual bool IsPointInside(P p) const;
 	virtual str TxtHeadString();
+
+	static int uid_count;
+	int uid = 0;
 };
 
 class IntersectInfo
@@ -25,12 +29,14 @@ public:
 class Line : public Shape
 {
 public:
-	P a, b;
+	Line();
+	Line(P a_, P b_);
 	void Set(P a_, P b_);
 	void UpdateB(P newb);
 	P dir() const;
 
 	friend double len(const Line& l);
+	P a, b;
 };
 double len(const Line& l);
 
@@ -69,9 +75,13 @@ public:
 class Plane : public Shape
 {
 public:
+	Plane();
+	Plane(const Plane& plane);
 	void Define(P n_, P p_);
 	void Transform(P offset);
+	double sdf(P pos) const;
 	IntersectInfo Intersect(const Line& l) const;
+	bool IsPointUnder(P pos,const Shape* outer) const;
 	P p, n;
 	bool isDefined = false;
 };
@@ -81,6 +91,7 @@ class Tri:public Plane
 {
 public:
 	Tri();
+	Tri(const Tri& tri);
 	Tri(const P& p1_, const P& p2_, const P& p3_);
 	void FromGrid(double len, str filter, bool isUpTri);
 	void Scale(double s);

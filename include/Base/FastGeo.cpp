@@ -1,6 +1,13 @@
 #include "FastGeo.h"
 
 //### Shape
+int Shape::uid_count=0;
+Shape::Shape()
+{
+	uid_count += 1;
+	uid = uid_count - 1;
+}
+
 bool Shape::Collide(const Shape* other)
 {
 	if (other == nullptr)
@@ -23,6 +30,16 @@ str Shape::TxtHeadString()
 //### Shape
 
 //### Line
+Line::Line()
+{
+
+}
+
+Line::Line(P a_, P b_):a(a_),b(b_)
+{
+
+}
+
 void Line::Set(P a_, P b_)
 {
 	a = a_;
@@ -101,6 +118,15 @@ bool Cylinder::IsPointInside(P p) const
 //### Cylinder
 
 //### Plane
+Plane::Plane()
+{
+
+}
+Plane::Plane(const Plane& plane):
+	n(plane.n),p(plane.p),isDefined(plane.isDefined)
+{
+
+}
 void Plane::Define(P n_, P p_)
 {
 	n = n_;
@@ -111,6 +137,12 @@ void Plane::Define(P n_, P p_)
 void Plane::Transform(P offset)
 {
 	p += offset;
+}
+
+double Plane::sdf(P pos) const
+{
+	double aa = dot(n, pos - p);
+	return dot(n, pos - p);
 }
 
 IntersectInfo Plane::Intersect(const Line& l) const
@@ -127,7 +159,25 @@ IntersectInfo Plane::Intersect(const Line& l) const
 	}
 	return re;
 }
+
+bool Plane::IsPointUnder(P pos, const Shape* outer) const
+{
+	double r = 0;
+	if (outer == nullptr)
+	{
+	}
+	else if (typeStr(*outer) == "class Sphere")
+	{
+		r = static_cast<const Sphere*>(outer)->r;
+	}
+	else
+	{
+		abort();
+	}
+	return sdf(pos) - r < 0;
+}
 //### Plane
+
 //### Global Plane
 P project(P p, const Plane& plane)
 {
@@ -143,6 +193,14 @@ P project(P p, const Plane& plane)
 Tri::Tri()
 {
 
+}
+
+Tri::Tri(const Tri& tri):Plane(tri)
+{
+	p1 = tri.p1;
+	p2 = tri.p2;
+	p3 = tri.p3;
+	uid = tri.uid;
 }
 
 Tri::Tri(const P& p1_, const P& p2_, const P& p3_):
@@ -248,10 +306,14 @@ IntersectInfo Tri::Collide(const Capsule& cap) const
 {
 	IntersectInfo re;
 	//1.判断头尾球体是否与tri相交
-	//对于移动中的traj形成的cap，应该不会检测到s1的相交
+	//??? 对于移动中的traj形成的cap，应该不会检测到s1的相交
 	IntersectInfo bs1 = Collide(cap.GetS1());
 	if (bs1)
 	{
+		double d2 = bs1.d;
+		P a2 = project(cap.a, *this);
+		double d1 = dis(cap.a, a2);
+		bs1.hitP = lerp(cap.b, cap.a, lerpRate(d2, d1, cap.r));
 		return bs1;
 	}
 	IntersectInfo bs2 = Collide(cap.GetS2());

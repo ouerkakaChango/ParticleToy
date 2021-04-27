@@ -141,6 +141,11 @@ void P::operator*=(double s)
 	z *= s;
 }
 
+double P::len() const
+{
+	return dis(P(0, 0, 0), *this);
+}
+
 str P::ToStr()
 {
 	str re;
