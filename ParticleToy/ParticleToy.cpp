@@ -17,19 +17,21 @@
 int main()
 {
 	MinkowskiSpace* world = new MinkowskiSpace;
-	world->SetFrameSettings(361, 0.0166666);
+	world->SetFrameSettings(1001, 0.0166666);
 	MinkowskiSpaceR* op = (MinkowskiSpaceR*)world->r[0];
 	op->SetGravity(P(0.0, -9.80665, 0.0));
 
 	Pnt atom1(P(0.0,1.1,0.0));
 	atom1.name = "atom1";
-	atom1.rule = "PhysicProp";
+	atom1.rule = "Molecule";
+	//atom1.rule = "PhysicProp";
 	atom1.SetSphereOuter(1.0);
 	op->PutPnt(atom1);
 
 	Pnt atom2(P(3.0, 5.0, 0.0));
 	atom2.name = "atom2";
-	atom2.rule = "PhysicProp";
+	atom2.rule = "Molecule";
+	//atom2.rule = "PhysicProp";
 	atom2.SetSphereOuter(1.0);
 	op->PutPnt(atom2);
 

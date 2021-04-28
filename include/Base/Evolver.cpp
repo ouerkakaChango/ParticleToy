@@ -104,6 +104,14 @@ void Evolver::SolvePntBegin(int inx, const arr<Pnt>& prevPnts, arr<Pnt>& pnts, d
 		info.prevPnts = &prevPnts;
 		physic.SolveBegin(prevPnt, pnt, dt, info);
 	}
+	else if (pnt.rule.Has("Molecule"))
+	{
+		ExtraInfo info;
+		info.pntInx = inx;
+		info.prevPnts = &prevPnts;
+		physic.SolveBegin(prevPnt, pnt, dt, info);
+		collision.Solve(prevPnt, pnt, dt);
+	}
 }
 
 void Evolver::SolvePnt(int inx, const arr<Pnt>& oldPnts, const arr<Pnt>& prevPnts, arr<Pnt>& pnts, double dt)
@@ -131,24 +139,41 @@ void Evolver::SolvePnt(int inx, const arr<Pnt>& oldPnts, const arr<Pnt>& prevPnt
 		info.prevPnts = &prevPnts;
 		physic.Solve(oldPnt, prevPnt, pnt, dt, info);
 	}
+	else if (pnt.rule.Has("Molecule"))
+	{
+		ExtraInfo info;
+		info.pntInx = inx;
+		info.prevPnts = &prevPnts;
+
+		if (prevPnt.IsBreakPoint())
+		{
+			auto oldPnt = collision.GetVirtualOldPnt(prevPnt, dt);
+			physic.Solve(oldPnt, prevPnt, pnt, dt, info);
+		}
+		else
+		{
+			physic.Solve(oldPnt, prevPnt, pnt, dt, info);
+		}
+		collision.Solve(prevPnt, pnt, dt);
+	}
 }
 
 void Evolver::InitSpace(const Fast3D& prev)
 {
 	auto& pnts = prev.pnts;
-	bool initSpace = true;
-	physic.spaceInxs.clear();
+	bool hasInitedSpace = false;
+	physic.uniGInxs.clear();
 	for (int inx = 0; inx < pnts.size(); inx++)
 	{
 		auto& pnt = pnts[inx];
-		if (pnt.rule.Has("Space"))
+		if (!hasInitedSpace && pnt.rule.Has("Space"))
 		{
-			if (initSpace)
-			{
-				physic.InitSpace();
-				initSpace = false;
-			}
-			physic.spaceInxs += inx;
+			physic.InitSpace();
+			hasInitedSpace = true;
+		}
+		if (physic.IsCalcuUniversalG(pnt))
+		{
+			physic.uniGInxs += inx;
 		}
 	}
 }

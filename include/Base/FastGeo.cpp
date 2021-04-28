@@ -17,7 +17,7 @@ bool Shape::Collide(const Shape* other)
 	return false;
 }
 
-bool Shape::IsPointInside(P p) const
+bool Shape::IsPointInside(P pos) const
 {
 	return false;
 }
@@ -48,11 +48,11 @@ void Line::Set(P a_, P b_)
 
 void Line::UpdateB(P newb)
 {
-	if (equal(b.y, newb.y))
+	a = b;
+	if (equal(a.y, 0.9986434))
 	{
 		int aa = 1;
 	}
-	a = b;
 	b = newb;
 }
 
@@ -101,13 +101,13 @@ Cylinder::Cylinder(P a_, P b_, double r_)
 	b = b_;
 }
 
-bool Cylinder::IsPointInside(P p) const
+bool Cylinder::IsPointInside(P pos) const
 {
 	//d 垂直距离;
 	//dis 水平距离
 	P d = norm(b - a);
-	P inter = b + d*dot(p-b,d);
-	if (dis(p, inter) > r)
+	P inter = b + d*dot(pos - b,d);
+	if (dis(pos, inter) > r)
 	{
 		return false;
 	}
@@ -141,7 +141,6 @@ void Plane::Transform(P offset)
 
 double Plane::sdf(P pos) const
 {
-	double aa = dot(n, pos - p);
 	return dot(n, pos - p);
 }
 
@@ -165,6 +164,7 @@ bool Plane::IsPointUnder(P pos, const Shape* outer) const
 	double r = 0;
 	if (outer == nullptr)
 	{
+		//r=0
 	}
 	else if (typeStr(*outer) == "class Sphere")
 	{
@@ -176,16 +176,60 @@ bool Plane::IsPointUnder(P pos, const Shape* outer) const
 	}
 	return sdf(pos) - r < 0;
 }
+
+P Plane::GetFixedPos(P pos, const Shape* outer) const
+{
+
+	if (outer == nullptr)
+	{
+		return pos;
+	}
+	double r=0;
+	P pj = project(pos, *this);
+	if (typeStr(*outer) == "class Sphere")
+	{
+		double r = static_cast<const Sphere*>(outer)->r;
+		return pj + n * r;
+	}
+	else
+	{
+		abort();
+	}
+	return pos;
+}
+
+bool Plane::IsPointInside(P pos) const
+{
+	return equal(sdf(pos), 0);
+}
+
+bool Plane::IsPointFixed(P pos, const Shape* outer) const
+{
+	if (outer == nullptr)
+	{
+		return IsPointInside(pos);
+	}
+	if (typeStr(*outer) == "class Sphere")
+	{
+		double r = static_cast<const Sphere*>(outer)->r;
+		return equal(sdf(pos), r);
+	}
+	else
+	{
+		abort();
+	}
+	return false;
+}
 //### Plane
 
 //### Global Plane
-P project(P p, const Plane& plane)
+P project(P pos, const Plane& plane)
 {
 	if (!plane.isDefined)
 	{
 		abort();
 	}
-	return p - plane.n * dot(p - plane.p, plane.n);
+	return pos - plane.n * dot(pos - plane.p, plane.n);
 }
 //### Global Plane
 
@@ -251,11 +295,11 @@ void Tri::CalculateNormal()
 	n = norm(n);
 }
 
-bool Tri::IsPointInside(P p) const
+bool Tri::IsPointInside(P pos) const
 {
 	P v0 = p3 - p1;
 	P v1 = p2 - p1;
-	P v2 = p - p1;
+	P v2 = pos - p1;
 
 	double dot00 = dot(v0, v0);
 	double dot01 = dot(v0, v1);
@@ -304,18 +348,9 @@ IntersectInfo Tri::Collide(const Cylinder& cylinder) const
 
 IntersectInfo Tri::Collide(const Capsule& cap) const
 {
+	//返回的hitP是S2球心移到平面之上的位置
 	IntersectInfo re;
-	//1.判断头尾球体是否与tri相交
-	//??? 对于移动中的traj形成的cap，应该不会检测到s1的相交
-	IntersectInfo bs1 = Collide(cap.GetS1());
-	if (bs1)
-	{
-		double d2 = bs1.d;
-		P a2 = project(cap.a, *this);
-		double d1 = dis(cap.a, a2);
-		bs1.hitP = lerp(cap.b, cap.a, lerpRate(d2, d1, cap.r));
-		return bs1;
-	}
+
 	IntersectInfo bs2 = Collide(cap.GetS2());
 	if (bs2)
 	{
@@ -326,9 +361,19 @@ IntersectInfo Tri::Collide(const Capsule& cap) const
 		return bs2;
 	}
 	IntersectInfo b3 = Collide(cap.GetCylinder());
-	if(b3)
+	if (b3)
 	{
+		//???
 		return b3;
+	}
+	IntersectInfo bs1 = Collide(cap.GetS1());
+	if (bs1)
+	{
+		double d2 = bs1.d;
+		P a2 = project(cap.a, *this);
+		double d1 = dis(cap.a, a2);
+		bs1.hitP = lerp(cap.b, cap.a, lerpRate(d2, d1, cap.r));
+		return bs1;
 	}
 	return re;
 }
@@ -357,11 +402,7 @@ IntersectInfo Tri::Collide(const Sphere& s) const
 	bool b1 = IsPointInside(re.hitP);
 	bool b2 = M_Add(*this,s).IsPointInside(s.center);
 	re.result = b1 || b2;
-	//??? debug
-	if (re.result)
-	{
-		int aa = 1;
-	}
+
 	return re;
 }
 //### Tri
@@ -392,9 +433,9 @@ bool Sphere::Collide(const Shape* other)
 	return false;
 }
 
-bool Sphere::IsPointInside(P p) const
+bool Sphere::IsPointInside(P pos) const
 {
-	return dis(p, center) <= r;
+	return dis(pos, center) <= r;
 }
 
 str Sphere::TxtHeadString()

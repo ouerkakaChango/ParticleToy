@@ -8,7 +8,7 @@ class Shape
 public:
 	Shape();
 	virtual bool Collide(const Shape* other);
-	virtual bool IsPointInside(P p) const;
+	virtual bool IsPointInside(P pos) const;
 	virtual str TxtHeadString();
 
 	static int uid_count;
@@ -46,7 +46,7 @@ public:
 	Sphere(double r_);
 	Sphere(P center_, double r_);
 	bool Collide(const Shape* other) override;
-	bool IsPointInside(P p) const override;
+	bool IsPointInside(P pos) const override;
 	str TxtHeadString() override;
 
 	double r;
@@ -58,7 +58,7 @@ class Cylinder : public Line
 {
 public:
 	Cylinder(P a_, P b_, double r_);
-	bool IsPointInside(P p) const override;
+	bool IsPointInside(P pos) const override;
 	double r;
 };
 
@@ -82,10 +82,13 @@ public:
 	double sdf(P pos) const;
 	IntersectInfo Intersect(const Line& l) const;
 	bool IsPointUnder(P pos,const Shape* outer) const;
+	P GetFixedPos(P pos, const Shape* outer) const;
+	bool IsPointInside(P pos) const override;
+	bool IsPointFixed(P pos, const Shape* outer) const;
 	P p, n;
 	bool isDefined = false;
 };
-P project(P p, const Plane& plane);
+P project(P pos, const Plane& plane);
 
 class Tri:public Plane
 {
@@ -97,7 +100,7 @@ public:
 	void Scale(double s);
 	void Transform(P offset);
 	void CalculateNormal();
-	bool IsPointInside(P p) const override;
+	bool IsPointInside(P pos) const override;
 	IntersectInfo Collide(const Line& l) const;
 	IntersectInfo Collide(const Cylinder& cylinder) const;
 	IntersectInfo Collide(const Capsule& cap) const;

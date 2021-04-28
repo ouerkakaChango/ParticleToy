@@ -269,6 +269,13 @@ double equal(double a, double b, double tolerance)
 	return std::abs(a - b) < tolerance;
 }
 
+double equal(P a, P b, double tolerance)
+{
+	return equal(a.x, b.x, tolerance) &&
+		equal(a.y, b.y, tolerance) &&
+		equal(a.z, b.z, tolerance);
+}
+
 bool zero(double n)
 {
 	return equal(n, 0.0);

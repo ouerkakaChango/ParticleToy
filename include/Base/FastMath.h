@@ -60,6 +60,7 @@ bool SolveQuadra(double a, double b, double c, double& x1, double& x2);
 bool SolveQuadra(P a, P b, P c, double& x1, double& x2);
 double rand01();
 double equal(double a, double b, double tolerance = 0.00001);
+double equal(P a, P b, double tolerance = 0.00001);
 bool zero(double n);
 bool zero(const P2& p);
 double side(double hypotenuse, double side1);

@@ -10,10 +10,11 @@ public:
 	P A(const Pnt& pnt, ExtraInfo info);
 	P UniversalG(const Pnt& pnt, ExtraInfo info);
 	void InitSpace();
+	bool IsCalcuUniversalG(const Pnt& pnt);
 
 	//Ä¬ÈÏÎªUE4µÄ-980
 	P g = P(0.0, 0.0, -980.0);
 	double G = 1.0; //???
 	arr<P> insForces;
-	arr<int> spaceInxs;
+	arr<int> uniGInxs;
 };

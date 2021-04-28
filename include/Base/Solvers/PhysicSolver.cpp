@@ -6,9 +6,6 @@ void PhysicSolver::Solve(const Pnt& oldPnt, const Pnt& prevPnt, Pnt& newPnt, dou
 	P a = A(newPnt, info);
 
 	//verlet pos
-	//???
-	double dp = (prevPnt.pos - oldPnt.pos).len();
-	//___
 	newPnt.pos = prevPnt.pos + newPnt.damp * (prevPnt.pos - oldPnt.pos) + a * dt*dt;
 	//verlet v
 	newPnt.v += a * dt;
@@ -36,7 +33,7 @@ P PhysicSolver::A(const Pnt& pnt, ExtraInfo info)
 		const P& f = insForces[inx];
 		finalForce += f;
 	}
-	if (pnt.rule.Has("Space"))
+	if (IsCalcuUniversalG(pnt))
 	{
 		finalForce += UniversalG(pnt, info);
 	}
@@ -46,10 +43,10 @@ P PhysicSolver::A(const Pnt& pnt, ExtraInfo info)
 P PhysicSolver::UniversalG(const Pnt& pnt, ExtraInfo info)
 {
 	P re;
-	for (int inx = 0; inx < spaceInxs.size(); inx++)
+	for (int inx = 0; inx < uniGInxs.size(); inx++)
 	{
 		auto& p2 = (*info.prevPnts)[inx];
-		if (info.pntInx != spaceInxs[inx])
+		if (info.pntInx != uniGInxs[inx])
 		{
 			re += norm(p2.pos - pnt.pos) * G * p2.mass * pnt.mass / dis2(p2.pos, pnt.pos);
 		}
@@ -61,5 +58,11 @@ P PhysicSolver::UniversalG(const Pnt& pnt, ExtraInfo info)
 void PhysicSolver::InitSpace()
 {
 	g = P(0, 0, 0);
+}
+
+bool PhysicSolver::IsCalcuUniversalG(const Pnt& pnt)
+{
+	str rule = pnt.rule;
+	return rule.Has("Space") || rule.Has("Molecule");
 }
 //### PhysicSolver
