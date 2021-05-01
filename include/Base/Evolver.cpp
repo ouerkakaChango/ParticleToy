@@ -6,14 +6,13 @@
 void Evolver::EvolveBegin(const Fast3D& prev, Fast3D& next, double dt)
 {
 	next.CopyFrom(prev);
-	collision.Load(&prev.triArr);
 
-	auto& pnts = next.pnts;
-
+	InitCollision(prev);
 	InitSpace(prev);
 	InitColliMerge(next);
 
 	//### Solve
+	auto& pnts = next.pnts;
 	for (int inx = 0; inx < pnts.size(); inx++)
 	{
 		SolvePntBegin(inx, prev.pnts, pnts, dt);
@@ -23,14 +22,13 @@ void Evolver::EvolveBegin(const Fast3D& prev, Fast3D& next, double dt)
 void Evolver::Evolve(const Fast3D& old, const Fast3D& prev, Fast3D& next, double dt)
 {
 	next.CopyFrom(prev);
-	collision.Load(&prev.triArr);
 
-	auto& pnts = next.pnts;
-
+	InitCollision(prev);
 	InitSpace(prev);
-	InitColliMerge(next);
+	InitColliMerge(prev);
 
 	//### Solve
+	auto& pnts = next.pnts;
 	for (int inx = 0; inx < pnts.size(); inx++)
 	{
 		if (inx >= old.pnts.size())
@@ -178,16 +176,16 @@ void Evolver::InitSpace(const Fast3D& prev)
 	}
 }
 
-void Evolver::InitColliMerge(Fast3D& next)
+void Evolver::InitColliMerge(const Fast3D& prev)
 {
-	auto& pnts = next.pnts;
-	bool initColliMerge = true;
+	auto& pnts = prev.pnts;
 	colliMerge.Clear();
 	for (int inx = 0; inx < pnts.size(); inx++)
 	{
 		auto& pnt = pnts[inx];
 		if (pnt.rule.Has("ColliMerge"))
 		{
+			//注意加了一个"d"
 			if (pnt.rule.Has("ColliMerged"))
 			{
 				colliMerge.mergedArr += inx;
@@ -196,6 +194,21 @@ void Evolver::InitColliMerge(Fast3D& next)
 			{
 				colliMerge.toMergeArr += inx;
 			}
+		}
+	}
+}
+
+void Evolver::InitCollision(const Fast3D& prev)
+{
+	auto& pnts = prev.pnts;
+	collision.Clear();
+	collision.Load(&prev.triArr);
+	for (int inx = 0; inx < pnts.size(); inx++)
+	{
+		auto& pnt = pnts[inx];
+		if (RuleOf(pnt.rule,"Collision"))
+		{
+			collision.pntArr += inx;
 		}
 	}
 }

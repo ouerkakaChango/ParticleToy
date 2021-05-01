@@ -11,7 +11,8 @@ public:
 	void EvolveBegin(const Fast3D& prev, Fast3D& next, double dt);
 	void Evolve(const Fast3D& old, const Fast3D& prev, Fast3D& next, double dt);
 	void InitSpace(const Fast3D& prev);
-	void InitColliMerge(Fast3D& next);
+	void InitColliMerge(const Fast3D& prev);
+	void InitCollision(const Fast3D& prev);
 	void SolvePntBegin(int inx, const arr<Pnt>& prevPnts, arr<Pnt>& pnts, double dt);
 	void SolvePnt(int inx, const arr<Pnt>& oldPnts, const arr<Pnt>& prevPnts, arr<Pnt>& pnts, double dt);
 	void Clear(arr<Pnt>& pnts);

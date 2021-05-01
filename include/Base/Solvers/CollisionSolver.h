@@ -12,7 +12,9 @@ public:
 	void Solve(const Pnt& prev, Pnt& newPnt, double dt);
 	Pnt GetVirtualOldPnt(const Pnt& prev, double dt) const;
 	const Tri& GetTri(int uid) const;
+	void Clear();
 
 	const arr<Tri>* triArr;
+	arr<int> pntArr;
 	double bounceDamp = 0.8;
 };

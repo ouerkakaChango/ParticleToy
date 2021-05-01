@@ -38,6 +38,7 @@ public:
 	EffectSpace effectSpace;
 	Pnt* breakPnt=nullptr;
 	bool isBreakPnt = false;
-	int uid_breakPlane = -1;
 	//### physic
 };
+
+bool RuleOf(str rule, str prop);

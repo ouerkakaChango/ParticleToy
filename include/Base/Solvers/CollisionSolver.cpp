@@ -74,6 +74,13 @@ void CollisionSolver::Solve(const Pnt& prev, Pnt& newPnt, double dt)
 			}
 		}
 	}
+
+	for (int inx = 0; inx < pntArr.size(); inx++)
+	{
+		int ptInx = pntArr[inx];
+		//if(info.id!==ptInx)
+		//???
+	}
 }
 
 const Tri& CollisionSolver::GetTri(int uid) const
@@ -99,15 +106,12 @@ Pnt CollisionSolver::GetVirtualOldPnt(const Pnt& prev, double dt) const
 	Pnt re = prev;
 	re.v -= prev.a * dt;
 	re.pos -= re.v*dt + 0.5 * prev.a *dt*dt;
-	auto& tri = GetTri(prev.uid_breakPlane);
-	//???
-	double dp = (re.pos - prev.pos).len();
-	//??? 改成通过dt计算准确的dp下限，而不是0.001
-	if (dp < 0.001)
-	{
-		auto aa = 1;
-	}
-	//___
 	return re;
+}
+
+void CollisionSolver::Clear()
+{
+	pntArr.clear();
+	triArr = nullptr;
 }
 //### CollisionSolver

@@ -124,23 +124,28 @@ void Pnt::SetBreakPoint(int planeuid, const Pnt& pnt, double dtr_)
 	breakPnt = new Pnt;
 	(*breakPnt) = pnt;
 	isBreakPnt = true;
-	uid_breakPlane = planeuid;
 }
 
 Pnt Pnt::GetBreakPnt() const
 {
 	return *breakPnt;
 }
-
-//Pnt Pnt::GetVirtualOldPnt(double dt) const
-//{
-//	if (!isBreakPnt)
-//	{
-//		abort();
-//	}
-//	Pnt re = *this;
-//	re.v -= a * dt;
-//	re.pos -= re.v*dt + 0.5 * a *dt*dt;
-//	return re;
-//}
 //### Pnt
+
+//### Global Pnt
+bool RuleOf(str rule, str prop)
+{
+	if (prop == "Collision")
+	{
+		if (rule.Has("Collision"))
+		{
+			return true;
+		}
+		if (rule.Has("Molecule"))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+//### Global Pnt
