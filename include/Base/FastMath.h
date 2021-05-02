@@ -34,6 +34,7 @@ public:
 
 	P operator+(const P& p) const;
 	P operator-(const P& p) const;
+	P operator-() const;
 	P operator*(double s) const;
 	P operator*(P p) const;
 	P operator/(double s) const;

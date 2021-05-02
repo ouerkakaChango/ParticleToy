@@ -7,8 +7,9 @@ class Shape
 {
 public:
 	Shape();
-	virtual bool Collide(const Shape* other);
+	virtual IntersectInfo Collide(const Shape& other);
 	virtual bool IsPointInside(P pos) const;
+	virtual bool InsideOf(const Shape& other) const;
 	virtual str TxtHeadString();
 
 	static int uid_count;
@@ -45,8 +46,9 @@ class Sphere :public Shape
 public:
 	Sphere(double r_);
 	Sphere(P center_, double r_);
-	bool Collide(const Shape* other) override;
+	IntersectInfo Collide(const Shape& other) override;
 	bool IsPointInside(P pos) const override;
+	bool InsideOf(const Shape& other) const override;
 	str TxtHeadString() override;
 
 	double r;

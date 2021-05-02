@@ -100,6 +100,7 @@ void Evolver::SolvePntBegin(int inx, const arr<Pnt>& prevPnts, arr<Pnt>& pnts, d
 	}
 	if (RuleOf(pnt.rule, "Collision"))
 	{
+		info.newPnts = &pnts;
 		collision.Solve(prevPnt, pnt, dt, info);
 	}
 }
@@ -127,6 +128,7 @@ void Evolver::SolvePnt(int inx, const arr<Pnt>& oldPnts, const arr<Pnt>& prevPnt
 	}
 	if (RuleOf(pnt.rule, "Collision"))
 	{
+		info.newPnts = &pnts;
 		collision.Solve(prevPnt, pnt, dt, info);
 	}
 }

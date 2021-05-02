@@ -32,14 +32,14 @@ void Pnt::UpdateOuter() const
 	{
 		abort();
 	}
-	if (typeStr(outer) == "class Sphere")
+	if (typeStr(*outer) == "class Sphere")
 	{
 		auto s = static_cast<Sphere*>(outer);
 		s->center = pos;
 	}
 }
 
-bool Pnt::Collide(const Pnt& pnt)
+IntersectInfo Pnt::Collide(const Pnt& pnt)
 {
 	UpdateOuter();
 	pnt.UpdateOuter();
@@ -50,7 +50,7 @@ bool Pnt::Collide(const Pnt& pnt)
 	}
 	else
 	{
-		return outer->Collide(pnt.outer);
+		return outer->Collide(*pnt.outer);
 	}
 }
 

@@ -8,16 +8,18 @@ Shape::Shape()
 	uid = uid_count - 1;
 }
 
-bool Shape::Collide(const Shape* other)
+IntersectInfo Shape::Collide(const Shape& other)
 {
-	if (other == nullptr)
-	{
-		abort();
-	}
-	return false;
+	IntersectInfo re;
+	return re;
 }
 
 bool Shape::IsPointInside(P pos) const
+{
+	return false;
+}
+
+bool Shape::InsideOf(const Shape& other) const
 {
 	return false;
 }
@@ -419,23 +421,42 @@ Sphere::Sphere(P center_, double r_):
 
 }
 
-bool Sphere::Collide(const Shape* other)
+IntersectInfo Sphere::Collide(const Shape& other)
 {
-	auto s = dynamic_cast<const Sphere*>(other);
-	if (s!=nullptr)
+	IntersectInfo re;
+	if (typeStr(other)=="class Sphere")
 	{
-		return SphereCollide(*this, *s);
+		//如果相交，hitP为两圆心中点
+		//d为需要两圆心一共向外移动的距离
+		auto& s = static_cast<const Sphere&>(other);
+		re.result = SphereCollide(*this, s);
+		if (re.result)
+		{
+			re.hitP = (center + s.center) / 2;
+			re.d = s.r + r - dis(center, s.center);
+		}
 	}
 	else
 	{
 		abort();
 	}
-	return false;
+	return re;
 }
 
 bool Sphere::IsPointInside(P pos) const
 {
 	return dis(pos, center) <= r;
+}
+
+bool Sphere::InsideOf(const Shape& other) const
+{
+	if (typeStr(other) == "class Sphere")
+	{
+		auto& s = static_cast<const Sphere&>(other);
+		return dis(center, s.center) + r < s.r;
+	}
+	abort();
+	return false;
 }
 
 str Sphere::TxtHeadString()

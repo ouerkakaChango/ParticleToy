@@ -149,6 +149,10 @@ void MinkowskiSpace::EvolveFrame(int prevFrame)
 	{
 		int aa = 1;
 	}
+	if (prevFrame == 8)
+	{
+		int aa = 1;
+	}
 	//___
 	auto& spaces = Cast<Space3DI*>(i[1])->spaces;
 	auto& evolvers = Cast<Space3DO*>(o[0])->evolvers;

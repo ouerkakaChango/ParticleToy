@@ -188,10 +188,7 @@ IntersectInfo EffectCapsuleI::Collide(const Tri& tri)
 IntersectInfo EffectCapsuleI::Collide(const Shape& shape)
 {
 	IntersectInfo re;
-	if (typeStr(shape) == "class Sphere")
-	{
-		//???
-	}
+	re = capsule.Collide(shape);
 	return re;
 }
 //### EffectCapsuleI

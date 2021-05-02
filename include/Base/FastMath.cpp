@@ -105,6 +105,11 @@ P P::operator-(const P& p) const
 	return P(x - p.x, y - p.y, z - p.z);
 }
 
+P P::operator-() const
+{
+	return P(0, 0, 0) - *this;
+}
+
 P P::operator*(double s) const
 {
 	return P(x*s, y*s, z*s);

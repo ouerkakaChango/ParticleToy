@@ -80,8 +80,13 @@ void CollisionSolver::Solve(const Pnt& prev, Pnt& newPnt, double dt, ExtraInfo i
 		int p2Inx = pntArr[inx];
 		if (info.pntInx != p2Inx)
 		{
-			auto& p2 = (*info.prevPnts)[p2Inx];
-			auto interInfo = newPnt.effectSpace.Collide(p2);
+			auto& p2 = (*info.newPnts)[p2Inx];
+			//由于两者都在动，所以用outer来判断相交，而不是effectSpace
+			auto interInfo = newPnt.Collide(p2);
+			if (interInfo.result)
+			{
+				int aa = 1;
+			}
 		}
 	}
 }
