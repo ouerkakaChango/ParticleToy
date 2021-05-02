@@ -5,8 +5,8 @@
 class PhysicSolver
 {
 public:
-	void Solve(const Pnt& oldPnt, const Pnt& prevPnt, Pnt& newPnt, double dt, ExtraInfo& info = ExtraInfo::empty);
-	void SolveBegin(const Pnt& prevPnt, Pnt& newPnt, double dt, ExtraInfo& info = ExtraInfo::empty);
+	void Solve(const Pnt& oldPnt, const Pnt& prevPnt, Pnt& newPnt, double dt, ExtraInfo& info);
+	void SolveBegin(const Pnt& prevPnt, Pnt& newPnt, double dt, ExtraInfo& info);
 	P A(const Pnt& pnt, ExtraInfo info);
 	P UniversalG(const Pnt& pnt, ExtraInfo info);
 	void InitSpace();

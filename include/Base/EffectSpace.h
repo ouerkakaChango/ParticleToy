@@ -12,6 +12,7 @@ class EffectSpace : public Ying
 	void DefineLineI(P a, P b);
 	void DefineCapsuleI(P a, P b, double r);
 	IntersectInfo Collide(const Tri& tri);
+	IntersectInfo Collide(const Pnt& pnt);
 	inline void SetIgnore(bool isIgnore_) { isIgnore = isIgnore_; }
 	void Update(const Pnt& pnt);
 	void Update(P pos)=delete;
@@ -27,6 +28,8 @@ class EffectSpaceI : public ClassI
 {
 public:
 	virtual IntersectInfo Collide(const Tri& tri);
+	virtual IntersectInfo Collide(const P& pos);
+	virtual IntersectInfo Collide(const Shape& shape);
 };
 
 class EffectLineI : public EffectSpaceI
@@ -44,5 +47,6 @@ public:
 	void Set(P a, P b, double r);
 	void UpdateB(P newb);
 	IntersectInfo Collide(const Tri& tri) override;
+	IntersectInfo Collide(const Shape& shape) override;
 	Capsule capsule;
 };

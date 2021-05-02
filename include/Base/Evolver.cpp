@@ -90,25 +90,17 @@ void Evolver::SolvePntBegin(int inx, const arr<Pnt>& prevPnts, arr<Pnt>& pnts, d
 {
 	const Pnt& prevPnt = prevPnts[inx];
 	auto& pnt = pnts[inx];
-	if (pnt.rule.Has("PhysicProp"))
+	ExtraInfo info;
+	info.pntInx = inx;
+	info.prevPnts = &prevPnts;
+
+	if (RuleOf(pnt.rule, "PhysicProp"))
 	{
-		physic.SolveBegin(prevPnt, pnt, dt);
-		collision.Solve(prevPnt, pnt, dt);
-	}
-	else if (pnt.rule.Has("Space"))
-	{
-		ExtraInfo info;
-		info.pntInx = inx;
-		info.prevPnts = &prevPnts;
 		physic.SolveBegin(prevPnt, pnt, dt, info);
 	}
-	else if (pnt.rule.Has("Molecule"))
+	if (RuleOf(pnt.rule, "Collision"))
 	{
-		ExtraInfo info;
-		info.pntInx = inx;
-		info.prevPnts = &prevPnts;
-		physic.SolveBegin(prevPnt, pnt, dt, info);
-		collision.Solve(prevPnt, pnt, dt);
+		collision.Solve(prevPnt, pnt, dt, info);
 	}
 }
 
@@ -117,32 +109,12 @@ void Evolver::SolvePnt(int inx, const arr<Pnt>& oldPnts, const arr<Pnt>& prevPnt
 	auto& pnt = pnts[inx];
 	auto& oldPnt = oldPnts[inx + pnt.inxOffset];
 	auto& prevPnt = prevPnts[inx];
-	if (pnt.rule.Has("PhysicProp"))
-	{
-		if (prevPnt.IsBreakPoint())
-		{
-			auto oldPnt = collision.GetVirtualOldPnt(prevPnt, dt);
-			physic.Solve(oldPnt, prevPnt, pnt, dt);
-		}
-		else
-		{
-			physic.Solve(oldPnt, prevPnt, pnt, dt);
-		}
-		collision.Solve(prevPnt, pnt, dt);
-	}
-	else if (pnt.rule.Has("Space"))
-	{
-		ExtraInfo info;
-		info.pntInx = inx;
-		info.prevPnts = &prevPnts;
-		physic.Solve(oldPnt, prevPnt, pnt, dt, info);
-	}
-	else if (pnt.rule.Has("Molecule"))
-	{
-		ExtraInfo info;
-		info.pntInx = inx;
-		info.prevPnts = &prevPnts;
+	ExtraInfo info;
+	info.pntInx = inx;
+	info.prevPnts = &prevPnts;
 
+	if (RuleOf(pnt.rule, "PhysicProp"))
+	{
 		if (prevPnt.IsBreakPoint())
 		{
 			auto oldPnt = collision.GetVirtualOldPnt(prevPnt, dt);
@@ -152,7 +124,10 @@ void Evolver::SolvePnt(int inx, const arr<Pnt>& oldPnts, const arr<Pnt>& prevPnt
 		{
 			physic.Solve(oldPnt, prevPnt, pnt, dt, info);
 		}
-		collision.Solve(prevPnt, pnt, dt);
+	}
+	if (RuleOf(pnt.rule, "Collision"))
+	{
+		collision.Solve(prevPnt, pnt, dt, info);
 	}
 }
 

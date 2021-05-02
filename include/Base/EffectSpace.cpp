@@ -35,6 +35,24 @@ IntersectInfo EffectSpace::Collide(const Tri& tri)
 	return re;
 }
 
+IntersectInfo EffectSpace::Collide(const Pnt& pnt)
+{
+	IntersectInfo re;
+	if (isDefined && !isIgnore)
+	{
+		auto ti = Cast<EffectSpaceI*>(i[0]);
+		if (pnt.outer == nullptr)
+		{
+			re = ti->Collide(pnt.pos);
+		}
+		else
+		{
+			re = ti->Collide(*pnt.outer);
+		}
+	}
+	return re;
+}
+
 void EffectSpace::Update(const Pnt& pnt)
 {
 	if (!isIgnore)
@@ -116,6 +134,18 @@ IntersectInfo EffectSpaceI::Collide(const Tri& tri)
 	IntersectInfo re;
 	return re;
 }
+
+IntersectInfo EffectSpaceI::Collide(const P& pos)
+{
+	IntersectInfo re;
+	return re;
+}
+
+IntersectInfo EffectSpaceI::Collide(const Shape& shape)
+{
+	IntersectInfo re;
+	return re;
+}
 //### EffectSpaceI
 
 //### EffectLineI
@@ -152,6 +182,16 @@ IntersectInfo EffectCapsuleI::Collide(const Tri& tri)
 {
 	IntersectInfo re;
 	re = tri.Collide(capsule);
+	return re;
+}
+
+IntersectInfo EffectCapsuleI::Collide(const Shape& shape)
+{
+	IntersectInfo re;
+	if (typeStr(shape) == "class Sphere")
+	{
+		//???
+	}
 	return re;
 }
 //### EffectCapsuleI

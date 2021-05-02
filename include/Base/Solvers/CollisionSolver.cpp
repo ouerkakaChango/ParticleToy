@@ -6,7 +6,7 @@ void CollisionSolver::Load(const arr<Tri>* triArr_)
 	triArr = triArr_;
 }
 
-void CollisionSolver::Solve(const Pnt& prev, Pnt& newPnt, double dt)
+void CollisionSolver::Solve(const Pnt& prev, Pnt& newPnt, double dt, ExtraInfo info)
 {
 	//Solve点轨迹：射线段与tri的碰撞
 	for (int inx = 0; inx < triArr->size(); inx++)
@@ -77,9 +77,12 @@ void CollisionSolver::Solve(const Pnt& prev, Pnt& newPnt, double dt)
 
 	for (int inx = 0; inx < pntArr.size(); inx++)
 	{
-		int ptInx = pntArr[inx];
-		//if(info.id!==ptInx)
-		//???
+		int p2Inx = pntArr[inx];
+		if (info.pntInx != p2Inx)
+		{
+			auto& p2 = (*info.prevPnts)[p2Inx];
+			auto interInfo = newPnt.effectSpace.Collide(p2);
+		}
 	}
 }
 

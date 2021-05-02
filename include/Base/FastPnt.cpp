@@ -141,6 +141,25 @@ bool RuleOf(str rule, str prop)
 		{
 			return true;
 		}
+		if (rule.Has("PhysicProp"))
+		{
+			return true;
+		}
+		if (rule.Has("Molecule"))
+		{
+			return true;
+		}
+	}
+	else if (prop == "PhysicProp")
+	{
+		if (rule.Has("PhysicProp"))
+		{
+			return true;
+		}
+		if (rule.Has("Space"))
+		{
+			return true;
+		}
 		if (rule.Has("Molecule"))
 		{
 			return true;
