@@ -8,7 +8,10 @@ void CollisionSolver::Load(const arr<Tri>* triArr_)
 
 void CollisionSolver::Solve(const Pnt& prev, Pnt& newPnt, double dt, ExtraInfo info)
 {
-	//Solve点轨迹：射线段与tri的碰撞
+	//自创PBC（Physical Based Collision）算法。 基于简单物理公式解算，而不是硬将碰撞物件直接拿开。
+	//详细物理推导在：https://blog.csdn.net/qq_41524721
+
+	//Solve点轨迹与tri的碰撞
 	for (int inx = 0; inx < triArr->size(); inx++)
 	{
 		auto& tri = (*triArr)[inx];
@@ -85,6 +88,8 @@ void CollisionSolver::Solve(const Pnt& prev, Pnt& newPnt, double dt, ExtraInfo i
 			auto interInfo = newPnt.Collide(p2);
 			if (interInfo.result)
 			{
+				//对于相交两球（其他Shape应该也是一样，以后验证正确），类似上面Pnt与Tri碰撞，进行PBC解算
+
 				int aa = 1;
 			}
 		}
