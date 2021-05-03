@@ -434,6 +434,8 @@ IntersectInfo Sphere::Collide(const Shape& other)
 		{
 			re.hitP = (center + s.center) / 2;
 			re.d = s.r + r - dis(center, s.center);
+			re.r1 = r;
+			re.r2 = s.r;
 		}
 	}
 	else

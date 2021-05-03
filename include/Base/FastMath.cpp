@@ -295,4 +295,41 @@ double side(double hypotenuse, double side1)
 {
 	return hypotenuse * hypotenuse - side1 * side1;
 }
+
+bool BisecitonSolve(std::function<double(double)> func, double tmin, double tmax, double& t, double tolerance)
+{
+	bool b1 = func(tmin) > 0;
+	bool b2 = func(tmax) > 0;
+	if (b1)
+	{
+		if (b2)
+		{
+			return false;
+		}
+		double tem = tmin;
+		tmin = tmax;
+		tmax = tem;
+	}
+	else if (!b2)
+	{
+		return false;
+	}
+	double tnew = (tmin + tmax) / 2;
+	double re = func(tnew);
+	if (abs(re) < tolerance)
+	{
+		t = tnew;
+		return true;
+	}
+	//==0的情况应该已经包含在abs(re)<tolerance里了
+	if (func(tnew) > 0)
+	{
+		BisecitonSolve(func,tmin,tnew,t,tolerance);
+	}
+	else
+	{
+		BisecitonSolve(func, tnew, tmax, t, tolerance);
+	}
+	return true;
+}
 //### Global Utility

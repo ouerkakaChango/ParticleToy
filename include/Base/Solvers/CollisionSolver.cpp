@@ -83,13 +83,33 @@ void CollisionSolver::Solve(const Pnt& prev, Pnt& newPnt, double dt, ExtraInfo i
 		int p2Inx = pntArr[inx];
 		if (info.pntInx != p2Inx)
 		{
-			auto& p2 = (*info.newPnts)[p2Inx];
+			auto& other = (*info.newPnts)[p2Inx];
 			//由于两者都在动，所以用outer来判断相交，而不是effectSpace
-			auto interInfo = newPnt.Collide(p2);
+			auto interInfo = newPnt.Collide(other);
 			if (interInfo.result)
 			{
+				auto& p1 = (*info.prevPnts)[info.pntInx];
+				auto& p2 = (*info.prevPnts)[p2Inx];
+				double r1 = interInfo.r1;
+				double r2 = interInfo.r2;
 				//对于相交两球（其他Shape应该也是一样，以后验证正确），类似上面Pnt与Tri碰撞，进行PBC解算
-
+				auto func = [=](double t)
+				{
+					P A = 0.5*(p2.a-p1.a);
+					P B = p2.v - p1.v;
+					P C = p2.pos - p1.pos;
+					P L = A * t*t + B * t + C;
+					return L.len() - r1 - r2;
+				};
+				double dtc = -1.0;
+				BisecitonSolve(func,0.0,dt, dtc);
+				//??? debug
+				auto func2 = [=](double t)
+				{
+					return t * t - 3;
+				};
+				bool bb = BisecitonSolve(func2, 0.0, 2, dtc);
+				//___
 				int aa = 1;
 			}
 		}

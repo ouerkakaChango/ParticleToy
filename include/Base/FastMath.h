@@ -1,6 +1,8 @@
 #pragma once
 #include "Container.h"
 
+#include <functional>
+
 class P2
 {
 public:
@@ -76,3 +78,6 @@ T lerpRate(T a, T b, T2 re)
 	//a+k*(b-a)=re
 	return (re - a) / (b - a);
 }
+
+
+bool BisecitonSolve(std::function<double(double)> func, double tmin, double tmax, double& t, double tolerance = 0.000001);

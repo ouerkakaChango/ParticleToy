@@ -24,6 +24,7 @@ public:
 	bool result = false;
 	double d=-1;
 	double hitR = -1;
+	double r1 = 0.0, r2 = 0.0;
 	P hitP;
 };
 
