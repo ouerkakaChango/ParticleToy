@@ -79,6 +79,7 @@ class Plane : public Shape
 {
 public:
 	Plane();
+	Plane(P n_,P p_);
 	Plane(const Plane& plane);
 	void Define(P n_, P p_);
 	void Transform(P offset);

@@ -11,6 +11,13 @@ void CollisionSolver::Solve(const Pnt& prev, Pnt& newPnt, double dt, ExtraInfo i
 	//自创PBC（Physical Based Collision）算法。 基于简单物理公式解算，而不是硬将碰撞物件直接拿开。
 	//详细物理推导在：https://blog.csdn.net/qq_41524721
 
+	//SolvePntWithPnt(prev, newPnt, dt, info);
+	SolvePntWithTri(prev, newPnt, dt, info);
+	
+}
+
+void CollisionSolver::SolvePntWithTri(const Pnt& prev, Pnt& newPnt, double dt, ExtraInfo info)
+{
 	//Solve点轨迹与tri的碰撞
 	for (int inx = 0; inx < triArr->size(); inx++)
 	{
@@ -19,42 +26,29 @@ void CollisionSolver::Solve(const Pnt& prev, Pnt& newPnt, double dt, ExtraInfo i
 		if (interInfo.result)
 		{
 			P hitP = interInfo.hitP;
-			if (equal(hitP, prev.pos)&& tri.IsPointUnder(newPnt.pos, newPnt.outer))
+			if (equal(hitP, prev.pos) && tri.IsPointUnder(newPnt.pos, newPnt.outer))
 			{
 				//!!! 极限情况，prev其实已经紧贴三角面，那么直接将newPnt强制移到三角面以上。
 				//如果进入第二个分支，会多计算，而且cap和tri的hitP会返回S1的位置，导致newPnt动不了
-				newPnt.pos = tri.GetFixedPos(newPnt.pos,newPnt.outer);
-				newPnt.effectSpace.Update(newPnt);
+				newPnt.pos = tri.GetFixedPos(newPnt.pos, newPnt.outer);
+				newPnt.UpdateEffectSpace();
 				P vPartAlignNorm = tri.n * dot(tri.n, newPnt.v);
 				newPnt.v -= vPartAlignNorm;
 			}
-			else if(!tri.IsPointFixed(newPnt.pos, newPnt.outer))
+			else if (!tri.IsPointFixed(newPnt.pos, newPnt.outer))
 			{
 				//1-2.
 				double dtc = -1.0;//delta time until collision
 				double x1 = 0.0, x2 = 0.0;
 				SolveQuadra(prev.a / 2, prev.v, prev.pos - hitP, x1, x2);
-				if (x1 * x2 > 0)
-				{//好像不可能存在这种情况
-					abort();
-				}
-				//选择正值
-				dtc = x1;
-				if (x1 < 0)
-				{
-					dtc = x2;
-				}
-				if (dtc >= dt)
-				{//好像不可能存在这种情况
-					abort();
-				}
+				dtc = QuadraFiliter(x1, x2, 0, dt);
 				//3.
 				P v2 = prev.v + prev.a*dtc;
 				P v3 = reflect(v2, tri.n)*bounceDamp;
 				//4.
 				double dtr = dt - dtc;
 				newPnt.pos = hitP + (v3*dtr + 0.5*newPnt.a*dtr*dtr);
-				newPnt.effectSpace.Update(newPnt);
+				newPnt.UpdateEffectSpace();
 				newPnt.v = v3 + newPnt.a*dtr;
 				//!!!
 				//照理来说，解算后的点不会低于碰撞面；
@@ -62,7 +56,7 @@ void CollisionSolver::Solve(const Pnt& prev, Pnt& newPnt, double dt, ExtraInfo i
 				if (tri.IsPointUnder(newPnt.pos, newPnt.outer))
 				{
 					newPnt.pos = hitP;
-					newPnt.effectSpace.Update(newPnt);
+					newPnt.UpdateEffectSpace();
 					P vPartAlignNorm = tri.n * dot(tri.n, newPnt.v);
 					newPnt.v -= vPartAlignNorm;
 				}
@@ -72,12 +66,15 @@ void CollisionSolver::Solve(const Pnt& prev, Pnt& newPnt, double dt, ExtraInfo i
 					Pnt breakPnt(hitP);
 					breakPnt.a = prev.a;
 					breakPnt.v = v3;
-					newPnt.SetBreakPoint(tri.uid, breakPnt, dtr);
+					newPnt.SetBreakPoint(breakPnt, dtr);
 				}
 			}
 		}
 	}
+}
 
+void CollisionSolver::SolvePntWithPnt(const Pnt& prev, Pnt& newPnt, double dt, ExtraInfo info)
+{
 	for (int inx = 0; inx < pntArr.size(); inx++)
 	{
 		int p2Inx = pntArr[inx];
@@ -95,22 +92,51 @@ void CollisionSolver::Solve(const Pnt& prev, Pnt& newPnt, double dt, ExtraInfo i
 				//对于相交两球（其他Shape应该也是一样，以后验证正确），类似上面Pnt与Tri碰撞，进行PBC解算
 				auto func = [=](double t)
 				{
-					P A = 0.5*(p2.a-p1.a);
+					P A = 0.5*(p2.a - p1.a);
 					P B = p2.v - p1.v;
 					P C = p2.pos - p1.pos;
 					P L = A * t*t + B * t + C;
 					return L.len() - r1 - r2;
 				};
 				double dtc = -1.0;
-				BisecitonSolve(func,0.0,dt, dtc);
-				//??? debug
-				auto func2 = [=](double t)
+				bool bSolve = BisecitonSolve(func, 0.0, dt, dtc);
+				if (!bSolve)
 				{
-					return t * t - 3;
-				};
-				bool bb = BisecitonSolve(func2, 0.0, 2, dtc);
-				//___
-				int aa = 1;
+					abort();
+				}
+
+				//阶段1：碰在一起0-dtc
+				//阶段2:速度反弹，damp，计算dt时刻位置
+				//calcu collision plane
+				double dtr = dt - dtc;
+				P n1 = norm(newPnt.pos - other.pos);
+
+				newPnt.v = p1.v + p1.a * dtc;
+				newPnt.v = reflect(newPnt.v, n1)*bounceDamp;
+				P hitP1 = p1.pos + p1.v*dtc + 0.5*p1.a*dtc*dtc;
+				newPnt.pos = hitP1 + newPnt.v*dtr + 0.5*newPnt.a*dtr*dtr;
+				newPnt.UpdateEffectSpace();
+
+				other.v = p2.v + p2.a * dtc;
+				other.v = reflect(other.v, -n1)*bounceDamp;
+				P hitP2 = p2.pos + p2.v*dtc + 0.5*p2.a*dtc*dtc;
+				other.pos = hitP2 + other.v*dtr + 0.5*other.a*dtr*dtr;
+				other.UpdateEffectSpace();
+
+				//breakPnt for p1,p2
+				{
+					Pnt breakPnt(hitP1);
+					breakPnt.a = p1.a;
+					breakPnt.v = newPnt.v;
+					newPnt.SetBreakPoint(breakPnt, dtr);
+				}
+				{
+					Pnt breakPnt(hitP2);
+					breakPnt.a = p2.a;
+					breakPnt.v = other.v;
+					other.SetBreakPoint(breakPnt, dtr);
+				}
+
 			}
 		}
 	}

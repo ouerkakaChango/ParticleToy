@@ -10,6 +10,8 @@ class CollisionSolver
 public:
 	void Load(const arr<Tri>* triArr_);
 	void Solve(const Pnt& prev, Pnt& newPnt, double dt, ExtraInfo info);
+	void SolvePntWithTri(const Pnt& prev, Pnt& newPnt, double dt, ExtraInfo info);
+	void SolvePntWithPnt(const Pnt& prev, Pnt& newPnt, double dt, ExtraInfo info);
 	Pnt GetVirtualOldPnt(const Pnt& prev, double dt) const;
 	const Tri& GetTri(int uid) const;
 	void Clear();

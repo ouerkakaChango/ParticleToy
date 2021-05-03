@@ -261,6 +261,29 @@ bool SolveQuadra(P a, P b, P c, double& x1, double& x2)
 	return true;
 }
 
+double QuadraFiliter(double x1, double x2, double xmin, double xmax)
+{
+	bool b1 = x1 >= xmin && x1 <= xmax;
+	bool b2 = x2 >= xmin && x2 <= xmax;
+	if (b1&&b2)
+	{
+		abort();
+	}
+	if (b1)
+	{
+		return x1;
+	}
+	else if (b2)
+	{
+		return x2;
+	}
+	else
+	{
+		abort();
+	}
+	return 0.0;
+}
+
 double rand01()
 {
 	static std::default_random_engine e;        // 生成无符号随机整数

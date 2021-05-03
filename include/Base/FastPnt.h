@@ -8,7 +8,7 @@ public:
 	Pnt();
 	Pnt(P pos_);
 	Pnt(P pos_, str name_, str rule_);
-
+	void UpdateEffectSpace();
 	//### Shape
 	void SetSphereOuter(double r);
 	void UpdateOuter() const;
@@ -21,7 +21,7 @@ public:
 	//### info
 	//### physic
 	bool IsBreakPoint() const;
-	void SetBreakPoint(int planeuid, const Pnt& pnt, double dtr_);
+	void SetBreakPoint(const Pnt& pnt, double dtr_);
 	Pnt GetBreakPnt() const;
 	//Pnt GetVirtualOldPnt(double dt) const;
 	//### physic

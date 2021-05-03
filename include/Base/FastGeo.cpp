@@ -124,6 +124,13 @@ Plane::Plane()
 {
 
 }
+
+Plane::Plane(P n_, P p_):
+	n(n_),p(p_),isDefined(true)
+{
+
+}
+
 Plane::Plane(const Plane& plane):
 	n(plane.n),p(plane.p),isDefined(plane.isDefined)
 {

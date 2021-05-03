@@ -17,6 +17,11 @@ Pnt::Pnt(P pos_, str name_, str rule_) :
 
 }
 
+void Pnt::UpdateEffectSpace()
+{
+	effectSpace.Update(*this);
+}
+
 void Pnt::SetSphereOuter(double r)
 {
 	if (outer != nullptr)
@@ -113,7 +118,7 @@ bool Pnt::IsBreakPoint() const
 	return isBreakPnt;
 }
 
-void Pnt::SetBreakPoint(int planeuid, const Pnt& pnt, double dtr_)
+void Pnt::SetBreakPoint(const Pnt& pnt, double dtr_)
 {
 	dtr = dtr_;
 	if (dtr < 0)
