@@ -11,8 +11,16 @@ void CollisionSolver::Solve(const Pnt& prev, Pnt& newPnt, double dt, ExtraInfo i
 	//自创PBC（Physical Based Collision）算法。 基于简单物理公式解算，而不是硬将碰撞物件直接拿开。
 	//详细物理推导在：https://blog.csdn.net/qq_41524721
 
-	//SolvePntWithPnt(prev, newPnt, dt, info);
-	SolvePntWithTri(prev, newPnt, dt, info);
+	SolvePntWithPnt(prev, newPnt, dt, info);
+	if (newPnt.isBreakPnt)
+	{
+		auto vPrev = GetVirtualOldPnt(newPnt, dt);
+		SolvePntWithTri(vPrev, newPnt, dt, info);
+	}
+	else
+	{
+		SolvePntWithTri(prev, newPnt, dt, info);
+	}
 	
 }
 
@@ -40,33 +48,41 @@ void CollisionSolver::SolvePntWithTri(const Pnt& prev, Pnt& newPnt, double dt, E
 				//1-2.
 				double dtc = -1.0;//delta time until collision
 				double x1 = 0.0, x2 = 0.0;
-				SolveQuadra(prev.a / 2, prev.v, prev.pos - hitP, x1, x2);
-				dtc = QuadraFiliter(x1, x2, 0, dt);
-				//3.
-				P v2 = prev.v + prev.a*dtc;
-				P v3 = reflect(v2, tri.n)*bounceDamp;
-				//4.
-				double dtr = dt - dtc;
-				newPnt.pos = hitP + (v3*dtr + 0.5*newPnt.a*dtr*dtr);
-				newPnt.UpdateEffectSpace();
-				newPnt.v = v3 + newPnt.a*dtr;
-				//!!!
-				//照理来说，解算后的点不会低于碰撞面；
-				//但由于verlert的误差原因（比如落下后慢慢停下的小球），导致v3项(?)不够精确，然后位置不对
-				if (tri.IsPointUnder(newPnt.pos, newPnt.outer))
+				bool bSolve = SolveQuadra(prev.a / 2, prev.v, prev.pos - hitP, x1, x2);
+				if (!bSolve)
 				{
-					newPnt.pos = hitP;
-					newPnt.UpdateEffectSpace();
-					P vPartAlignNorm = tri.n * dot(tri.n, newPnt.v);
-					newPnt.v -= vPartAlignNorm;
+					//!!!
+					int aa = 1;
 				}
-				//___
-				//5.Setup breakPnt
+				else
 				{
-					Pnt breakPnt(hitP);
-					breakPnt.a = prev.a;
-					breakPnt.v = v3;
-					newPnt.SetBreakPoint(breakPnt, dtr);
+					dtc = QuadraFiliter(x1, x2, 0, dt);
+					//3.
+					P v2 = prev.v + prev.a*dtc;
+					P v3 = reflect(v2, tri.n)*bounceDamp;
+					//4.
+					double dtr = dt - dtc;
+					newPnt.pos = hitP + (v3*dtr + 0.5*newPnt.a*dtr*dtr);
+					newPnt.UpdateEffectSpace();
+					newPnt.v = v3 + newPnt.a*dtr;
+					//!!!
+					//照理来说，解算后的点不会低于碰撞面；
+					//但由于verlert的误差原因（比如落下后慢慢停下的小球），导致v3项(?)不够精确，然后位置不对
+					if (tri.IsPointUnder(newPnt.pos, newPnt.outer))
+					{
+						newPnt.pos = hitP;
+						newPnt.UpdateEffectSpace();
+						P vPartAlignNorm = tri.n * dot(tri.n, newPnt.v);
+						newPnt.v -= vPartAlignNorm;
+					}
+					//___
+					//5.Setup breakPnt
+					{
+						Pnt breakPnt(hitP);
+						breakPnt.a = prev.a;
+						breakPnt.v = v3;
+						newPnt.SetBreakPoint(breakPnt, dtr);
+					}
 				}
 			}
 		}
@@ -102,41 +118,46 @@ void CollisionSolver::SolvePntWithPnt(const Pnt& prev, Pnt& newPnt, double dt, E
 				bool bSolve = BisecitonSolve(func, 0.0, dt, dtc);
 				if (!bSolve)
 				{
-					abort();
+					//abort();
+					//!!! 
+					int aa = 1;
+					ll = false;
 				}
-
-				//阶段1：碰在一起0-dtc
-				//阶段2:速度反弹，damp，计算dt时刻位置
-				//calcu collision plane
-				double dtr = dt - dtc;
-				P n1 = norm(newPnt.pos - other.pos);
-
-				newPnt.v = p1.v + p1.a * dtc;
-				newPnt.v = reflect(newPnt.v, n1)*bounceDamp;
-				P hitP1 = p1.pos + p1.v*dtc + 0.5*p1.a*dtc*dtc;
-				newPnt.pos = hitP1 + newPnt.v*dtr + 0.5*newPnt.a*dtr*dtr;
-				newPnt.UpdateEffectSpace();
-
-				other.v = p2.v + p2.a * dtc;
-				other.v = reflect(other.v, -n1)*bounceDamp;
-				P hitP2 = p2.pos + p2.v*dtc + 0.5*p2.a*dtc*dtc;
-				other.pos = hitP2 + other.v*dtr + 0.5*other.a*dtr*dtr;
-				other.UpdateEffectSpace();
-
-				//breakPnt for p1,p2
+				else
 				{
-					Pnt breakPnt(hitP1);
-					breakPnt.a = p1.a;
-					breakPnt.v = newPnt.v;
-					newPnt.SetBreakPoint(breakPnt, dtr);
-				}
-				{
-					Pnt breakPnt(hitP2);
-					breakPnt.a = p2.a;
-					breakPnt.v = other.v;
-					other.SetBreakPoint(breakPnt, dtr);
-				}
+					//阶段1：碰在一起0-dtc
+					//阶段2:速度反弹，damp，计算dt时刻位置
+					//calcu collision plane
+					double dtr = dt - dtc;
+					P n1 = norm(newPnt.pos - other.pos);
 
+					newPnt.v = p1.v + p1.a * dtc;
+					newPnt.v = reflect(newPnt.v, n1)*bounceDamp;
+					P hitP1 = p1.pos + p1.v*dtc + 0.5*p1.a*dtc*dtc;
+					newPnt.pos = hitP1 + newPnt.v*dtr + 0.5*newPnt.a*dtr*dtr;
+					newPnt.UpdateEffectSpace();
+
+					//other.v = p2.v + p2.a * dtc;
+					//other.v = reflect(other.v, -n1)*bounceDamp;
+					//P hitP2 = p2.pos + p2.v*dtc + 0.5*p2.a*dtc*dtc;
+					//other.pos = hitP2 + other.v*dtr + 0.5*other.a*dtr*dtr;
+					//other.UpdateEffectSpace();
+
+					//breakPnt for p1,p2
+					{
+						Pnt breakPnt(hitP1);
+						breakPnt.a = p1.a;
+						breakPnt.v = newPnt.v;
+						newPnt.SetBreakPoint(breakPnt, dtr);
+					}
+					{
+						//Pnt breakPnt(hitP2);
+						//breakPnt.a = p2.a;
+						//breakPnt.v = other.v;
+						//other.SetBreakPoint(breakPnt, dtr);
+					}
+					ll = true;
+				}
 			}
 		}
 	}

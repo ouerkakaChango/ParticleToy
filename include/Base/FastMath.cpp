@@ -267,7 +267,14 @@ double QuadraFiliter(double x1, double x2, double xmin, double xmax)
 	bool b2 = x2 >= xmin && x2 <= xmax;
 	if (b1&&b2)
 	{
-		abort();
+		if (equal(x1, x2))
+		{
+			return x1;
+		}
+		else
+		{
+			abort();
+		}
 	}
 	if (b1)
 	{

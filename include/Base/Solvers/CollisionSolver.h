@@ -19,4 +19,6 @@ public:
 	const arr<Tri>* triArr;
 	arr<int> pntArr;
 	double bounceDamp = 0.8;
+
+	bool ll = false;
 };
