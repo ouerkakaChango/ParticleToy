@@ -11,6 +11,7 @@ public:
 	void Load(const arr<Tri>* triArr_);
 	void Solve(const Pnt& prev, Pnt& newPnt, double dt, ExtraInfo info);
 	void SolvePntWithTri(const Pnt& prev, Pnt& newPnt, double dt, ExtraInfo info);
+	void ForceSolvePntWithTri(Pnt& pnt);
 	void SolvePntWithPnt(const Pnt& prev, Pnt& newPnt, double dt, ExtraInfo info);
 	Pnt GetVirtualOldPnt(const Pnt& prev, double dt) const;
 	const Tri& GetTri(int uid) const;
@@ -20,5 +21,5 @@ public:
 	arr<int> pntArr;
 	double bounceDamp = 0.8;
 
-	bool ll = false;
+	bool lastPntColliVirtalPont = false;
 };

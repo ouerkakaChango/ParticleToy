@@ -12,7 +12,12 @@ void CollisionSolver::Solve(const Pnt& prev, Pnt& newPnt, double dt, ExtraInfo i
 	//详细物理推导在：https://blog.csdn.net/qq_41524721
 
 	SolvePntWithPnt(prev, newPnt, dt, info);
-	if (newPnt.isBreakPnt)
+	if (newPnt.ignorePrev)
+	{
+		ForceSolvePntWithTri(newPnt);
+		newPnt.ignorePrev = false;
+	}
+	else if (newPnt.isBreakPnt)
 	{
 		auto vPrev = GetVirtualOldPnt(newPnt, dt);
 		SolvePntWithTri(vPrev, newPnt, dt, info);
@@ -22,6 +27,19 @@ void CollisionSolver::Solve(const Pnt& prev, Pnt& newPnt, double dt, ExtraInfo i
 		SolvePntWithTri(prev, newPnt, dt, info);
 	}
 	
+}
+
+void CollisionSolver::ForceSolvePntWithTri(Pnt& pnt)
+{
+	for (int inx = 0; inx < triArr->size(); inx++)
+	{
+		auto& tri = (*triArr)[inx];
+		if (tri.IsPointUnder(pnt.pos, pnt.outer))
+		{
+			pnt.pos = tri.GetFixedPos(pnt.pos, pnt.outer);
+			pnt.UpdateEffectSpace();
+		}
+	}
 }
 
 void CollisionSolver::SolvePntWithTri(const Pnt& prev, Pnt& newPnt, double dt, ExtraInfo info)
@@ -51,8 +69,7 @@ void CollisionSolver::SolvePntWithTri(const Pnt& prev, Pnt& newPnt, double dt, E
 				bool bSolve = SolveQuadra(prev.a / 2, prev.v, prev.pos - hitP, x1, x2);
 				if (!bSolve)
 				{
-					//!!!
-					int aa = 1;
+					abort();
 				}
 				else
 				{
@@ -99,7 +116,20 @@ void CollisionSolver::SolvePntWithPnt(const Pnt& prev, Pnt& newPnt, double dt, E
 			auto& other = (*info.newPnts)[p2Inx];
 			//由于两者都在动，所以用outer来判断相交，而不是effectSpace
 			auto interInfo = newPnt.Collide(other);
-			if (interInfo.result)
+			//???
+			bool go = true;
+			//if ( equal(interInfo.d, 0, 1.0e-4))
+			//{
+			//	P n1 = norm(newPnt.pos - other.pos);
+			//	newPnt.pos = other.pos + (interInfo.r1 + interInfo.r2)*n1;
+			//	newPnt.v = reflect(newPnt.v, n1);
+			//	P vPartAlignNorm = n1 * dot(n1, newPnt.v);
+			//	newPnt.v -= vPartAlignNorm;
+			//	newPnt.ignorePrev = true;
+			//	go = false;
+			//}		
+			//___
+			if (go&&interInfo.result)
 			{
 				auto& p1 = (*info.prevPnts)[info.pntInx];
 				auto& p2 = (*info.prevPnts)[p2Inx];
@@ -118,10 +148,18 @@ void CollisionSolver::SolvePntWithPnt(const Pnt& prev, Pnt& newPnt, double dt, E
 				bool bSolve = BisecitonSolve(func, 0.0, dt, dtc);
 				if (!bSolve)
 				{
-					//abort();
-					//!!! 
-					int aa = 1;
-					ll = false;
+					//极限止动情况
+					if (func(0) < 0 && func(dt < 0))
+					{
+						P n1 = norm(newPnt.pos - other.pos);
+						//!!! 极限止动，基本位置不变
+						newPnt.pos = other.pos + (interInfo.r1 + interInfo.r2)*n1;
+						newPnt.v = reflect(newPnt.v, n1);
+						P vPartAlignNorm = n1 * dot(n1, newPnt.v);
+						newPnt.v -= vPartAlignNorm;
+						newPnt.ignorePrev = true;
+					}
+					
 				}
 				else
 				{
@@ -149,6 +187,7 @@ void CollisionSolver::SolvePntWithPnt(const Pnt& prev, Pnt& newPnt, double dt, E
 						breakPnt.a = p1.a;
 						breakPnt.v = newPnt.v;
 						newPnt.SetBreakPoint(breakPnt, dtr);
+						lastPntColliVirtalPont = true;
 					}
 					{
 						//Pnt breakPnt(hitP2);
@@ -156,7 +195,6 @@ void CollisionSolver::SolvePntWithPnt(const Pnt& prev, Pnt& newPnt, double dt, E
 						//breakPnt.v = other.v;
 						//other.SetBreakPoint(breakPnt, dtr);
 					}
-					ll = true;
 				}
 			}
 		}

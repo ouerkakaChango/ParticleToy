@@ -39,6 +39,7 @@ public:
 	EffectSpace effectSpace;
 	Pnt* breakPnt=nullptr;
 	bool isBreakPnt = false;
+	bool ignorePrev = false;
 	//### physic
 };
 
