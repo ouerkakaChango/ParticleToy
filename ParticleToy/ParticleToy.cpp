@@ -17,7 +17,7 @@
 int main()
 {
 	MinkowskiSpace* world = new MinkowskiSpace;
-	world->SetFrameSettings(1001, 0.0166666);
+	world->SetFrameSettings(361, 0.0166666);
 	MinkowskiSpaceR* op = (MinkowskiSpaceR*)world->r[0];
 	op->SetGravity(P(0.0, -9.80665, 0.0));
 
@@ -26,6 +26,7 @@ int main()
 	atom1.rule = "Molecule";
 	//atom1.rule = "PhysicProp";
 	atom1.SetSphereOuter(1.0);
+	atom1.AddRestRelation(1, P(1.5, 0.0, 0.0));
 	op->PutPnt(atom1);
 
 	Pnt atom2(P(3.0, 5.0, 0.0));
@@ -33,6 +34,7 @@ int main()
 	atom2.rule = "Molecule";
 	//atom2.rule = "PhysicProp";
 	atom2.SetSphereOuter(1.0);
+	atom2.AddRestRelation(0, P(-1.5, 0.0, 0.0));
 	op->PutPnt(atom2);
 
 	Grid* terrain = new Grid;

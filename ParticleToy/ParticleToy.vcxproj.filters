@@ -75,6 +75,9 @@
     <ClInclude Include="..\include\Base\Solvers\ColliMergeSolver.h">
       <Filter>头文件\Base\Solvers</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\Base\Relation.h">
+      <Filter>头文件\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -133,6 +136,9 @@
     </ClCompile>
     <ClCompile Include="..\include\Base\Solvers\ColliMergeSolver.cpp">
       <Filter>源文件\Base\Solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\Relation.cpp">
+      <Filter>源文件\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

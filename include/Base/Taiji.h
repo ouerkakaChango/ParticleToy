@@ -13,6 +13,12 @@
 	void SayI() override;\
 	className* y;
 
+#define DefaultConstruct(className) \
+	auto newI = new className##I; \
+	i += newI; \
+	auto newO = new className##O; \
+	o += newO; \
+
 class R
 {
 public:

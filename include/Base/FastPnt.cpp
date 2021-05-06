@@ -135,6 +135,11 @@ Pnt Pnt::GetBreakPnt() const
 {
 	return *breakPnt;
 }
+
+void Pnt::AddRestRelation(int pntInx, P restPos)
+{
+	restRelations += RestRelation(pntInx, restPos);
+}
 //### Pnt
 
 //### Global Pnt

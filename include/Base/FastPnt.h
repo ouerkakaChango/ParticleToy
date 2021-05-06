@@ -1,6 +1,7 @@
 #pragma once
 #include "FastMath.h"
 #include "EffectSpace.h"
+#include "Relation.h"
 
 class Pnt
 {
@@ -23,7 +24,7 @@ public:
 	bool IsBreakPoint() const;
 	void SetBreakPoint(const Pnt& pnt, double dtr_);
 	Pnt GetBreakPnt() const;
-	//Pnt GetVirtualOldPnt(double dt) const;
+	void AddRestRelation(int pntInx,P restPos);
 	//### physic
 
 	P pos;
@@ -40,6 +41,8 @@ public:
 	Pnt* breakPnt=nullptr;
 	bool isBreakPnt = false;
 	bool ignorePrev = false;
+	arr<RestRelation> restRelations;
+	//int fuckYour18Generation = 1;
 	//### physic
 };
 
