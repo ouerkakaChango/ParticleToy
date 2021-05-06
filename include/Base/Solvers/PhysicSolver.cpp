@@ -33,10 +33,15 @@ P PhysicSolver::A(const Pnt& pnt, ExtraInfo info)
 		const P& f = insForces[inx];
 		finalForce += f;
 	}
-	if (IsCalcuUniversalG(pnt))
+	if (RuleOf(pnt.rule, "UniversalG"))
 	{
 		finalForce += UniversalG(pnt, info);
 	}
+	if (RuleOf(pnt.rule, "RestForce"))
+	{
+		finalForce += RestForce(pnt, info);
+	}
+
 	return finalForce / pnt.mass;
 }
 
@@ -55,14 +60,13 @@ P PhysicSolver::UniversalG(const Pnt& pnt, ExtraInfo info)
 	return re;
 }
 
+P PhysicSolver::RestForce(const Pnt& pnt, ExtraInfo info)
+{
+	return P(0, 0, 0);
+}
+
 void PhysicSolver::InitSpace()
 {
 	g = P(0, 0, 0);
-}
-
-bool PhysicSolver::IsCalcuUniversalG(const Pnt& pnt)
-{
-	str rule = pnt.rule;
-	return rule.Has("Space") || rule.Has("Molecule");
 }
 //### PhysicSolver

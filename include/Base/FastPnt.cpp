@@ -175,6 +175,24 @@ bool RuleOf(str rule, str prop)
 			return true;
 		}
 	}
+	else if (prop == "UniversalG")
+	{
+		if (rule.Has("Space"))
+		{
+			return true;
+		}
+		if (rule.Has("Molecule"))
+		{
+			return true;
+		}
+	}
+	else if (prop == "RestForce")
+	{
+		if (rule.Has("Molecule"))
+		{
+			return true;
+		}
+	}
 	return false;
 }
 //### Global Pnt

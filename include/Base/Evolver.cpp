@@ -146,7 +146,7 @@ void Evolver::InitSpace(const Fast3D& prev)
 			physic.InitSpace();
 			hasInitedSpace = true;
 		}
-		if (physic.IsCalcuUniversalG(pnt))
+		if (RuleOf(pnt.rule,"UniversalG"))
 		{
 			physic.uniGInxs += inx;
 		}
