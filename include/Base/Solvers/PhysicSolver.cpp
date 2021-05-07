@@ -62,7 +62,23 @@ P PhysicSolver::UniversalG(const Pnt& pnt, ExtraInfo info)
 
 P PhysicSolver::RestForce(const Pnt& pnt, ExtraInfo info)
 {
-	return P(0, 0, 0);
+	P finalPos;
+	if (pnt.restRelations.size() == 0)
+	{
+		return finalPos;
+	}
+	for (int inx = 0; inx < pnt.restRelations.size(); inx++)
+	{
+		auto& rela = pnt.restRelations[inx];
+		int otherInx = Cast<RestRelationI*>(rela.i[0])->pntInx;
+		P restPos = Cast<RestRelationO*>(rela.o[0])->restPos;
+		auto& other = (*info.prevPnts)[otherInx];
+		finalPos += other.pos - restPos;
+	}
+	finalPos /= pnt.restRelations.size();
+	P dir = norm(finalPos - pnt.pos);
+	P re = 0.1 * dir * pow(dis2(finalPos,pnt.pos),1);
+	return re;
 }
 
 void PhysicSolver::InitSpace()

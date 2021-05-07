@@ -146,6 +146,13 @@ void P::operator*=(double s)
 	z *= s;
 }
 
+void P::operator/=(double s)
+{
+	x /= s;
+	y /= s;
+	z /= s;
+}
+
 double P::len() const
 {
 	return dis(P(0, 0, 0), *this);
@@ -273,7 +280,8 @@ double QuadraFiliter(double x1, double x2, double xmin, double xmax)
 		}
 		else
 		{
-			abort();
+			//!!!
+			return x1 < x2 ? x1 : x2;
 		}
 	}
 	if (b1)

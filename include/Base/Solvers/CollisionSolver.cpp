@@ -52,7 +52,7 @@ void CollisionSolver::SolvePntWithTri(const Pnt& prev, Pnt& newPnt, double dt, E
 		if (interInfo.result)
 		{
 			P hitP = interInfo.hitP;
-			if (equal(hitP, prev.pos) && tri.IsPointUnder(newPnt.pos, newPnt.outer))
+			if (equal(hitP, prev.pos,0.02) && tri.IsPointUnder(newPnt.pos, newPnt.outer))
 			{
 				//!!! 极限情况，prev其实已经紧贴三角面，那么直接将newPnt强制移到三角面以上。
 				//如果进入第二个分支，会多计算，而且cap和tri的hitP会返回S1的位置，导致newPnt动不了
@@ -60,6 +60,8 @@ void CollisionSolver::SolvePntWithTri(const Pnt& prev, Pnt& newPnt, double dt, E
 				newPnt.UpdateEffectSpace();
 				P vPartAlignNorm = tri.n * dot(tri.n, newPnt.v);
 				newPnt.v -= vPartAlignNorm;
+				//!!! 如果不return,会再进行碰撞判断出问题
+				return;
 			}
 			else if (!tri.IsPointFixed(newPnt.pos, newPnt.outer))
 			{
@@ -69,7 +71,22 @@ void CollisionSolver::SolvePntWithTri(const Pnt& prev, Pnt& newPnt, double dt, E
 				bool bSolve = SolveQuadra(prev.a / 2, prev.v, prev.pos - hitP, x1, x2);
 				if (!bSolve)
 				{
+					//???
 					abort();
+					return;
+				}
+				else if ((x1<0||x1>dt)&&(x2<0 || x2>dt))
+				{
+					//???
+					abort();
+					double x3=0.0, x4 = 0.0;
+					P a, b, c;
+					a = prev.a / 2;
+					b = prev.v;
+					c = prev.pos - hitP;
+					auto tt1 = SolveQuadra(a.y, b.y, c.y, x3, x4);
+					auto tt = (hitP - prev.pos).len();
+					return;
 				}
 				else
 				{
