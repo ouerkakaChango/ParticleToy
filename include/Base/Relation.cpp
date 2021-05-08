@@ -34,10 +34,9 @@ P RestLengthRelation::RelationForce(const Pnt& pnt, const ExtraInfo& info)
 	P dP = other.pos - pnt.pos;
 	double nowLen = dP.len();
 	double dL = nowLen - restLen;
-	//!!! 现在比较hardcode,等会想想怎么把这个算restForce的属性抽象出来
 	if (dL < 0)
 	{
-		re += 3 * sign(dL)*norm(dP);
+		re += forceRate * sign(dL)*norm(dP);
 	}
 	return re;
 }
@@ -49,7 +48,8 @@ RestPosRelation::RestPosRelation()
 	DefaultConstruct(RestPosRelation);
 }
 
-RestPosRelation::RestPosRelation(int pntInx, P restPos)
+RestPosRelation::RestPosRelation(int pntInx, P restPos, double forceRate_):
+	forceRate(forceRate_)
 {
 	auto newI = new RestPosRelationI;
 	newI->pntInx = pntInx;
@@ -70,7 +70,7 @@ P RestPosRelation::RelationForce(const Pnt& pnt, const ExtraInfo& info)
 	double l = dot(dP, restPos)/restL;
 	if (l < restL)
 	{
-		re += 3 * sign(l) * norm(-restPos);
+		re += forceRate * sign(l) * norm(-restPos);
 	}
 	return re;
 }

@@ -17,6 +17,8 @@ class RestLengthRelation :public Relation
 	RestLengthRelation(int pntInx, double restLen);
 
 	P RelationForce(const Pnt& pnt, const ExtraInfo& info) override;
+
+	double forceRate = 3.0;
 };
 
 class RestLengthRelationI : public ClassI
@@ -34,9 +36,11 @@ public:
 class RestPosRelation : public Relation
 {
 	THISY(RestPosRelation)
-	RestPosRelation(int pntInx, P restPos);
+	RestPosRelation(int pntInx, P restPos, double forceRate_=3.0);
 
 	P RelationForce(const Pnt& pnt, const ExtraInfo& info) override;
+
+	double forceRate=3.0;
 };
 
 class RestPosRelationI : public ClassI

@@ -351,7 +351,8 @@ IntersectInfo Tri::Collide(const Line& l) const
 IntersectInfo Tri::Collide(const Cylinder& cylinder) const
 {
 	IntersectInfo re;
-	//???
+	//??? »¹Ã»Ð´
+	//abort();
 	return re;
 }
 
@@ -372,7 +373,6 @@ IntersectInfo Tri::Collide(const Capsule& cap) const
 	IntersectInfo b3 = Collide(cap.GetCylinder());
 	if (b3)
 	{
-		//???
 		return b3;
 	}
 	IntersectInfo bs1 = Collide(cap.GetS1());
