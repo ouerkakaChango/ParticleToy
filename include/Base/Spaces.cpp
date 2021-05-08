@@ -145,7 +145,7 @@ void MinkowskiSpace::AddTriNow(str name, const Tri& tri, str rule)
 void MinkowskiSpace::EvolveFrame(int prevFrame)
 {
 	//??? debug
-	if (prevFrame == 450)
+	if (prevFrame == 53)
 	{
 		int aa = 1;
 	}

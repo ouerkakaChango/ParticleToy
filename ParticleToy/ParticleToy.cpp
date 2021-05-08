@@ -13,6 +13,8 @@
 //3.引入restPosition，让粒子收到基于偏移restPos的斥力，看是否能实现类似分子键的效果，让两个粒子能
 //保持一定距离
 //1.1 重写胶囊与三角面相交判定
+//4.现在比较hardcode,等会想想怎么把这个算restForce的属性抽象出来
+//5.relation换成基于restPos的再看一下效果
 
 int main()
 {
@@ -26,7 +28,7 @@ int main()
 	atom1.rule = "Molecule";
 	//atom1.rule = "PhysicProp";
 	atom1.SetSphereOuter(1.0);
-	atom1.AddRestRelation(1, P(6.0, 0.0, 0.0));
+	atom1.AddRestLength(1, 3.0);
 	op->PutPnt(atom1);
 
 	Pnt atom2(P(3.0, 5.0, 0.0));
@@ -34,7 +36,7 @@ int main()
 	atom2.rule = "Molecule";
 	//atom2.rule = "PhysicProp";
 	atom2.SetSphereOuter(1.0);
-	atom2.AddRestRelation(0, P(-6.0, 0.0, 0.0));
+	atom2.AddRestLength(0, 3.0);
 	op->PutPnt(atom2);
 
 	Grid* terrain = new Grid;

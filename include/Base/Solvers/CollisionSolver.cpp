@@ -52,7 +52,7 @@ void CollisionSolver::SolvePntWithTri(const Pnt& prev, Pnt& newPnt, double dt, E
 		if (interInfo.result)
 		{
 			P hitP = interInfo.hitP;
-			if (equal(hitP, prev.pos,0.02) && tri.IsPointUnder(newPnt.pos, newPnt.outer))
+			if (equal(hitP, prev.pos) && tri.IsPointUnder(newPnt.pos, newPnt.outer))
 			{
 				//!!! 极限情况，prev其实已经紧贴三角面，那么直接将newPnt强制移到三角面以上。
 				//如果进入第二个分支，会多计算，而且cap和tri的hitP会返回S1的位置，导致newPnt动不了
@@ -75,17 +75,21 @@ void CollisionSolver::SolvePntWithTri(const Pnt& prev, Pnt& newPnt, double dt, E
 					abort();
 					return;
 				}
-				else if ((x1<0||x1>dt)&&(x2<0 || x2>dt))
+				else if ((x1<0||x1>dt)&&(x2<0||x2>dt))
 				{
-					//???
-					abort();
-					double x3=0.0, x4 = 0.0;
-					P a, b, c;
-					a = prev.a / 2;
-					b = prev.v;
-					c = prev.pos - hitP;
-					auto tt1 = SolveQuadra(a.y, b.y, c.y, x3, x4);
-					auto tt = (hitP - prev.pos).len();
+					//由于某些原因?，导致不能以匀加速运动模拟dt时间内prev到new的行为。
+					//(可能是这一帧给的加速度相比dt过大了，用prev.a没法近似了)
+					//那么直接上挤，速度damp。
+					//也就是这一帧的PBC不那么物理真实了
+					newPnt.pos = tri.GetFixedPos(newPnt.pos, newPnt.outer);
+					newPnt.UpdateEffectSpace();
+					newPnt.v = reflect(newPnt.v, tri.n) * bounceDamp;
+					{
+						Pnt breakPnt(newPnt.pos);
+						breakPnt.a = newPnt.a;
+						breakPnt.v = newPnt.v;
+						newPnt.SetBreakPoint(breakPnt, dt);
+					}
 					return;
 				}
 				else
@@ -117,6 +121,7 @@ void CollisionSolver::SolvePntWithTri(const Pnt& prev, Pnt& newPnt, double dt, E
 						breakPnt.v = v3;
 						newPnt.SetBreakPoint(breakPnt, dtr);
 					}
+					return;
 				}
 			}
 		}

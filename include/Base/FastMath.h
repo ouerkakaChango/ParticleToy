@@ -60,9 +60,7 @@ P reflect(const P& i, const P& n);
 double dis(const P& p1, const P& p2);
 double dis2(const P& p1, const P& p2);
 
-bool SolveQuadra(double a, double b, double c, double& x1, double& x2);
-bool SolveQuadra(P a, P b, P c, double& x1, double& x2);
-double QuadraFiliter(double x1, double x2, double xmin, double xmax);
+double sign(double n);
 double rand01();
 double equal(double a, double b, double tolerance = 0.00001);
 double equal(P a, P b, double tolerance = 0.00001);
@@ -81,5 +79,7 @@ T lerpRate(T a, T b, T2 re)
 	return (re - a) / (b - a);
 }
 
-
+bool SolveQuadra(double a, double b, double c, double& x1, double& x2);
+bool SolveQuadra(P a, P b, P c, double& x1, double& x2);
+double QuadraFiliter(double x1, double x2, double xmin, double xmax);
 bool BisecitonSolve(std::function<double(double)> func, double tmin, double tmax, double& t, double tolerance = 0.000001);

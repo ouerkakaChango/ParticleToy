@@ -280,7 +280,6 @@ double QuadraFiliter(double x1, double x2, double xmin, double xmax)
 		}
 		else
 		{
-			//!!!
 			return x1 < x2 ? x1 : x2;
 		}
 	}
@@ -297,6 +296,11 @@ double QuadraFiliter(double x1, double x2, double xmin, double xmax)
 		abort();
 	}
 	return 0.0;
+}
+
+double sign(double n)
+{
+	return n < 0 ? -1.0 : 1.0;
 }
 
 double rand01()

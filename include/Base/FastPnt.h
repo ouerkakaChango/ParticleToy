@@ -24,7 +24,7 @@ public:
 	bool IsBreakPoint() const;
 	void SetBreakPoint(const Pnt& pnt, double dtr_);
 	Pnt GetBreakPnt() const;
-	void AddRestRelation(int pntInx,P restPos);
+	void AddRestLength(int pntInx,double restLen);
 	//### physic
 
 	P pos;
@@ -41,7 +41,7 @@ public:
 	Pnt* breakPnt=nullptr;
 	bool isBreakPnt = false;
 	bool ignorePrev = false;
-	arr<RestRelation> restRelations;
+	arr<Relation*> relations;
 	//int fuckYour18Generation = 1;
 	//### physic
 };

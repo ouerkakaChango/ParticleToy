@@ -136,9 +136,9 @@ Pnt Pnt::GetBreakPnt() const
 	return *breakPnt;
 }
 
-void Pnt::AddRestRelation(int pntInx, P restPos)
+void Pnt::AddRestLength(int pntInx, double restLen)
 {
-	restRelations += RestRelation(pntInx, restPos);
+	relations += new RestLengthRelation(pntInx, restLen);
 }
 //### Pnt
 
@@ -186,7 +186,7 @@ bool RuleOf(str rule, str prop)
 			return true;
 		}
 	}
-	else if (prop == "RestForce")
+	else if (prop == "RelationForce")
 	{
 		if (rule.Has("Molecule"))
 		{

@@ -2,25 +2,31 @@
 #include "Taiji.h"
 #include "FastMath.h"
 
+class Pnt;
+class ExtraInfo;
+
 class Relation : public Ying
 {
 	THISY(Relation)
+	virtual P RelationForce(const Pnt& pnt, const ExtraInfo& info) = 0;
 };
 
-class RestRelation :public Relation
+class RestLengthRelation :public Relation
 {
-	THISY(RestRelation)
-	RestRelation(int pntInx,P restPos);
+	THISY(RestLengthRelation)
+	RestLengthRelation(int pntInx, double restLen);
+
+	P RelationForce(const Pnt& pnt, const ExtraInfo& info) override;
 };
 
-class RestRelationI : public ClassI
+class RestLengthRelationI : public ClassI
 {
 public:
 	int pntInx;
 };
 
-class RestRelationO : public ClassO
+class RestLengthRelationO : public ClassO
 {
 public:
-	P restPos;
+	double restLen;
 };
