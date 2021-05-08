@@ -24,7 +24,6 @@ public:
 	bool IsBreakPoint() const;
 	void SetBreakPoint(const Pnt& pnt, double dtr_);
 	Pnt GetBreakPnt() const;
-	void AddRestLength(int pntInx,double restLen);
 	//### physic
 
 	P pos;

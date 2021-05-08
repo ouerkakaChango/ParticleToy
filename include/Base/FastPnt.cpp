@@ -135,11 +135,6 @@ Pnt Pnt::GetBreakPnt() const
 {
 	return *breakPnt;
 }
-
-void Pnt::AddRestLength(int pntInx, double restLen)
-{
-	relations += new RestLengthRelation(pntInx, restLen);
-}
 //### Pnt
 
 //### Global Pnt

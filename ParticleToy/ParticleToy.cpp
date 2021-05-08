@@ -28,7 +28,8 @@ int main()
 	atom1.rule = "Molecule";
 	//atom1.rule = "PhysicProp";
 	atom1.SetSphereOuter(1.0);
-	atom1.AddRestLength(1, 3.0);
+	//atom1.relations += new RestLengthRelation(1, 3.0);
+	atom1.relations += new RestPosRelation(1, P(3, 0, 0));
 	op->PutPnt(atom1);
 
 	Pnt atom2(P(3.0, 5.0, 0.0));
@@ -36,7 +37,8 @@ int main()
 	atom2.rule = "Molecule";
 	//atom2.rule = "PhysicProp";
 	atom2.SetSphereOuter(1.0);
-	atom2.AddRestLength(0, 3.0);
+	//atom2.relations += new RestLengthRelation(0, 3.0);
+	atom2.relations += new RestPosRelation(0, P(-3, 0, 0));
 	op->PutPnt(atom2);
 
 	Grid* terrain = new Grid;

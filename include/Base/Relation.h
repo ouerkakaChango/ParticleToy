@@ -30,3 +30,23 @@ class RestLengthRelationO : public ClassO
 public:
 	double restLen;
 };
+
+class RestPosRelation : public Relation
+{
+	THISY(RestPosRelation)
+	RestPosRelation(int pntInx, P restPos);
+
+	P RelationForce(const Pnt& pnt, const ExtraInfo& info) override;
+};
+
+class RestPosRelationI : public ClassI
+{
+public:
+	int pntInx;
+};
+
+class RestPosRelationO : public ClassO
+{
+public:
+	P restPos;
+};

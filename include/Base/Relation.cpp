@@ -42,3 +42,36 @@ P RestLengthRelation::RelationForce(const Pnt& pnt, const ExtraInfo& info)
 	return re;
 }
 //### RestLengthRelation
+
+//### RestPosRelation
+RestPosRelation::RestPosRelation()
+{
+	DefaultConstruct(RestPosRelation);
+}
+
+RestPosRelation::RestPosRelation(int pntInx, P restPos)
+{
+	auto newI = new RestPosRelationI;
+	newI->pntInx = pntInx;
+	i += newI;
+	auto newO = new RestPosRelationO;
+	newO->restPos = restPos;
+	o += newO;
+}
+
+P RestPosRelation::RelationForce(const Pnt& pnt, const ExtraInfo& info)
+{
+	P re;
+	int otherInx = Cast<RestPosRelationI*>(i[0])->pntInx;
+	P restPos = Cast<RestPosRelationO*>(o[0])->restPos;
+	auto& other = (*info.prevPnts)[otherInx];
+	P dP = other.pos - pnt.pos;
+	double restL = restPos.len();
+	double l = dot(dP, restPos)/restL;
+	if (l < restL)
+	{
+		re += 3 * sign(l) * norm(-restPos);
+	}
+	return re;
+}
+//### RestPosRelation

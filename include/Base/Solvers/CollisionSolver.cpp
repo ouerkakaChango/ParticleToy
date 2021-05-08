@@ -81,6 +81,8 @@ void CollisionSolver::SolvePntWithTri(const Pnt& prev, Pnt& newPnt, double dt, E
 					//(可能是这一帧给的加速度相比dt过大了，用prev.a没法近似了)
 					//那么直接上挤，速度damp。
 					//也就是这一帧的PBC不那么物理真实了
+					//!!!
+					//PS:其实是变加速运动，如果需要可以用匀变加速运动近似，这里先不管了
 					newPnt.pos = tri.GetFixedPos(newPnt.pos, newPnt.outer);
 					newPnt.UpdateEffectSpace();
 					newPnt.v = reflect(newPnt.v, tri.n) * bounceDamp;
