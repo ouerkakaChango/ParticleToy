@@ -26,27 +26,23 @@ int main()
 	Pnt atom1(P(0.0,1.0,0.0));
 	atom1.name = "atom1";
 	atom1.rule = "Molecule";
-	//atom1.rule = "PhysicProp";
 	atom1.SetSphereOuter(1.0);
-	//atom1.relations += new RestLengthRelation(1, 3.0);
-	//atom1.relations += new RestPosRelation(1, P(3, 0, 0));
-	atom1.relations += new RestPosRelation(1, P(0, 4, 0));
+	atom1.relations += new RestPosRelation(1, P(4, 0, 0),10);
+	atom1.relations += new RestPosRelation(2, P(0, 4, 0),100);
 	op->PutPnt(atom1);
 
-	//Pnt atom2(P(3.0, 5.0, 0.0));
-	//atom2.name = "atom2";
-	//atom2.rule = "Molecule";
-	////atom2.rule = "PhysicProp";
-	//atom2.SetSphereOuter(1.0);
-	////atom2.relations += new RestLengthRelation(0, 3.0);
-	//atom2.relations += new RestPosRelation(0, P(-3, 0, 0));
-	//op->PutPnt(atom2);
+	Pnt atom2(P(3.0, 5.0, 0.0));
+	atom2.name = "atom2";
+	atom2.rule = "Molecule";
+	atom2.SetSphereOuter(1.0);
+	atom2.relations += new RestPosRelation(0, P(-4, 0, 0),10);
+	op->PutPnt(atom2);
 
 	Pnt atom3(P(0.0, 5.0, 0.0));
 	atom3.name = "atom3";
 	atom3.rule = "Molecule";
 	atom3.SetSphereOuter(1.0);
-	atom3.relations += new RestPosRelation(0, P(0, -4, 0),10.0);
+	atom3.relations += new RestPosRelation(0, P(0, -4, 0), 100);
 	op->PutPnt(atom3);
 
 	Grid* terrain = new Grid;
