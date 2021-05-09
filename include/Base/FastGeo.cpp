@@ -62,12 +62,29 @@ P Line::dir() const
 {
 	return norm(b - a);
 }
+
+bool Line::LineNearlyZero() const
+{
+	return zero((b - a).len());
+}
 //### Line
 
 //### Global Line
 double len(const Line& l)
 {
 	return len(l.b - l.a);
+}
+double DisToLine(P p, const Line& l)
+{
+	//取三角形，叉乘后得平行四边形面积再除以底边长得高
+	P v1 = l.a - p;
+	P v2 = l.b - p;
+	P v3 = l.b - l.a;
+	if (zero(v3.len()))
+	{
+		abort();
+	}
+	return cross(v1, v2).len() / v3.len();
 }
 //### Global Line
 
@@ -105,6 +122,10 @@ Cylinder::Cylinder(P a_, P b_, double r_)
 
 bool Cylinder::IsPointInside(P pos) const
 {
+	if (equal(a, b))
+	{
+		return false;
+	}
 	//d 垂直距离;
 	//dis 水平距离
 	P d = norm(b - a);
@@ -151,21 +172,6 @@ void Plane::Transform(P offset)
 double Plane::sdf(P pos) const
 {
 	return dot(n, pos - p);
-}
-
-IntersectInfo Plane::Intersect(const Line& l) const
-{
-	IntersectInfo re;
-	//原理：https://blog.csdn.net/qq_41524721/article/details/103490144
-	P T = l.a - p;
-	double d = -dot(l.a - p, n) / dot(l.dir(), n);
-	if (d <= len(l) && d>=0)
-	{
-		re.result = true;
-		re.d = d;
-		re.hitP = l.a + d * l.dir();
-	}
-	return re;
 }
 
 bool Plane::IsPointUnder(P pos, const Shape* outer) const
@@ -337,7 +343,7 @@ IntersectInfo Tri::Collide(const Line& l) const
 {
 	IntersectInfo re;
 	//1.判断与平面相交
-	re = Plane::Intersect(l);
+	re = Intersect(l,*this);
 	//2.判断交点是否在三角形内
 	if (re.result)
 	{
@@ -351,8 +357,36 @@ IntersectInfo Tri::Collide(const Line& l) const
 IntersectInfo Tri::Collide(const Cylinder& cylinder) const
 {
 	IntersectInfo re;
-	//??? 还没写
-	//abort();
+	//https://blog.csdn.net/qq_41524721/article/details/116141905?spm=1001.2014.3001.5501
+	//步骤一 3点在cylinder内测试
+	bool b1 = cylinder.IsPointInside(p1);
+	bool b2 = cylinder.IsPointInside(p2);
+	bool b3 = cylinder.IsPointInside(p3);
+	if (b1 || b2 || b3)
+	{
+		re.result = true;
+		return re;
+	}
+	//步骤二 3边与cylinder相交
+	IntersectInfo e1 = Intersect(Line(p1, p2),cylinder);
+	IntersectInfo e2 = Intersect(Line(p2, p3),cylinder);
+	IntersectInfo e3 = Intersect(Line(p3, p1),cylinder);
+	if (e1 || e2 || e3)
+	{
+		re.result = true;
+		return re;
+	}
+
+	//步骤三 圆柱轴线和三角面相交测试
+	//这个Intersect保证交点在线段上，但不保证在三角形里
+	IntersectInfo c = Intersect(cylinder, *this);
+	if (c.result && IsPointInside(c.hitP))
+	{
+		re.result = true;
+		return re;
+	}
+
+	//!!! 现在都是开口的圆柱体，如果是封口的，还要加上步骤四
 	return re;
 }
 
@@ -373,11 +407,14 @@ IntersectInfo Tri::Collide(const Capsule& cap) const
 	IntersectInfo b3 = Collide(cap.GetCylinder());
 	if (b3)
 	{
+		abort();
 		return b3;
 	}
 	IntersectInfo bs1 = Collide(cap.GetS1());
 	if (bs1)
 	{
+		//照理不会进这个分支
+		abort();
 		double d2 = bs1.d;
 		P a2 = project(cap.a, *this);
 		double d1 = dis(cap.a, a2);
@@ -511,3 +548,63 @@ ShapeHull M_Add(const Tri& tri, const Sphere& s)
 	return re;
 }
 //### Global ShapeHull
+
+//### Global
+IntersectInfo Intersect(const Line& line, const Cylinder& cylinder)
+{
+	IntersectInfo re;
+	if (cylinder.LineNearlyZero())
+	{
+		return re;
+	}
+	//懒得完全推导，先用二分法解方程求得线段上的交点之一
+	auto func = [=](double t)
+	{
+		P p = line.a + t * (line.b - line.a);
+		return DisToLine(p, cylinder) - cylinder.r;
+	};
+	double x1 = -1.0;
+	bool bSolve1 = BisecitonSolve(func, 0, 1, x1);
+	auto func2 = [=](double t)
+	{
+		P p = line.b + t * (line.a - line.b);
+		return DisToLine(p, cylinder) - cylinder.r;
+	};
+	//由于是2分法，如果“允许解域”上有2个解，从另一个端点开始解，能得到第二个解
+	double x2 = -1.0;
+	bool bSolve2 = BisecitonSolve(func2, 0, 1, x2);
+	if (!bSolve1 && !bSolve2)
+	{
+		return re;
+	}
+	//判断交点是否在cylinder内
+	P p1 = line.a + x1 * (line.b - line.a);
+	bool b1 = cylinder.IsPointInside(p1);
+	P p2 = line.b + x2 * (line.a - line.b);
+	bool b2 = cylinder.IsPointInside(p2);
+	if (b1 || b2)
+	{
+		re.result = true;
+	}
+	return re;
+}
+
+IntersectInfo Intersect(const Line& line, const Plane& plane)
+{
+	IntersectInfo re;
+	if (line.LineNearlyZero())
+	{
+		return re;
+	}
+	//原理：https://blog.csdn.net/qq_41524721/article/details/103490144
+	P T = line.a - plane.p;
+	double d = -dot(line.a - plane.p, plane.n) / dot(line.dir(), plane.n);
+	if (d <= len(line) && d >= 0)
+	{
+		re.result = true;
+		re.d = d;
+		re.hitP = line.a + d * line.dir();
+	}
+	return re;
+}
+//### Global

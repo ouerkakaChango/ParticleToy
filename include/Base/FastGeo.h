@@ -36,11 +36,13 @@ public:
 	void Set(P a_, P b_);
 	void UpdateB(P newb);
 	P dir() const;
+	bool LineNearlyZero() const;
 
 	friend double len(const Line& l);
 	P a, b;
 };
 double len(const Line& l);
+double DisToLine(P p,const Line& l);
 
 class Sphere :public Shape
 {
@@ -84,7 +86,6 @@ public:
 	void Define(P n_, P p_);
 	void Transform(P offset);
 	double sdf(P pos) const;
-	IntersectInfo Intersect(const Line& l) const;
 	bool IsPointUnder(P pos,const Shape* outer) const;
 	P GetFixedPos(P pos, const Shape* outer) const;
 	bool IsPointInside(P pos) const override;
@@ -119,3 +120,6 @@ public:
 	arr<Shape*> hulls;
 };
 ShapeHull M_Add(const Tri& tri, const Sphere& s);
+
+IntersectInfo Intersect(const Line& line, const Cylinder& cylinder);
+IntersectInfo Intersect(const Line& line, const Plane& plane);
