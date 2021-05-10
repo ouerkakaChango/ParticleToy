@@ -73,8 +73,25 @@ int main()
 	};
 	grid3d.DoByPos(func2);
 
+	auto relationFunc = [](Pnt& pnt, P dir, int otherInx)
+	{
+		if (dir.y != 0)
+		{
+			pnt.relations += new RestPosRelation(otherInx, 4 * dir, 100);
+		}
+		else
+		{
+			pnt.relations += new RestPosRelation(otherInx, 4 * dir, 10);
+		}
+	};
 	//对每个原子周围设置relation
-	//grid3d.DoByNearest();
+	grid3d.DoByNearest(relationFunc);
+
+	auto putPntFunc = [&](Pnt& pnt)
+	{
+		op->PutPnt(pnt);
+	};
+	grid3d.DoByInx(putPntFunc);
 
 	Grid* terrain = new Grid;
 	terrain->SetGridSettings<double>(2, 30.0);
@@ -88,7 +105,7 @@ int main()
 
 	op->Evolve(0);
 	//op->DebugSay();
-	//op->OutputPntTrajTxt("C:/HoudiniProjects/PToyScene/golfBall.txt");
+	op->OutputPntTrajTxt("C:/HoudiniProjects/PToyScene/golfBall.txt");
 
 
 	return 0;

@@ -157,17 +157,76 @@ public:
 		SetSize(edgeX, edgeY, edgeZ, P(cellLength, cellLength, cellLength), defaultData);
 	}
 
+	inline int Inx(int i, int j, int k)
+	{
+		return i  + j * pnts.y + k * pnts.x * pnts.y;
+	}
+
 	void DoByPos(std::function<void(DataClass& data, P pntPos, int pntInx)> func)
 	{
-		int pntInx = 0;
 		for (int k = 0; k < pnts.z; k++)
 		{
 			for (int j = 0; j < pnts.y; j++)
 			{
 				for (int i = 0; i < pnts.x; i++)
 				{
-					func(datas[i][j][k], pnts[i][j][k], pntInx);
-					pntInx++;
+					func(datas[i][j][k], pnts[i][j][k], Inx(i,j,k));
+				}
+			}
+		}
+	}
+
+	void DoByInx(std::function<void(DataClass& data)> func)
+	{
+		for (int k = 0; k < pnts.z; k++)
+		{
+			for (int j = 0; j < pnts.y; j++)
+			{
+				for (int i = 0; i < pnts.x; i++)
+				{
+					int inx = Inx(i, j, k);
+					func(datas[i][j][k]);
+				}
+			}
+		}
+	}
+
+	void DoByNearest(std::function<void(DataClass& data, P dir, int otherInx)> func)
+	{
+		for (int k = 0; k < pnts.z; k++)
+		{
+			for (int j = 0; j < pnts.y; j++)
+			{
+				for (int i = 0; i < pnts.x; i++)
+				{
+					DataClass& data = datas[i][j][k];
+					//x dir
+					if (i - 1 >= 0)
+					{
+						func(data, P(-1, 0, 0), Inx(i - 1, j, k));
+					}
+					if (i + 1 < pnts.x)
+					{
+						func(data, P(1, 0, 0), Inx(i + 1, j, k));
+					}
+					//y dir
+					if (j - 1 >= 0)
+					{
+						func(data, P(0, -1, 0), Inx(i, j - 1, k));
+					}
+					if (j + 1 < pnts.y)
+					{
+						func(data, P(0, 1, 0), Inx(i, j + 1, k));
+					}
+					//z dir
+					if (k - 1 >= 0)
+					{
+						func(data, P(0, 0, -1), Inx(i, j, k - 1));
+					}
+					if (k + 1 < pnts.z)
+					{
+						func(data, P(0, 0, 1), Inx(i, j, k + 1));
+					}
 				}
 			}
 		}
