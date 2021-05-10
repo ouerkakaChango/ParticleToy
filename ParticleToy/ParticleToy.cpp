@@ -21,7 +21,7 @@
 int main()
 {
 	MinkowskiSpace* world = new MinkowskiSpace;
-	world->SetFrameSettings(1001, 0.0166666);
+	world->SetFrameSettings(361, 0.0166666);
 	MinkowskiSpaceR* op = (MinkowskiSpaceR*)world->r[0];
 	op->SetGravity(P(0.0, -9.80665, 0.0));
 
@@ -77,7 +77,7 @@ int main()
 	{
 		if (dir.y != 0)
 		{
-			pnt.relations += new RestPosRelation(otherInx, 4 * dir, 100);
+			pnt.relations += new RestPosRelation(otherInx, 4 * dir, 20);
 		}
 		else
 		{
@@ -102,6 +102,15 @@ int main()
 
 	op2->TerrainToTri(triArr);
 	op->PutTri("terrain", triArr, "CollisionProp");
+
+	auto f1 = [&](TickInfo& info)
+	{
+		PhysicSolver* physic = info.physic;
+		auto F = info.F;
+		double nowRate = pow(1 - F / 180.0,1);
+		physic->RelationRate = nowRate;
+	};
+	op->AddBeforeTickFunc(f1);
 
 	op->Evolve(0);
 	//op->DebugSay();

@@ -175,6 +175,7 @@
     <ClInclude Include="..\include\Base\Solvers\SolverUtility.h" />
     <ClInclude Include="..\include\Base\Spaces.h" />
     <ClInclude Include="..\include\Base\Taiji.h" />
+    <ClInclude Include="..\include\Base\TickUtility.h" />
     <ClInclude Include="..\include\Base\Utility.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
@@ -196,6 +197,7 @@
     <ClCompile Include="..\include\Base\Solvers\SolverUtility.cpp" />
     <ClCompile Include="..\include\Base\Spaces.cpp" />
     <ClCompile Include="..\include\Base\Taiji.cpp" />
+    <ClCompile Include="..\include\Base\TickUtility.cpp" />
     <ClCompile Include="..\include\Base\Utility.cpp" />
     <ClCompile Include="ParticleToy.cpp" />
     <ClCompile Include="pch.cpp">

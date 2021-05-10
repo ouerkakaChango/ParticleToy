@@ -73,9 +73,13 @@ T lerp(T a, T b, T2 k)
 	return a + k * (b - a);
 }
 template <class T, class T2>
-T lerpRate(T a, T b, T2 re)
+T lerpRate(T a, T b, T2 re,T tolerance=0.000001)
 {
 	//a+k*(b-a)=re
+	if (equal(a, b, tolerance))
+	{
+		return 0;
+	}
 	return (re - a) / (b - a);
 }
 

@@ -4,6 +4,7 @@
 #include "Fast3D.h"
 #include "Evolver.h"
 #include "FastGrid.h"
+#include "TickUtility.h"
 
 class Space : public Yang
 {
@@ -79,6 +80,7 @@ class MinkowskiSpace : public Time, public Space3D
 	double frameSec;
 	int frameNum;
 	int F = 0;
+	arr<TickFunc> beforeTickFuncs;
 };
 
 class MinkowskiSpaceR : public R
@@ -93,6 +95,7 @@ class MinkowskiSpaceR : public R
 	void SetGravity(P gravity);
 	void PntInsForce(int F, str name, P force);
 	void MoveToFrame(int F);
+	void AddBeforeTickFunc(TickFunc tickFunc);
 
 	void SayO() override;
 	void Say();
@@ -105,7 +108,6 @@ class MinkowskiSpaceR : public R
 	arr<int2> pntFrames;
 };
 
-//### Grid
 class Grid : public EuclideanSpace
 {
 	THISY(Grid)
@@ -181,4 +183,3 @@ class GridR : public R
 	void DebugSay(int mode=1);
 	void DebugOutput(const str& filePath);
 };
-//### Grid3D

@@ -17,4 +17,6 @@ public:
 	double G = 1.0; //???
 	arr<P> insForces;
 	arr<int> uniGInxs;
+
+	double RelationRate = 1.0;
 };

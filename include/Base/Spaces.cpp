@@ -154,8 +154,16 @@ void MinkowskiSpace::EvolveFrame(int prevFrame)
 		int aa = 1;
 	}
 	//___
+	F = prevFrame;
 	auto& spaces = Cast<Space3DI*>(i[1])->spaces;
 	auto& evolvers = Cast<Space3DO*>(o[0])->evolvers;
+	TickInfo tickInfo;
+	tickInfo.physic = &evolvers[prevFrame]->physic;
+	tickInfo.F = F;
+	for (auto& func : beforeTickFuncs)
+	{
+		func(tickInfo);
+	}
 	if (prevFrame == 0)
 	{
 		evolvers[prevFrame]->EvolveBegin(spaces[0], spaces[1], frameSec);
@@ -236,6 +244,11 @@ void MinkowskiSpaceR::PntInsForce(int F, str name, P force)
 void MinkowskiSpaceR::MoveToFrame(int F)
 {
 	y->F = F;
+}
+
+void MinkowskiSpaceR::AddBeforeTickFunc(TickFunc tickFunc)
+{
+	y->beforeTickFuncs += tickFunc;
 }
 
 void MinkowskiSpaceR::Say()

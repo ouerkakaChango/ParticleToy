@@ -65,17 +65,19 @@ P RestPosRelation::RelationForce(const Pnt& pnt, const ExtraInfo& info)
 	int otherInx = Cast<RestPosRelationI*>(i[0])->pntInx;
 	P restPos = Cast<RestPosRelationO*>(o[0])->restPos;
 	auto& other = (*info.prevPnts)[otherInx];
+	{
+		P dP = other.pos - pnt.pos;
+		double restL = restPos.len();
+		double l = dot(dP, restPos) / restL;
+		if (l < restL)
+		{
+			re += forceRate * sign(l) * norm(-restPos);
+		}
+	}
 	//{
-	//	P dP = other.pos - pnt.pos;
-	//	double restL = restPos.len();
-	//	double l = dot(dP, restPos) / restL;
-	//	if (l < restL)
-	//	{
-	//		re += forceRate * sign(l) * norm(-restPos);
-	//	}
+	//	P targetPos = other.pos - restPos;
+	//	re += (targetPos - pnt.pos)*forceRate;
 	//}
-	P targetPos = other.pos - restPos;
-	re += (targetPos - pnt.pos)*forceRate;
 	return re;
 }
 //### RestPosRelation

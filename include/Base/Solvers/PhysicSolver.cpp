@@ -39,7 +39,7 @@ P PhysicSolver::A(const Pnt& pnt, ExtraInfo info)
 	}
 	if (RuleOf(pnt.rule, "RelationForce"))
 	{
-		finalForce += RestForce(pnt, info);
+		finalForce += RelationRate*RestForce(pnt, info);
 	}
 
 	return finalForce / pnt.mass;

@@ -413,8 +413,7 @@ IntersectInfo Tri::Collide(const Capsule& cap) const
 	IntersectInfo bs1 = Collide(cap.GetS1());
 	if (bs1)
 	{
-		//照理不会进这个分支
-		abort();
+		//当prev是virtual的，可能会进这个分支
 		double d2 = bs1.d;
 		P a2 = project(cap.a, *this);
 		double d1 = dis(cap.a, a2);
