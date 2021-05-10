@@ -16,6 +16,7 @@
 //4.现在比较hardcode,等会想想怎么把这个算restForce的属性抽象出来
 //5.relation换成基于restPos的再看一下效果
 //6.基于新的restPos force，测试立方体晶格稳定性，并思考是否让受外力太强的/距离太远的两原子的分子键断裂，以模拟破碎/融化？
+//7.??? 注意pnt在复制的时候outer的复制，现在先没管
 
 int main()
 {
@@ -24,27 +25,56 @@ int main()
 	MinkowskiSpaceR* op = (MinkowskiSpaceR*)world->r[0];
 	op->SetGravity(P(0.0, -9.80665, 0.0));
 
-	Pnt atom1(P(0.0,1.0,0.0));
-	atom1.name = "atom1";
-	atom1.rule = "Molecule";
-	atom1.SetSphereOuter(1.0);
-	atom1.relations += new RestPosRelation(1, P(4, 0, 0),10);
-	atom1.relations += new RestPosRelation(2, P(0, 4, 0),100);
-	op->PutPnt(atom1);
+	//Pnt atom1(P(0.0,1.0,0.0));
+	//atom1.name = "atom1";
+	//atom1.rule = "Molecule";
+	//atom1.SetSphereOuter(1.0);
+	//atom1.relations += new RestPosRelation(1, P(4, 0, 0),10);
+	//atom1.relations += new RestPosRelation(2, P(0, 4, 0),100);
+	//op->PutPnt(atom1);
+	//
+	//Pnt atom2(P(4.0, 1.0, 0.0));
+	//atom2.name = "atom2";
+	//atom2.rule = "Molecule";
+	//atom2.SetSphereOuter(1.0);
+	//atom2.relations += new RestPosRelation(0, P(-4, 0, 0),10);
+	//op->PutPnt(atom2);
+	//
+	//Pnt atom3(P(0.0, 5.0, 0.0));
+	//atom3.name = "atom3";
+	//atom3.rule = "Molecule";
+	//atom3.SetSphereOuter(1.0);
+	//atom3.relations += new RestPosRelation(0, P(0, -4, 0), 100);
+	//op->PutPnt(atom3);
+	//
+	//Pnt atom4(P(4.0, 5.0, 0.0));
+	//atom4.name = "atom4";
+	//atom4.rule = "Molecule";
+	//atom4.SetSphereOuter(1.0);
+	//atom4.relations += new RestPosRelation(1, P(0, -4, 0), 100);
+	//op->PutPnt(atom4);
 
-	Pnt atom2(P(3.0, 5.0, 0.0));
-	atom2.name = "atom2";
-	atom2.rule = "Molecule";
-	atom2.SetSphereOuter(1.0);
-	atom2.relations += new RestPosRelation(0, P(-4, 0, 0),10);
-	op->PutPnt(atom2);
+	Grid* cellGrid = new Grid;
+	Pnt templatePnt;
+	templatePnt.rule = "Molecule";
+	templatePnt.SetSphereOuter(1.0);
+	cellGrid->SetGrid3DSettings<Pnt>(1,1,1,4.0, templatePnt);
+	auto& grid3d = Cast<Grid3DI<Pnt>*>(cellGrid->i[0])->grid;
+	auto func = [](Pnt& pnt,P pntPos, int pntInx)
+	{
+		pnt.pos = pntPos+P(0,1,0);
+		pnt.name = str("atom"); 
+		pnt.name += pntInx;
+	};
+	grid3d.DoByPos(func);
+	auto func2 = [](Pnt& pnt, P pntPos, int pntInx)
+	{
+		std::cout <<pnt.name << " " << pnt.rule<<" "<< pnt.pos.ToStr() <<std::endl;
+	};
+	grid3d.DoByPos(func2);
 
-	Pnt atom3(P(0.0, 5.0, 0.0));
-	atom3.name = "atom3";
-	atom3.rule = "Molecule";
-	atom3.SetSphereOuter(1.0);
-	atom3.relations += new RestPosRelation(0, P(0, -4, 0), 100);
-	op->PutPnt(atom3);
+	//对每个原子周围设置relation
+	//grid3d.DoByNearest();
 
 	Grid* terrain = new Grid;
 	terrain->SetGridSettings<double>(2, 30.0);
@@ -58,7 +88,7 @@ int main()
 
 	op->Evolve(0);
 	//op->DebugSay();
-	op->OutputPntTrajTxt("C:/HoudiniProjects/PToyScene/golfBall.txt");
+	//op->OutputPntTrajTxt("C:/HoudiniProjects/PToyScene/golfBall.txt");
 
 
 	return 0;

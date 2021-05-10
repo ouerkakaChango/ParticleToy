@@ -119,6 +119,31 @@ public:
 	int x, y;
 };
 
+template<class T>
+class arr3
+{
+public:
+	void resize(int x_, int y_, int z_)
+	{
+		x = x_;
+		y = y_;
+		z = z_;
+		data_.resize(z);
+		for (int k = 0; k < z; k++)
+		{
+			data_[k].resize(x,y);
+		}
+	}
+
+	arr2<T>& operator[](int inx)
+	{
+		return data_[inx];
+	}
+
+	arr<arr2<T>> data_;
+	int x, y, z;
+};
+
 class str
 {
 public:

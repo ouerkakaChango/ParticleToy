@@ -117,6 +117,15 @@ class Grid : public EuclideanSpace
 		auto& grid = ti->grid;
 		grid.SetSize(edgeNum, cellLength);
 	}
+
+	template<class DataClass>
+	void SetGrid3DSettings(int edgeX, int edgeY, int edgeZ, double cellLength, const DataClass& defaultData)
+	{
+		auto ti = new Grid3DI<DataClass>;
+		i += ti;
+		auto& grid = ti->grid;
+		grid.SetSize(edgeX, edgeY, edgeZ, cellLength, defaultData);
+	}
 };
 
 template <class DataClass>
@@ -124,6 +133,13 @@ class GridI : public ClassI
 {
 public:
 	FastGrid<DataClass> grid;
+};
+
+template <class DataClass>
+class Grid3DI : public ClassI
+{
+public:
+	FastGrid3D<DataClass> grid;
 };
 
 class GridO : public ClassO
