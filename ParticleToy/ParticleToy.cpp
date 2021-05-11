@@ -29,7 +29,7 @@ int main()
 	//atom1.name = "atom1";
 	//atom1.rule = "Molecule";
 	//atom1.SetSphereOuter(1.0);
-	//atom1.relations += new RestPosRelation(1, P(4, 0, 0),10);
+	//atom1.relations += new RestPosRelation(1, P(4, 0, 0),20);
 	//atom1.relations += new RestPosRelation(2, P(0, 4, 0),100);
 	//op->PutPnt(atom1);
 	//
@@ -37,7 +37,7 @@ int main()
 	//atom2.name = "atom2";
 	//atom2.rule = "Molecule";
 	//atom2.SetSphereOuter(1.0);
-	//atom2.relations += new RestPosRelation(0, P(-4, 0, 0),10);
+	//atom2.relations += new RestPosRelation(0, P(-4, 0, 0),20);
 	//op->PutPnt(atom2);
 	//
 	//Pnt atom3(P(0.0, 5.0, 0.0));
@@ -110,7 +110,7 @@ int main()
 		double nowRate = pow(1 - F / 180.0,1);
 		physic->RelationRate = nowRate;
 	};
-	op->AddBeforeTickFunc(f1);
+	//op->AddBeforeTickFunc(f1);
 
 	op->Evolve(0);
 	//op->DebugSay();

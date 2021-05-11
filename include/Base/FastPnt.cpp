@@ -176,10 +176,10 @@ bool RuleOf(str rule, str prop)
 		{
 			return true;
 		}
-		//if (rule.Has("Molecule"))
-		//{
-		//	return true;
-		//}
+		if (rule.Has("Molecule"))
+		{
+			return true;
+		}
 	}
 	else if (prop == "RelationForce")
 	{
