@@ -246,6 +246,11 @@ P project(P pos, const Plane& plane)
 	}
 	return pos - plane.n * dot(pos - plane.p, plane.n);
 }
+
+P project(P dirBeforeProj, double lenBeforeProj, P dirAfterProj)
+{
+	return dirAfterProj * lenBeforeProj / (dot(dirBeforeProj, dirAfterProj));
+}
 //### Global Plane
 
 //### Tri
@@ -357,6 +362,10 @@ IntersectInfo Tri::Collide(const Line& l) const
 IntersectInfo Tri::Collide(const Cylinder& cylinder) const
 {
 	IntersectInfo re;
+	if (cylinder.LineNearlyZero())
+	{
+		return re;
+	}
 	//https://blog.csdn.net/qq_41524721/article/details/116141905?spm=1001.2014.3001.5501
 	//步骤一 3点在cylinder内测试
 	bool b1 = cylinder.IsPointInside(p1);
@@ -364,6 +373,8 @@ IntersectInfo Tri::Collide(const Cylinder& cylinder) const
 	bool b3 = cylinder.IsPointInside(p3);
 	if (b1 || b2 || b3)
 	{
+		//还未补全
+		abort();
 		re.result = true;
 		return re;
 	}
@@ -373,7 +384,7 @@ IntersectInfo Tri::Collide(const Cylinder& cylinder) const
 	IntersectInfo e3 = Intersect(Line(p3, p1),cylinder);
 	if (e1 || e2 || e3)
 	{
-		re.result = true;
+		re = e1 ? e1 : (e2 ? e2 : e3);
 		return re;
 	}
 
@@ -382,6 +393,8 @@ IntersectInfo Tri::Collide(const Cylinder& cylinder) const
 	IntersectInfo c = Intersect(cylinder, *this);
 	if (c.result && IsPointInside(c.hitP))
 	{
+		//还未补全
+		abort();
 		re.result = true;
 		return re;
 	}
@@ -407,7 +420,10 @@ IntersectInfo Tri::Collide(const Capsule& cap) const
 	IntersectInfo b3 = Collide(cap.GetCylinder());
 	if (b3)
 	{
-		abort();
+		//???
+		P cen = b3.hitP;
+		P dir = -cap.dir();
+		b3.hitP = Ray(cap,*this).hitP + project(n, cap.r, dir);
 		return b3;
 	}
 	IntersectInfo bs1 = Collide(cap.GetS1());
@@ -584,6 +600,15 @@ IntersectInfo Intersect(const Line& line, const Cylinder& cylinder)
 	if (b1 || b2)
 	{
 		re.result = true;
+		if (b1&&b2)
+		{
+			P cen = (p1 + p2) / 2;
+			re.hitP = cen;
+		}
+		else
+		{
+			abort();
+		}
 	}
 	return re;
 }
@@ -596,7 +621,6 @@ IntersectInfo Intersect(const Line& line, const Plane& plane)
 		return re;
 	}
 	//原理：https://blog.csdn.net/qq_41524721/article/details/103490144
-	P T = line.a - plane.p;
 	double d = -dot(line.a - plane.p, plane.n) / dot(line.dir(), plane.n);
 	if (d <= len(line) && d >= 0)
 	{
@@ -604,6 +628,19 @@ IntersectInfo Intersect(const Line& line, const Plane& plane)
 		re.d = d;
 		re.hitP = line.a + d * line.dir();
 	}
+	return re;
+}
+
+IntersectInfo Ray(const Line& line, const Plane& plane)
+{
+	IntersectInfo re;
+	if (line.LineNearlyZero())
+	{
+		return re;
+	}
+	double d = -dot(line.a - plane.p, plane.n) / dot(line.dir(), plane.n);
+	re.hitP = line.a + d * line.dir();
+	re.result = true;
 	return re;
 }
 //### Global

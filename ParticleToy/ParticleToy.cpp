@@ -110,7 +110,7 @@ int main()
 		double nowRate = pow(1 - F / 180.0,1);
 		physic->RelationRate = nowRate;
 	};
-	//op->AddBeforeTickFunc(f1);
+	op->AddBeforeTickFunc(f1);
 
 	op->Evolve(0);
 	//op->DebugSay();

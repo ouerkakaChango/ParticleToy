@@ -94,6 +94,7 @@ public:
 	bool isDefined = false;
 };
 P project(P pos, const Plane& plane);
+P project(P dirBeforeProj, double lenBeforeProj, P dirAfterProj);
 
 class Tri:public Plane
 {
@@ -123,3 +124,4 @@ ShapeHull M_Add(const Tri& tri, const Sphere& s);
 
 IntersectInfo Intersect(const Line& line, const Cylinder& cylinder);
 IntersectInfo Intersect(const Line& line, const Plane& plane);
+IntersectInfo Ray(const Line& line, const Plane& plane);
