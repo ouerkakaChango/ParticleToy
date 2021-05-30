@@ -146,6 +146,9 @@
     <ClCompile Include="..\include\Base\TickUtility.cpp">
       <Filter>源文件\Base</Filter>
     </ClCompile>
+    <ClCompile Include="..\Backup\molecule.cpp">
+      <Filter>资源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Backup\testStandard.txt">
