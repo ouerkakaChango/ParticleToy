@@ -4,7 +4,10 @@
 #include "pch.h"
 #include <iostream>
 
-#include "../include/Base/Spaces/Spaces.h"
+#include "../include/Base/rayTraceRender/rayTraceWorld.h"
+
+//### 架构心得
+//1.基本的Space+Evolver+Solver一套，如同template,如同原点。
 
 //### 应用
 //ParticleToy第四期应用：光子渲染
@@ -18,9 +21,17 @@
 //6.将眼画布上的颜色输出txt画布文件，外部python用pillow转画布文件为图片
 //7.CUDA加速，首先是平行计算单光束和每个三角面判断相交
 
+//8.为了渲染效果，改rayCast为rayTrace，改三角面相交为场景sdf sphere rayTrace。CUDA加速的是每条ray与场景的Intersect
+//9.放置一个球体在(0,0,-5)，半径为1
+//10.放置屏幕x属于[-1,1]，y根据分辨率变化的screen，eye在(0,1,0)对每个像素中心发射ray(trace束)
+
 int main()
 {
+	rayTraceWorld* world = new rayTraceWorld;
+	world->SetTraceSettings(1);
+	rayTraceWorldR* op = (rayTraceWorldR*)world->r[0];
+	op->PutShape(new Sphere(P(0, 0, -5), 1.0),"Sphere1");
 
-
+	op->SayI();
 	return 0;
 }

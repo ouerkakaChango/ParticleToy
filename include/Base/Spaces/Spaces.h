@@ -66,8 +66,6 @@ class Space3DR : public R
 	void SayO() override;
 };
 
-//i:time,space3D
-//o:spaceD
 class MinkowskiSpace : public Time, public Space3D
 {
 	THISY(MinkowskiSpace)

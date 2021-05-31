@@ -31,6 +31,18 @@
     <Filter Include="源文件\Base\Spaces">
       <UniqueIdentifier>{1e75eb94-4248-4987-8365-b0013989d547}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Base\photonRender">
+      <UniqueIdentifier>{03a556f8-88e8-4c27-9438-81f1277b37a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Base\photonRender">
+      <UniqueIdentifier>{9c4ad404-3189-41fd-aeaa-eae1890c10da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Base\rayTraceRender">
+      <UniqueIdentifier>{64a3ab3d-459d-4fa9-b308-c09f8458a0aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Base\rayTraceRender">
+      <UniqueIdentifier>{536d9a18-1a1a-436a-a8d7-dc980d8cf354}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -92,6 +104,15 @@
     </ClInclude>
     <ClInclude Include="..\include\Base\Spaces\Terrain.h">
       <Filter>头文件\Base\Spaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Base\photonRender\photonWorld.h">
+      <Filter>头文件\Base\photonRender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Base\rayTraceRender\rayTraceWorld.h">
+      <Filter>头文件\Base\rayTraceRender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Base\Object.h">
+      <Filter>头文件\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -166,6 +187,15 @@
     </ClCompile>
     <ClCompile Include="..\include\Base\Spaces\Terrain.cpp">
       <Filter>源文件\Base\Spaces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\photonRender\photonWorld.cpp">
+      <Filter>源文件\Base\photonRender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\rayTraceRender\rayTraceWorld.cpp">
+      <Filter>源文件\Base\rayTraceRender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\Object.cpp">
+      <Filter>源文件\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
