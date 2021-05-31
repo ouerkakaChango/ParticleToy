@@ -28,6 +28,11 @@ public:
 	P hitP;
 };
 
+class Ray : public Shape
+{
+
+};
+
 class Line : public Shape
 {
 public:
@@ -124,4 +129,4 @@ ShapeHull M_Add(const Tri& tri, const Sphere& s);
 
 IntersectInfo Intersect(const Line& line, const Cylinder& cylinder);
 IntersectInfo Intersect(const Line& line, const Plane& plane);
-IntersectInfo Ray(const Line& line, const Plane& plane);
+IntersectInfo RayIntersect(const Line& line, const Plane& plane);

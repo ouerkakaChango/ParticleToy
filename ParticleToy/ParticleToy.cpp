@@ -4,7 +4,8 @@
 #include "pch.h"
 #include <iostream>
 
-#include "../include/Base/rayTraceRender/rayTraceWorld.h"
+#include "rayTraceRender/rayTraceWorld.h"
+#include "rayTraceRender/rayTraceScreen.h"
 
 //### 架构心得
 //1.基本的Space+Evolver+Solver一套，如同template,如同原点。
@@ -31,7 +32,9 @@ int main()
 	world->SetTraceSettings(1);
 	rayTraceWorldR* op = (rayTraceWorldR*)world->r[0];
 	op->PutShape(new Sphere(P(0, 0, -5), 1.0),"Sphere1");
-
+	auto screen = new rayTraceScreen(1080,720);
+	op->PutScreen(screen);
+	op->Evolve();
 	op->SayI();
 	return 0;
 }

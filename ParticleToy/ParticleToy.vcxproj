@@ -172,7 +172,9 @@
     <ClInclude Include="..\include\Base\FastPnt.h" />
     <ClInclude Include="..\include\Base\Object.h" />
     <ClInclude Include="..\include\Base\photonRender\photonWorld.h" />
+    <ClInclude Include="..\include\Base\rayTraceRender\rayTraceScreen.h" />
     <ClInclude Include="..\include\Base\rayTraceRender\rayTraceWorld.h" />
+    <ClInclude Include="..\include\Base\rayTraceRender\TraceRay.h" />
     <ClInclude Include="..\include\Base\Relation.h" />
     <ClInclude Include="..\include\Base\Solvers\ColliMergeSolver.h" />
     <ClInclude Include="..\include\Base\Solvers\CollisionSolver.h" />
@@ -200,7 +202,9 @@
     <ClCompile Include="..\include\Base\FastPnt.cpp" />
     <ClCompile Include="..\include\Base\Object.cpp" />
     <ClCompile Include="..\include\Base\photonRender\photonWorld.cpp" />
+    <ClCompile Include="..\include\Base\rayTraceRender\rayTraceScreen.cpp" />
     <ClCompile Include="..\include\Base\rayTraceRender\rayTraceWorld.cpp" />
+    <ClCompile Include="..\include\Base\rayTraceRender\TraceRay.cpp" />
     <ClCompile Include="..\include\Base\Relation.cpp" />
     <ClCompile Include="..\include\Base\Solvers\ColliMergeSolver.cpp" />
     <ClCompile Include="..\include\Base\Solvers\CollisionSolver.cpp" />

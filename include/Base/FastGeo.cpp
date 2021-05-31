@@ -423,7 +423,7 @@ IntersectInfo Tri::Collide(const Capsule& cap) const
 		//???
 		P cen = b3.hitP;
 		P dir = -cap.dir();
-		b3.hitP = Ray(cap,*this).hitP + project(n, cap.r, dir);
+		b3.hitP = RayIntersect(cap,*this).hitP + project(n, cap.r, dir);
 		return b3;
 	}
 	IntersectInfo bs1 = Collide(cap.GetS1());
@@ -631,7 +631,7 @@ IntersectInfo Intersect(const Line& line, const Plane& plane)
 	return re;
 }
 
-IntersectInfo Ray(const Line& line, const Plane& plane)
+IntersectInfo RayIntersect(const Line& line, const Plane& plane)
 {
 	IntersectInfo re;
 	if (line.LineNearlyZero())

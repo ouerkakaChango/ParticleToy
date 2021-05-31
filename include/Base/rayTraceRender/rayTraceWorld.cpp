@@ -23,12 +23,23 @@ void rayTraceWorld::SetTraceSettings(int bounceNum_)
 {
 	bounceNum = bounceNum_;
 }
+
+void rayTraceWorld::Evolve()
+{
+	for (int i = 0; i < bounceNum; i++)
+	{
+		for (auto& screen : screens)
+		{
+			screen->Trace(this);
+		}
+	}
+}
 //### rayTraceWorld
 
 //### rayTraceWorldR
 void rayTraceWorldR::SayI()
 {
-	for (auto& obj : objs)
+	for (auto& obj : y->objs)
 	{
 		cout << obj->name << endl;
 	}
@@ -40,6 +51,16 @@ void rayTraceWorldR::PutShape(Shape* shape, const str& name)
 	obj->SetShape(shape);
 	obj->name = name;
 
-	objs += obj;
+	y->objs += obj;
+}
+
+void rayTraceWorldR::PutScreen(rayTraceScreen* screen)
+{
+	y->screens += screen;
+}
+
+void rayTraceWorldR::Evolve()
+{
+	y->Evolve();
 }
 //### rayTraceWorldR

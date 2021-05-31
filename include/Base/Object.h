@@ -1,3 +1,4 @@
+#pragma once
 #include "Taiji.h"
 
 //i[0]:Shape
