@@ -25,15 +25,18 @@
     <Filter Include="源文件\Base\Solvers">
       <UniqueIdentifier>{b345cb86-48c0-44d6-a93b-f2fd166e13da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Base\Spaces">
+      <UniqueIdentifier>{467cf648-369f-4361-a124-d8ee09ac5912}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Base\Spaces">
+      <UniqueIdentifier>{1e75eb94-4248-4987-8365-b0013989d547}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\include\Base\Taiji.h">
-      <Filter>头文件\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Base\Spaces.h">
       <Filter>头文件\Base</Filter>
     </ClInclude>
     <ClInclude Include="..\include\Base\Container.h">
@@ -81,6 +84,15 @@
     <ClInclude Include="..\include\Base\TickUtility.h">
       <Filter>头文件\Base</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\Base\Spaces\Spaces.h">
+      <Filter>头文件\Base\Spaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Base\Spaces\Grid.h">
+      <Filter>头文件\Base\Spaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Base\Spaces\Terrain.h">
+      <Filter>头文件\Base\Spaces</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -90,9 +102,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\include\Base\Taiji.cpp">
-      <Filter>源文件\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="..\include\Base\Spaces.cpp">
       <Filter>源文件\Base</Filter>
     </ClCompile>
     <ClCompile Include="..\include\Base\Container.cpp">
@@ -148,6 +157,15 @@
     </ClCompile>
     <ClCompile Include="..\Backup\molecule.cpp">
       <Filter>资源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\Spaces\Spaces.cpp">
+      <Filter>源文件\Base\Spaces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\Spaces\Grid.cpp">
+      <Filter>源文件\Base\Spaces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\Spaces\Terrain.cpp">
+      <Filter>源文件\Base\Spaces</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

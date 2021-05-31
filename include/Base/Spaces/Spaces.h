@@ -1,10 +1,10 @@
 #pragma once 
 
-#include "Taiji.h"
-#include "Fast3D.h"
-#include "Evolver.h"
-#include "FastGrid.h"
-#include "TickUtility.h"
+#include "../Taiji.h"
+#include "../Fast3D.h"
+#include "../Evolver.h"
+#include "../FastGrid.h"
+#include "../TickUtility.h"
 
 class Space : public Yang
 {
@@ -106,80 +106,4 @@ class MinkowskiSpaceR : public R
 	//记录所有加入的点的初态
 	arr<Pnt> recordPnts;
 	arr<int2> pntFrames;
-};
-
-class Grid : public EuclideanSpace
-{
-	THISY(Grid)
-	template<class DataClass>
-	void SetGridSettings(int edgeNum, double cellLength)
-	{
-		auto ti = new GridI<DataClass>;
-		i += ti;
-		auto& grid = ti->grid;
-		grid.SetSize(edgeNum, cellLength);
-	}
-
-	template<class DataClass>
-	void SetGrid3DSettings(int edgeX, int edgeY, int edgeZ, double cellLength, const DataClass& defaultData)
-	{
-		auto ti = new Grid3DI<DataClass>;
-		i += ti;
-		auto& grid = ti->grid;
-		grid.SetSize(edgeX, edgeY, edgeZ, cellLength, defaultData);
-	}
-};
-
-template <class DataClass>
-class GridI : public ClassI
-{
-public:
-	FastGrid<DataClass> grid;
-};
-
-template <class DataClass>
-class Grid3DI : public ClassI
-{
-public:
-	FastGrid3D<DataClass> grid;
-};
-
-class GridO : public ClassO
-{
-public:
-
-};
-
-class TerrainAlgo : public GridO
-{
-public:
-};
-
-class EasyTerrainAlgo : public TerrainAlgo
-{
-public:
-	void Create(GridI<double>* terrain, int detailLevel_, double initH_, double roughness_);
-	void InitCorner(double h);
-	void Square();
-	void Diamond();
-	void SubDiamond(const P2& inx1,const P2& inx2, const P2& inxCenter,
-		double h1,double h2,double hc);
-	double Offset();
-	double H(double h1, double h2, double h3, double h4=0.0);
-
-	FastGrid<double>* grid;
-	int detailLevel;
-	double initH;
-	bool bMaxFrac=false;
-	double stepSize = -10000.0;
-	double roughness = 0.3;
-};
-
-class GridR : public R
-{
-	THISR(Grid)
-	void EasyTerrain(double initH, double roughness, int detailLevel = 100);
-	void TerrainToTri(arr<Tri>& triArr);
-	void DebugSay(int mode=1);
-	void DebugOutput(const str& filePath);
 };

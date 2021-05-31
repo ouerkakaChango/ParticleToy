@@ -4,7 +4,7 @@
 #include "pch.h"
 #include <iostream>
 
-#include "../include/Base/Spaces.h"
+#include "../include/Base/Spaces/Spaces.h"
 
 //类设计哲学:
 //1.类名后加后缀，Y为太极，I为阳，O为阴，R为人。阳上有阴阳，阴上有阴阳，以此类推。

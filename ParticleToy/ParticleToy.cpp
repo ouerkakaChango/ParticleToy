@@ -4,7 +4,7 @@
 #include "pch.h"
 #include <iostream>
 
-#include "../include/Base/Spaces.h"
+#include "../include/Base/Spaces/Spaces.h"
 
 //### 应用
 //ParticleToy第四期应用：光子渲染
@@ -16,6 +16,7 @@
 //5.放置“眼画布”，眼画布比相机还简单，不带任何投影矩阵，焦距等。
 //而且特别大，光子打到它上面成为“画布上的一个像素点”（根据画布分辨率不同，事实上可能影响多个）。
 //6.将眼画布上的颜色输出txt画布文件，外部python用pillow转画布文件为图片
+//7.CUDA加速，首先是平行计算单光束和每个三角面判断相交
 
 int main()
 {

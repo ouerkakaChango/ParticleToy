@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -173,7 +173,9 @@
     <ClInclude Include="..\include\Base\Solvers\CollisionSolver.h" />
     <ClInclude Include="..\include\Base\Solvers\PhysicSolver.h" />
     <ClInclude Include="..\include\Base\Solvers\SolverUtility.h" />
-    <ClInclude Include="..\include\Base\Spaces.h" />
+    <ClInclude Include="..\include\Base\Spaces\Grid.h" />
+    <ClInclude Include="..\include\Base\Spaces\Spaces.h" />
+    <ClInclude Include="..\include\Base\Spaces\Terrain.h" />
     <ClInclude Include="..\include\Base\Taiji.h" />
     <ClInclude Include="..\include\Base\TickUtility.h" />
     <ClInclude Include="..\include\Base\Utility.h" />
@@ -196,7 +198,9 @@
     <ClCompile Include="..\include\Base\Solvers\CollisionSolver.cpp" />
     <ClCompile Include="..\include\Base\Solvers\PhysicSolver.cpp" />
     <ClCompile Include="..\include\Base\Solvers\SolverUtility.cpp" />
-    <ClCompile Include="..\include\Base\Spaces.cpp" />
+    <ClCompile Include="..\include\Base\Spaces\Grid.cpp" />
+    <ClCompile Include="..\include\Base\Spaces\Spaces.cpp" />
+    <ClCompile Include="..\include\Base\Spaces\Terrain.cpp" />
     <ClCompile Include="..\include\Base\Taiji.cpp" />
     <ClCompile Include="..\include\Base\TickUtility.cpp" />
     <ClCompile Include="..\include\Base\Utility.cpp" />
