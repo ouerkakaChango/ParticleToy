@@ -2,10 +2,16 @@
 
 //### Shape
 int Shape::uid_count=0;
+
 Shape::Shape()
 {
 	uid_count += 1;
 	uid = uid_count - 1;
+}
+
+double Shape::SDF(P pos)
+{
+	return maxSDF;
 }
 
 IntersectInfo Shape::Collide(const Shape& other)
@@ -478,6 +484,11 @@ Sphere::Sphere(P center_, double r_):
 	center(center_),r(r_)
 {
 
+}
+
+double Sphere::SDF(P pos)
+{
+	return dis(pos, center) - r;
 }
 
 IntersectInfo Sphere::Collide(const Shape& other)

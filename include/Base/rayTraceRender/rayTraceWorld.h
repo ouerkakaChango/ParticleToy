@@ -15,9 +15,11 @@ class rayTraceWorld : public TraceTime, public Space3D
 	THISY(rayTraceWorld)
 	void SetTraceSettings(int bounceNum_);
 	void Evolve();
+	double SDF(P pos);
 
 	arr<Object*> objs;
 	arr<rayTraceScreen*> screens;
+	double maxSDF = 1000.0;
 };
 
 class rayTraceWorldR : public R

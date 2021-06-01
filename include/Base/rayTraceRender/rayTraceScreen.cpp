@@ -17,12 +17,12 @@ void rayTraceScreen::InitRays()
 	double dx = 2.0 / w;
 	double ylen = (2.0*h) / w;
 	
-	P startPos = P(-1.0, -ylen, 0.0) + 0.5*P(dx, dx, 0.0);
+	P startPos = P(-1.0, -ylen/2, 0.0) + 0.5*P(dx, dx, 0.0);
 	for (int j = 0; j < h; j++)
 	{
 		for (int i = 0; i < w; i++)
 		{
-			P endPos = startPos + i*P(dx,dx,0.0);
+			P endPos = startPos + P(i*dx,j*dx,0.0);
 			rays += TraceRay(P(0,0,1),endPos);
 		}
 	}
@@ -46,6 +46,7 @@ void rayTraceScreen::Trace(rayTraceWorld* world)
 			log += percen*100;
 			log += "%...";
 			cout << log << endl;
+			//cout << ray.dir.ToStr() << endl;
 			step += 1;
 		}
 	}

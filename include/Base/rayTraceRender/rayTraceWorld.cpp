@@ -34,6 +34,28 @@ void rayTraceWorld::Evolve()
 		}
 	}
 }
+
+double rayTraceWorld::SDF(P pos)
+{
+	//!!!
+	if (objs.size() == 0)
+	{
+		return maxSDF;
+	}
+	double minDis = maxSDF;
+	for (auto& obj : objs)
+	{
+		if (obj->shape != nullptr)
+		{
+			double tDis = obj->shape->SDF(pos);
+			if (tDis < minDis)
+			{
+				minDis = tDis;
+			}
+		}
+	}
+	return minDis;
+}
 //### rayTraceWorld
 
 //### rayTraceWorldR
