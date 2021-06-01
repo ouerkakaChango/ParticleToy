@@ -28,11 +28,6 @@ public:
 	P hitP;
 };
 
-class Ray : public Shape
-{
-
-};
-
 class Line : public Shape
 {
 public:
