@@ -10,7 +10,9 @@ public:
 	rayTraceScreen(int w_, int h_);
 	void InitRays();
 	void Trace(rayTraceWorld* world);
+	void GatherInfo(const TraceInfo& info, int i, int j);
 
 	int w, h;
-	arr<TraceRay> rays;
+	arr2<TraceRay> rays;
+	arr2<P> debugFrameBuffer;
 };

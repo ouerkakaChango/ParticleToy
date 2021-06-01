@@ -9,17 +9,25 @@ enum TraceMode
 	TraceMode_SphereTracing,
 };
 
+class TraceInfo
+{
+public:
+	bool bHit = false;
+	P debugColor;
+};
+
 class TraceRay
 {
 public:
+	TraceRay();
 	TraceRay(P a, P b);
-	void Trace(rayTraceWorld* world);
-	void SphereTracing(rayTraceWorld* world);
+	TraceInfo Trace(rayTraceWorld* world);
+	TraceInfo SphereTracing(rayTraceWorld* world);
 	P Ray(double len);
 
 	Line line;
 	TraceMode mode = TraceMode_SphereTracing;
-	const double startLen = 5.0;
-	const double traceThre = 0.01;
+	double startLen = 5.0;
+	double traceThre = 0.01;
 	P o,dir;
 };

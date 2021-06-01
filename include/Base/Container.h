@@ -95,13 +95,10 @@ public:
 	{
 		x = x_;
 		y = y_;
-		data_.resize(y);
-		for (int j = 0; j < y; j++)
+		data_.resize(x);
+		for (int i = 0; i < x; i++)
 		{
-			for (int i = 0; i < x; i++)
-			{
-				data_[j].resize(x);
-			}
+			data_[i].resize(y);
 		}
 	}
 

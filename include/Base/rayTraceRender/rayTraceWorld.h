@@ -28,4 +28,5 @@ class rayTraceWorldR : public R
 	void PutShape(Shape* shape, const str& name="");
 	void PutScreen(rayTraceScreen* screen);
 	void Evolve();
+	void SaveScreenDebugFrame(rayTraceScreen* screen,const str& pngPath);
 };

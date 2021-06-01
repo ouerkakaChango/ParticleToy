@@ -1,6 +1,7 @@
 #include "rayTraceWorld.h"
 
 #include <iostream>
+#include <fstream>
 using std::cout;
 using std::endl;
 
@@ -84,5 +85,24 @@ void rayTraceWorldR::PutScreen(rayTraceScreen* screen)
 void rayTraceWorldR::Evolve()
 {
 	y->Evolve();
+}
+
+void rayTraceWorldR::SaveScreenDebugFrame(rayTraceScreen* screen, const str& filePath)
+{
+	std::cout << "ATTENTION: CPU Writing FrameBuffer...\n";
+	std::ofstream f(filePath.data, std::ios::out);
+	f << screen->w << " " << screen->h << endl;
+	for (int j = 0; j < screen->h; j++)
+	{
+		for (int i = 0; i < screen->w; i++)
+		{
+			auto pixel = screen->debugFrameBuffer[i][j];
+			int R = pixel.x * 255;
+			int G = pixel.y * 255;
+			int B = pixel.z * 255;
+			f << R << " " << G << " " << B << endl;
+		}
+	}
+	std::cout << "ATTENTION: CPU Writing FrameBuffer done\n";
 }
 //### rayTraceWorldR

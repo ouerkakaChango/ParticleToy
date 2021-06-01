@@ -25,6 +25,7 @@
 //8.为了渲染效果，改rayCast为rayTrace，改三角面相交为场景sdf sphere rayTrace。CUDA加速的是每条ray与场景的Intersect
 //9.放置一个球体在(0,0,-5)，半径为1
 //10.放置屏幕x属于[-1,1]，y根据分辨率变化的screen，eye在(0,1,0)对每个像素中心发射ray(trace束)
+//11.将debugFrameBuffer的内容保存成png
 
 int main()
 {
@@ -35,6 +36,7 @@ int main()
 	auto screen = new rayTraceScreen(1080,720);
 	op->PutScreen(screen);
 	op->Evolve();
-	op->SayI();
+	op->SaveScreenDebugFrame(screen,"D:\\PToyCache\\z.txt");
+	//op->SayI();
 	return 0;
 }

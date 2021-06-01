@@ -2,6 +2,11 @@
 
 #include "rayTraceWorld.h"
 
+TraceRay::TraceRay()
+{
+
+}
+
 TraceRay::TraceRay(P a, P b)
 {
 	line.Set(a, b);
@@ -9,11 +14,11 @@ TraceRay::TraceRay(P a, P b)
 	dir = line.dir();
 }
 
-void TraceRay::Trace(rayTraceWorld* world)
+TraceInfo TraceRay::Trace(rayTraceWorld* world)
 {
 	if (mode == TraceMode_SphereTracing)
 	{
-		SphereTracing(world);
+		return SphereTracing(world);
 	}
 }
 
@@ -23,16 +28,19 @@ P TraceRay::Ray(double len)
 	return o;
 }
 
-void TraceRay::SphereTracing(rayTraceWorld* world)
+TraceInfo TraceRay::SphereTracing(rayTraceWorld* world)
 {
+	TraceInfo re;
 	double dis = world->SDF(Ray(startLen));
 	while (dis > traceThre)
 	{
 		dis = world->SDF(Ray(dis));
 		if (dis >= world->maxSDF)
 		{
-			return;
+			return re;
 		}
 	}
-	int aa = 0;
+	re.bHit = true;
+	re.debugColor = P(1, 0, 0);
+	return re;
 }
