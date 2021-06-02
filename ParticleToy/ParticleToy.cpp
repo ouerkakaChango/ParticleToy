@@ -30,7 +30,7 @@
 int main()
 {
 	rayTraceWorld* world = new rayTraceWorld;
-	world->SetTraceSettings(1);
+	world->SetTraceSettings(2);
 	rayTraceWorldR* op = (rayTraceWorldR*)world->r[0];
 	op->PutShape(new Sphere(P(0, 0, -5), 1.0),"Sphere1");
 	auto screen = new rayTraceScreen(1080,720);

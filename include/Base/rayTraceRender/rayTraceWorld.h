@@ -9,7 +9,8 @@ class TraceTime : public Ying
 {
 	THISY(TraceTime)
 
-	int bounceNum=0;
+	int bounceNum = 0;
+	int nowBounce = 0;
 };
 
 class rayTraceWorld : public TraceTime, public Space3D
@@ -19,11 +20,13 @@ class rayTraceWorld : public TraceTime, public Space3D
 	void Evolve();
 	TraceInfo SDF(P pos);
 	P CalculateMaterial(const TraceInfo& info);
+	P BlendColor(const TraceInfo& info);
 
 	arr<Object*> objs;
 	arr<rayTraceScreen*> screens;
 	arr<Light*> lights;
 	double maxSDF = 1000.0;
+	rayTraceBounceMode bounceMode = rayTraceBounceMode_cheap;
 };
 
 class rayTraceWorldR : public R

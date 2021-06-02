@@ -32,6 +32,7 @@ void rayTraceWorld::Evolve()
 	{
 		for (auto& screen : screens)
 		{
+			nowBounce += 1;
 			screen->Trace(this);
 		}
 	}
@@ -76,6 +77,24 @@ P rayTraceWorld::CalculateMaterial(const TraceInfo& info)
 			P n = info.hitN;
 			P v = -info.dir;
 			color = mat->Calculate(lights, n, v);
+		}
+	}
+	return color;
+}
+
+P rayTraceWorld::BlendColor(const TraceInfo& info)
+{
+	P color = info.color;
+	if (info.obj && info.obj->shape)
+	{
+		auto mat = info.obj->material;
+		if (mat != nullptr)
+		{
+			if (typeStr(mat->i[0]) == "BlinnPhongI")
+			{
+				auto param = Cast<BlinnPhongI*>(mat->i[0]);
+				return color + param->reflectness * info.color;
+			}
 		}
 	}
 	return color;

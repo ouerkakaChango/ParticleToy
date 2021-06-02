@@ -47,6 +47,10 @@ void rayTraceScreen::Trace(rayTraceWorld* world)
 			auto& ray = rays[i][j];
 			auto info = ray.Trace(world);
 			GatherInfo(info,i,j);
+			if (world->nowBounce < world->bounceNum)
+			{
+				ray.Bounce(world->bounceMode,info);
+			}
 			count += 1.0;
 			double percen = count /(w*h) ;
 			if (int(percen * 100 / logStep) == step)
@@ -69,8 +73,9 @@ void rayTraceScreen::GatherInfo(const TraceInfo& info, int i, int j)
 	if (info.bHit)
 	{
 		debugFrameBuffer[i][j] = info.debugColor;
-		colorBuffer[i][j] = info.color;
 		normalBuffer[i][j] = info.hitN;
 		posBuffer[i][j] = info.hitPos;
+
+		colorBuffer[i][j] = rays[i][j].color;
 	}
 }

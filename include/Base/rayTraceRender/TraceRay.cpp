@@ -48,5 +48,11 @@ TraceInfo TraceRay::SphereTracing(rayTraceWorld* world)
 	info.hitN = info.obj->shape->SDFNormal(o);
 	info.debugColor = P(1, 0, 0);
 	info.color = world->CalculateMaterial(info);
+	color = world->BlendColor(info);
 	return info;
+}
+
+void TraceRay::Bounce(rayTraceBounceMode bounceMode, const TraceInfo& info)
+{
+	dir = reflect(dir, info.hitN);
 }
