@@ -129,6 +129,9 @@
     <ClInclude Include="..\include\Base\Render\Material.h">
       <Filter>头文件\Base\Render</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\Base\Render\Lights.h">
+      <Filter>头文件\Base\Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -219,6 +222,9 @@
       <Filter>源文件\Base\rayTraceRender</Filter>
     </ClCompile>
     <ClCompile Include="..\include\Base\Render\Material.cpp">
+      <Filter>源文件\Base\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\Render\Lights.cpp">
       <Filter>源文件\Base\Render</Filter>
     </ClCompile>
   </ItemGroup>

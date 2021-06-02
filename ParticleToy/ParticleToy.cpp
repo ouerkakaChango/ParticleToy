@@ -35,8 +35,11 @@ int main()
 	op->PutShape(new Sphere(P(0, 0, -5), 1.0),"Sphere1");
 	auto screen = new rayTraceScreen(1080,720);
 	op->PutScreen(screen);
+	auto light = new DirectionalLight(P(-1, -1, 0), P(1, 1, 1));
+	op->PutLight(light);
 	op->Evolve();
-	//op->SaveScreenDebugFrame(screen,"D:\\PToyCache\\z.txt");
+	op->SaveScreenBufferFrame(screen,"color","D:\\PToyCache\\z.txt");
+	//system("D:\\PToyCache\\runTransToImg.bat");
 	//op->SayI();
 	return 0;
 }

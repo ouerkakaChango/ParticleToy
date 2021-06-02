@@ -67,13 +67,18 @@ TraceInfo rayTraceWorld::SDF(P pos)
 
 P rayTraceWorld::CalculateMaterial(const TraceInfo& info)
 {
-	//???
-	auto mat = info.obj->material;
-	if (mat != nullptr)
+	P color;
+	if (info.obj && info.obj->shape)
 	{
-		//mat->Calculate(lights,n,v);
+		auto mat = info.obj->material;
+		if (mat != nullptr)
+		{
+			P n = info.hitN;
+			P v = -info.dir;
+			color = mat->Calculate(lights, n, v);
+		}
 	}
-	return P(0, 0, 0);
+	return color;
 }
 //### rayTraceWorld
 
@@ -100,12 +105,17 @@ void rayTraceWorldR::PutScreen(rayTraceScreen* screen)
 	y->screens += screen;
 }
 
+void rayTraceWorldR::PutLight(DirectionalLight* light)
+{
+	y->lights += light;
+}
+
 void rayTraceWorldR::Evolve()
 {
 	y->Evolve();
 }
 
-void rayTraceWorldR::SaveScreenDebugFrame(rayTraceScreen* screen, const str& filePath)
+void rayTraceWorldR::SaveScreenBufferFrame(rayTraceScreen* screen, const str& bufferName, const str& filePath)
 {
 	std::cout << "ATTENTION: CPU Writing FrameBuffer...\n";
 	std::ofstream f(filePath.data, std::ios::out);
@@ -114,7 +124,23 @@ void rayTraceWorldR::SaveScreenDebugFrame(rayTraceScreen* screen, const str& fil
 	{
 		for (int i = 0; i < screen->w; i++)
 		{
-			auto pixel = screen->debugFrameBuffer[i][j];
+			P pixel;
+			if (bufferName == "debug")
+			{
+				pixel = screen->debugFrameBuffer[i][j];
+			}
+			else if (bufferName == "color")
+			{
+				pixel = screen->colorBuffer[i][j];
+			}
+			else if (bufferName == "normal")
+			{
+				pixel = screen->normalBuffer[i][j];
+			}
+			else if (bufferName == "pos")
+			{
+				pixel = screen->posBuffer[i][j];
+			}
 			int R = Cast<int>(pixel.x * 255);
 			int G = Cast<int>(pixel.y * 255);
 			int B = Cast<int>(pixel.z * 255);

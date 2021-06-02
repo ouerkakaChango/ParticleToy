@@ -14,6 +14,15 @@ double Shape::SDF(P pos)
 	return maxSDF;
 }
 
+P Shape::SDFNormal(P p)
+{
+	return norm(P(
+		SDF(P(p.x + epsilon, p.y, p.z)) - SDF(P(p.x - epsilon, p.y, p.z)),
+		SDF(P(p.x, p.y + epsilon, p.z)) - SDF(P(p.x, p.y - epsilon, p.z)),
+		SDF(P(p.x, p.y, p.z + epsilon)) - SDF(P(p.x, p.y, p.z - epsilon))
+	));
+}
+
 IntersectInfo Shape::Collide(const Shape& other)
 {
 	IntersectInfo re;
@@ -489,6 +498,11 @@ Sphere::Sphere(P center_, double r_):
 double Sphere::SDF(P pos)
 {
 	return dis(pos, center) - r;
+}
+
+P Sphere::SDFNormal(P pos)
+{
+	return norm(pos - center);
 }
 
 IntersectInfo Sphere::Collide(const Shape& other)

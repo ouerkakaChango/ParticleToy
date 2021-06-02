@@ -13,11 +13,14 @@ class TraceInfo
 {
 public:
 	bool bHit = false;
-	P debugColor;
-	P color;
+	P dir;
 	P hitPos;
+	P hitN;
 	double dis=0.0;
 	Object* obj = nullptr;
+
+	P debugColor;
+	P color;
 };
 
 class TraceRay

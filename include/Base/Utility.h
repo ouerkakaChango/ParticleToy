@@ -13,6 +13,3 @@ T Cast(double n)
 {
 	return static_cast<T>(n);
 }
-
-template<>
-int Cast(double n);

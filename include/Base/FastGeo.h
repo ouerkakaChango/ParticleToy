@@ -8,6 +8,7 @@ class Shape
 public:
 	Shape();
 	virtual double SDF(P pos);
+	virtual P SDFNormal(P pos);
 	virtual IntersectInfo Collide(const Shape& other);
 	virtual bool IsPointInside(P pos) const;
 	virtual bool InsideOf(const Shape& other) const;
@@ -16,6 +17,7 @@ public:
 	static int uid_count;
 	int uid = 0;
 	double maxSDF = 1000000.0;
+	double epsilon = 0.0001;
 };
 
 class IntersectInfo
@@ -52,6 +54,7 @@ public:
 	Sphere(double r_);
 	Sphere(P center_, double r_);
 	double SDF(P pos) override;
+	P SDFNormal(P pos) override;
 	IntersectInfo Collide(const Shape& other) override;
 	bool IsPointInside(P pos) const override;
 	bool InsideOf(const Shape& other) const override;

@@ -15,5 +15,7 @@ public:
 	int w, h;
 	arr2<TraceRay> rays;
 	arr2<P> debugFrameBuffer;
+	arr2<P> normalBuffer;
 	arr2<P> colorBuffer;
+	arr2<P> posBuffer;
 };

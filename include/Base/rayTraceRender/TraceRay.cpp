@@ -33,6 +33,7 @@ P TraceRay::Ray(double len)
 TraceInfo TraceRay::SphereTracing(rayTraceWorld* world)
 {
 	TraceInfo info = world->SDF(Ray(startLen));
+	info.dir = dir;
 	while (info.dis > traceThre)
 	{
 		info = world->SDF(Ray(info.dis));
@@ -42,7 +43,9 @@ TraceInfo TraceRay::SphereTracing(rayTraceWorld* world)
 		}
 	}
 	info.bHit = true;
+	info.dir = dir;
 	info.hitPos = o;
+	info.hitN = info.obj->shape->SDFNormal(o);
 	info.debugColor = P(1, 0, 0);
 	info.color = world->CalculateMaterial(info);
 	return info;

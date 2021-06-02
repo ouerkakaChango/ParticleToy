@@ -225,9 +225,18 @@ double dis2(const P& p1, const P& p2)
 	P d = p2 - p1;
 	return dot(d, d);
 }
+
+P saturate(const P& p)
+{
+	return P(
+		clamp(p.x, 0, 1),
+		clamp(p.y, 0, 1),
+		clamp(p.z, 0, 1));
+}
 //### Global P
 
 //### Global Utility
+
 bool SolveQuadra(double a, double b, double c, double& x1, double& x2)
 {
 	if (abs(a) < 0.00001)
@@ -296,6 +305,22 @@ double QuadraFiliter(double x1, double x2, double xmin, double xmax)
 		abort();
 	}
 	return 0.0;
+}
+
+double clamp(double x, double low, double high)
+{
+	if (high < low)
+	{
+		abort();
+	}
+	x = x < low ? low : x;
+	x = x > high ? high : x;
+	return x;
+}
+
+double max(double a, double b)
+{
+	return a > b ? a : b;
 }
 
 double sign(double n)

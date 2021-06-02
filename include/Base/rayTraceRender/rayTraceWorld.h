@@ -1,7 +1,9 @@
 #pragma once
 #include "Spaces/Spaces.h"
+
 #include "Object.h"
 #include "rayTraceScreen.h"
+#include "Render/Lights.h"
 
 class TraceTime : public Ying
 {
@@ -20,6 +22,7 @@ class rayTraceWorld : public TraceTime, public Space3D
 
 	arr<Object*> objs;
 	arr<rayTraceScreen*> screens;
+	arr<Light*> lights;
 	double maxSDF = 1000.0;
 };
 
@@ -28,6 +31,7 @@ class rayTraceWorldR : public R
 	THISR(rayTraceWorld)
 	void PutShape(Shape* shape, const str& name="");
 	void PutScreen(rayTraceScreen* screen);
+	void PutLight(DirectionalLight* light);
 	void Evolve();
-	void SaveScreenDebugFrame(rayTraceScreen* screen,const str& pngPath);
+	void SaveScreenBufferFrame(rayTraceScreen* screen, const str& bufferName, const str& pngPath);
 };
