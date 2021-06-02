@@ -15,6 +15,7 @@ void rayTraceScreen::InitRays()
 {
 	rays.resize(w, h);
 	debugFrameBuffer.resize(w, h);
+	colorBuffer.resize(w, h);
 	//屏幕x属于[-1,1]，y根据分辨率变化的screen，eye在(0,1,0)对每个像素中心发射ray(trace束)
 	double dx = 2.0 / w;
 	double ylen = (2.0*h) / w;
@@ -66,5 +67,6 @@ void rayTraceScreen::GatherInfo(const TraceInfo& info, int i, int j)
 	if (info.bHit)
 	{
 		debugFrameBuffer[i][j] = info.debugColor;
+		colorBuffer[i][j] = info.color;
 	}
 }

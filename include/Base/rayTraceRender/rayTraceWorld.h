@@ -15,7 +15,8 @@ class rayTraceWorld : public TraceTime, public Space3D
 	THISY(rayTraceWorld)
 	void SetTraceSettings(int bounceNum_);
 	void Evolve();
-	double SDF(P pos);
+	TraceInfo SDF(P pos);
+	P CalculateMaterial(const TraceInfo& info);
 
 	arr<Object*> objs;
 	arr<rayTraceScreen*> screens;

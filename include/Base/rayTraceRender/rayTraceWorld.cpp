@@ -1,5 +1,6 @@
 #include "rayTraceWorld.h"
 
+#include "Render/Material.h"
 #include <iostream>
 #include <fstream>
 using std::cout;
@@ -36,14 +37,17 @@ void rayTraceWorld::Evolve()
 	}
 }
 
-double rayTraceWorld::SDF(P pos)
+TraceInfo rayTraceWorld::SDF(P pos)
 {
 	//!!!
+	TraceInfo re;
+	re.dis = maxSDF;
 	if (objs.size() == 0)
 	{
-		return maxSDF;
+		return re;
 	}
 	double minDis = maxSDF;
+	Object* tObj = nullptr;
 	for (auto& obj : objs)
 	{
 		if (obj->shape != nullptr)
@@ -52,10 +56,24 @@ double rayTraceWorld::SDF(P pos)
 			if (tDis < minDis)
 			{
 				minDis = tDis;
+				tObj = obj;
 			}
 		}
 	}
-	return minDis;
+	re.dis = minDis;
+	re.obj = tObj;
+	return re;
+}
+
+P rayTraceWorld::CalculateMaterial(const TraceInfo& info)
+{
+	//???
+	auto mat = info.obj->material;
+	if (mat != nullptr)
+	{
+		//mat->Calculate(lights,n,v);
+	}
+	return P(0, 0, 0);
 }
 //### rayTraceWorld
 
@@ -97,9 +115,9 @@ void rayTraceWorldR::SaveScreenDebugFrame(rayTraceScreen* screen, const str& fil
 		for (int i = 0; i < screen->w; i++)
 		{
 			auto pixel = screen->debugFrameBuffer[i][j];
-			int R = pixel.x * 255;
-			int G = pixel.y * 255;
-			int B = pixel.z * 255;
+			int R = Cast<int>(pixel.x * 255);
+			int G = Cast<int>(pixel.y * 255);
+			int B = Cast<int>(pixel.z * 255);
 			f << R << " " << G << " " << B << endl;
 		}
 	}

@@ -16,10 +16,12 @@ TraceRay::TraceRay(P a, P b)
 
 TraceInfo TraceRay::Trace(rayTraceWorld* world)
 {
+	TraceInfo re;
 	if (mode == TraceMode_SphereTracing)
 	{
 		return SphereTracing(world);
 	}
+	return re;
 }
 
 P TraceRay::Ray(double len)
@@ -30,17 +32,18 @@ P TraceRay::Ray(double len)
 
 TraceInfo TraceRay::SphereTracing(rayTraceWorld* world)
 {
-	TraceInfo re;
-	double dis = world->SDF(Ray(startLen));
-	while (dis > traceThre)
+	TraceInfo info = world->SDF(Ray(startLen));
+	while (info.dis > traceThre)
 	{
-		dis = world->SDF(Ray(dis));
-		if (dis >= world->maxSDF)
+		info = world->SDF(Ray(info.dis));
+		if (info.dis >= world->maxSDF)
 		{
-			return re;
+			return info;
 		}
 	}
-	re.bHit = true;
-	re.debugColor = P(1, 0, 0);
-	return re;
+	info.bHit = true;
+	info.hitPos = o;
+	info.debugColor = P(1, 0, 0);
+	info.color = world->CalculateMaterial(info);
+	return info;
 }

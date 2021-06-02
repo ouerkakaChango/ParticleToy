@@ -43,6 +43,12 @@
     <Filter Include="源文件\Base\rayTraceRender">
       <UniqueIdentifier>{536d9a18-1a1a-436a-a8d7-dc980d8cf354}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Base\Render">
+      <UniqueIdentifier>{f0c7b5bf-bbf7-4566-b854-8ebbd524a410}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Base\Render">
+      <UniqueIdentifier>{bff15e2b-7e4f-491f-bf25-43e2e39b9b9f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -119,6 +125,9 @@
     </ClInclude>
     <ClInclude Include="..\include\Base\rayTraceRender\TraceRay.h">
       <Filter>头文件\Base\rayTraceRender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Base\Render\Material.h">
+      <Filter>头文件\Base\Render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -208,6 +217,9 @@
     </ClCompile>
     <ClCompile Include="..\include\Base\rayTraceRender\TraceRay.cpp">
       <Filter>源文件\Base\rayTraceRender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\Render\Material.cpp">
+      <Filter>源文件\Base\Render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

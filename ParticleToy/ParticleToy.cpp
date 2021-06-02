@@ -36,7 +36,7 @@ int main()
 	auto screen = new rayTraceScreen(1080,720);
 	op->PutScreen(screen);
 	op->Evolve();
-	op->SaveScreenDebugFrame(screen,"D:\\PToyCache\\z.txt");
+	//op->SaveScreenDebugFrame(screen,"D:\\PToyCache\\z.txt");
 	//op->SayI();
 	return 0;
 }

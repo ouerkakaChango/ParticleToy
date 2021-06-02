@@ -176,6 +176,7 @@
     <ClInclude Include="..\include\Base\rayTraceRender\rayTraceWorld.h" />
     <ClInclude Include="..\include\Base\rayTraceRender\TraceRay.h" />
     <ClInclude Include="..\include\Base\Relation.h" />
+    <ClInclude Include="..\include\Base\Render\Material.h" />
     <ClInclude Include="..\include\Base\Solvers\ColliMergeSolver.h" />
     <ClInclude Include="..\include\Base\Solvers\CollisionSolver.h" />
     <ClInclude Include="..\include\Base\Solvers\PhysicSolver.h" />
@@ -206,6 +207,7 @@
     <ClCompile Include="..\include\Base\rayTraceRender\rayTraceWorld.cpp" />
     <ClCompile Include="..\include\Base\rayTraceRender\TraceRay.cpp" />
     <ClCompile Include="..\include\Base\Relation.cpp" />
+    <ClCompile Include="..\include\Base\Render\Material.cpp" />
     <ClCompile Include="..\include\Base\Solvers\ColliMergeSolver.cpp" />
     <ClCompile Include="..\include\Base\Solvers\CollisionSolver.cpp" />
     <ClCompile Include="..\include\Base\Solvers\PhysicSolver.cpp" />
