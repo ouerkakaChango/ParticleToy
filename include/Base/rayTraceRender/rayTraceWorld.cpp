@@ -66,7 +66,7 @@ TraceInfo rayTraceWorld::SDF(P pos)
 	return re;
 }
 
-BounceInfo rayTraceWorld::CalculateMaterial(const TraceInfo& info)
+BounceInfo rayTraceWorld::CalculateMaterial(TraceRay& ray, const TraceInfo& info)
 {
 	BounceInfo re;
 	if (info.obj && info.obj->shape)
@@ -77,32 +77,33 @@ BounceInfo rayTraceWorld::CalculateMaterial(const TraceInfo& info)
 			P n = info.hitN;
 			P v = -info.dir;
 			re.color = mat->Calculate(lights, n, v);
-			if (typeStr(mat->i[0]) == "BlinnPhongI")
+			if (typeStr(*mat->i[0]) == "class BlinnPhongI")
 			{
 				auto param = Cast<BlinnPhongI*>(mat->i[0]);
 				re.bStopRay = zero(param->reflectness);
+				//ray.lastReflectness *= param->reflectness;
 			}
 		}
 	}
 	return re;
 }
 
-P rayTraceWorld::BlendColor(const TraceInfo& info)
+void rayTraceWorld::BlendColor(TraceRay& ray, const TraceInfo& info)
 {
-	P color = info.color;
 	if (info.obj && info.obj->shape)
 	{
 		auto mat = info.obj->material;
 		if (mat != nullptr)
 		{
-			if (typeStr(mat->i[0]) == "BlinnPhongI")
+			if (typeStr(*mat->i[0]) == "class BlinnPhongI")
 			{
 				auto param = Cast<BlinnPhongI*>(mat->i[0]);
-				return color + param->reflectness * info.color;
+				ray.color = lerp(ray.color, info.color,ray.lastReflectness);
+				ray.lastReflectness *= param->reflectness;
+				return ;
 			}
 		}
 	}
-	return color;
 }
 //### rayTraceWorld
 

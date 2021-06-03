@@ -49,7 +49,7 @@ void rayTraceScreen::Trace(rayTraceWorld* world)
 			if (!ray.bStopTrace)
 			{
 				auto info = ray.Trace(world);
-				GatherInfo(info, i, j);
+				GatherInfo(world, info, i, j);
 				if (world->nowBounce < world->bounceNum)
 				{
 					ray.Bounce(world->bounceMode, info);
@@ -72,7 +72,7 @@ void rayTraceScreen::Trace(rayTraceWorld* world)
 	cout << "ATTENTION:CPU rayTracing done" << endl;
 }
 
-void rayTraceScreen::GatherInfo(const TraceInfo& info, int i, int j)
+void rayTraceScreen::GatherInfo(rayTraceWorld* world, const TraceInfo& info, int i, int j)
 {
 	//!!!
 	if (info.bHit)

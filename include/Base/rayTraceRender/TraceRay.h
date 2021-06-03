@@ -52,4 +52,7 @@ public:
 	P o,dir;
 	P color;
 	bool bStopTrace = false;
+
+	//???
+	double lastReflectness = 1.0;
 };

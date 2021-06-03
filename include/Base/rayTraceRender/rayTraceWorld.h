@@ -19,8 +19,8 @@ class rayTraceWorld : public TraceTime, public Space3D
 	void SetTraceSettings(int bounceNum_);
 	void Evolve();
 	TraceInfo SDF(P pos);
-	BounceInfo CalculateMaterial(const TraceInfo& info);
-	P BlendColor(const TraceInfo& info);
+	BounceInfo CalculateMaterial(TraceRay& ray, const TraceInfo& info);
+	void BlendColor(TraceRay& ray, const TraceInfo& info);
 
 	arr<Object*> objs;
 	arr<rayTraceScreen*> screens;

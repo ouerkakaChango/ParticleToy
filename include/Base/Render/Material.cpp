@@ -36,7 +36,6 @@ P BlinnPhongO::Calculate(MaterialI* matParam, const arr<class Light*>& lights, P
 		re += spec;
 	}
 	re = saturate(re);
-	re *= 1 - param->reflectness;
 	return re;
 }
 //### BlinnPhongO

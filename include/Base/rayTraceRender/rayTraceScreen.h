@@ -10,7 +10,7 @@ public:
 	rayTraceScreen(int w_, int h_);
 	void InitRays();
 	void Trace(rayTraceWorld* world);
-	void GatherInfo(const TraceInfo& info, int i, int j);
+	void GatherInfo(rayTraceWorld* world, const TraceInfo& info, int i, int j);
 
 	int w, h;
 	arr2<TraceRay> rays;

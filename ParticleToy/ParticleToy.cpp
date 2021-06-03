@@ -44,6 +44,7 @@ int main()
 	{
 		auto param = Cast<BlinnPhongI*>(box1->material->i[0]);
 		param->reflectness = 0.7;
+		param->diffuseColor = P(1.0, 242 / 255.0, 0.0);
 	}
 
 	auto screen = new rayTraceScreen(1080,720);
