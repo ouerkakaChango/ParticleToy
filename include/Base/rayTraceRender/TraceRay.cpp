@@ -39,6 +39,12 @@ TraceInfo TraceRay::SphereTracing(rayTraceWorld* world)
 		info = world->SDF(Ray(info.dis));
 		if (info.dis >= world->maxSDF)
 		{
+			if (world->nowBounce == 2)
+			{
+				info.debugColor = P(0, 1, 0);
+				color = lerp(color, P(0, 0, 0), lastReflectness);
+			}
+			bStopTrace = true;
 			return info;
 		}
 	}
@@ -46,18 +52,9 @@ TraceInfo TraceRay::SphereTracing(rayTraceWorld* world)
 	info.dir = dir;
 	info.hitPos = o;
 	info.hitN = info.obj->shape->SDFNormal(o);
-	//???
-	if (info.obj->name == "Sphere1")
-	{
-		int aa = 1;
-	}
 	auto bounceInfo = world->CalculateMaterial(*this, info);
 	info.color = bounceInfo.color;
 	//???
-	if (world->nowBounce == 2)
-	{
-		int aa = 1;
-	}
 	if (world->nowBounce == 1)
 	{
 		color = info.color;
@@ -69,6 +66,10 @@ TraceInfo TraceRay::SphereTracing(rayTraceWorld* world)
 	if (bStopTrace && world->nowBounce == 1)
 	{
 		info.debugColor = P(0, 0, 1);
+	}
+	if (zero(color))
+	{
+		abort();
 	}
 	return info;
 }

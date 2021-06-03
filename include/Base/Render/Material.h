@@ -26,7 +26,7 @@ public:
 	P ambientColor = P(1, 1, 1);
 	P diffuseColor = P(1, 1, 1);
 	P specularColor = P(1, 1, 1);
-	double specPower = 5.0;
+	double specPower = 3.0;
 	double kA = 0.05;
 	double kD = 0.5;			//Diffuse intensity
 	double kS = 1.0;			//Specular intensity

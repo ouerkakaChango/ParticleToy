@@ -396,6 +396,11 @@ bool zero(const P2& p)
 	return equal(p.x, 0) && equal(p.y, 0);
 }
 
+bool zero(const P& p)
+{
+	return equal(p.x, 0) && equal(p.y, 0) && equal(p.z, 0);
+}
+
 double side(double hypotenuse, double side1)
 {
 	return hypotenuse * hypotenuse - side1 * side1;

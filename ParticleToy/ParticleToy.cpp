@@ -43,7 +43,8 @@ int main()
 	auto box1 = op->PutShape(new Box(P(0.0, -1.2, -5.0), P(5.0, 0.1, 5.0)), "Box1");
 	{
 		auto param = Cast<BlinnPhongI*>(box1->material->i[0]);
-		param->reflectness = 0.7;
+		param->reflectness = 0.5;
+		param->kD = 1.0;
 		param->diffuseColor = P(1.0, 242 / 255.0, 0.0);
 	}
 

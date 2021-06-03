@@ -75,6 +75,7 @@ double equal(double a, double b, double tolerance = 0.00001);
 double equal(P a, P b, double tolerance = 0.00001);
 bool zero(double n);
 bool zero(const P2& p);
+bool zero(const P& p);
 double side(double hypotenuse, double side1);
 template <class T,class T2>
 T lerp(T a, T b, T2 k)

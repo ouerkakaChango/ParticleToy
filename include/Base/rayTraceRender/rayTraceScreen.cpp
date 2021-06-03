@@ -75,12 +75,12 @@ void rayTraceScreen::Trace(rayTraceWorld* world)
 void rayTraceScreen::GatherInfo(rayTraceWorld* world, const TraceInfo& info, int i, int j)
 {
 	//!!!
+	debugFrameBuffer[i][j] = info.debugColor;
+	colorBuffer[i][j] = rays[i][j].color;
 	if (info.bHit)
 	{
-		debugFrameBuffer[i][j] = info.debugColor;
 		normalBuffer[i][j] = info.hitN;
 		posBuffer[i][j] = info.hitPos;
-
-		colorBuffer[i][j] = rays[i][j].color;
 	}
+
 }
