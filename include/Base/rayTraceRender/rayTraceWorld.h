@@ -19,7 +19,7 @@ class rayTraceWorld : public TraceTime, public Space3D
 	void SetTraceSettings(int bounceNum_);
 	void Evolve();
 	TraceInfo SDF(P pos);
-	P CalculateMaterial(const TraceInfo& info);
+	BounceInfo CalculateMaterial(const TraceInfo& info);
 	P BlendColor(const TraceInfo& info);
 
 	arr<Object*> objs;
@@ -32,7 +32,7 @@ class rayTraceWorld : public TraceTime, public Space3D
 class rayTraceWorldR : public R
 {
 	THISR(rayTraceWorld)
-	void PutShape(Shape* shape, const str& name="");
+	Object* PutShape(Shape* shape, const str& name="");
 	void PutScreen(rayTraceScreen* screen);
 	void PutLight(DirectionalLight* light);
 	void Evolve();

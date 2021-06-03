@@ -233,6 +233,39 @@ P saturate(const P& p)
 		clamp(p.y, 0, 1),
 		clamp(p.z, 0, 1));
 }
+
+P abs(const P& p)
+{
+	return P(abs(p.x), abs(p.y), abs(p.z));
+}
+
+P max(const P& p, double n)
+{
+	return P(
+		p.x > n ? p.x : n,
+		p.y > n ? p.y : n,
+		p.z > n ? p.z : n
+	);
+}
+
+P max(double n, const P& p)
+{
+	return max(p, n);
+}
+
+P min(const P& p, double n)
+{
+	return P(
+		p.x < n ? p.x : n,
+		p.y < n ? p.y : n,
+		p.z < n ? p.z : n
+	);
+}
+
+P min(double n, const P& p)
+{
+	return min(p, n);
+}
 //### Global P
 
 //### Global Utility
@@ -321,6 +354,11 @@ double clamp(double x, double low, double high)
 double max(double a, double b)
 {
 	return a > b ? a : b;
+}
+
+double min(double a, double b)
+{
+	return a < b ? a : b;
 }
 
 double sign(double n)

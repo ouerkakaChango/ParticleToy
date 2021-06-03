@@ -66,9 +66,9 @@ TraceInfo rayTraceWorld::SDF(P pos)
 	return re;
 }
 
-P rayTraceWorld::CalculateMaterial(const TraceInfo& info)
+BounceInfo rayTraceWorld::CalculateMaterial(const TraceInfo& info)
 {
-	P color;
+	BounceInfo re;
 	if (info.obj && info.obj->shape)
 	{
 		auto mat = info.obj->material;
@@ -76,10 +76,15 @@ P rayTraceWorld::CalculateMaterial(const TraceInfo& info)
 		{
 			P n = info.hitN;
 			P v = -info.dir;
-			color = mat->Calculate(lights, n, v);
+			re.color = mat->Calculate(lights, n, v);
+			if (typeStr(mat->i[0]) == "BlinnPhongI")
+			{
+				auto param = Cast<BlinnPhongI*>(mat->i[0]);
+				re.bStopRay = zero(param->reflectness);
+			}
 		}
 	}
-	return color;
+	return re;
 }
 
 P rayTraceWorld::BlendColor(const TraceInfo& info)
@@ -110,13 +115,14 @@ void rayTraceWorldR::SayI()
 	}
 }
 
-void rayTraceWorldR::PutShape(Shape* shape, const str& name)
+Object* rayTraceWorldR::PutShape(Shape* shape, const str& name)
 {
 	auto obj = new Object;
 	obj->SetShape(shape);
 	obj->name = name;
 
 	y->objs += obj;
+	return obj;
 }
 
 void rayTraceWorldR::PutScreen(rayTraceScreen* screen)

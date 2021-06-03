@@ -45,12 +45,17 @@ void rayTraceScreen::Trace(rayTraceWorld* world)
 		for (int i=0;i<w;i++)
 		{
 			auto& ray = rays[i][j];
-			auto info = ray.Trace(world);
-			GatherInfo(info,i,j);
-			if (world->nowBounce < world->bounceNum)
+
+			if (!ray.bStopTrace)
 			{
-				ray.Bounce(world->bounceMode,info);
+				auto info = ray.Trace(world);
+				GatherInfo(info, i, j);
+				if (world->nowBounce < world->bounceNum)
+				{
+					ray.Bounce(world->bounceMode, info);
+				}
 			}
+
 			count += 1.0;
 			double percen = count /(w*h) ;
 			if (int(percen * 100 / logStep) == step)

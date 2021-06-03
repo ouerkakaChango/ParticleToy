@@ -28,6 +28,13 @@ public:
 	P color;
 };
 
+class BounceInfo
+{
+public:
+	bool bStopRay = false;
+	P color;
+};
+
 class TraceRay
 {
 public:
@@ -40,8 +47,9 @@ public:
 
 	Line line;
 	TraceMode mode = TraceMode_SphereTracing;
-	double startLen = 5.0;
+	double startLen = 0.1;
 	double traceThre = 0.01;
 	P o,dir;
 	P color;
+	bool bStopTrace = false;
 };

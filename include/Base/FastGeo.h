@@ -120,6 +120,14 @@ public:
 	P p1, p2, p3;
 };
 
+class Box : public Shape
+{
+public:
+	Box(P center_, P bound_);
+	double SDF(P p) override;
+	P center, bound;
+};
+
 class ShapeHull
 {
 public:

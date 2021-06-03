@@ -4,6 +4,7 @@
 #include "pch.h"
 #include <iostream>
 
+#include "Render/Material.h"
 #include "rayTraceRender/rayTraceWorld.h"
 #include "rayTraceRender/rayTraceScreen.h"
 
@@ -32,11 +33,25 @@ int main()
 	rayTraceWorld* world = new rayTraceWorld;
 	world->SetTraceSettings(2);
 	rayTraceWorldR* op = (rayTraceWorldR*)world->r[0];
-	op->PutShape(new Sphere(P(0, 0, -5), 1.0),"Sphere1");
+
+	auto s1 = op->PutShape(new Sphere(P(0, 0, -5), 1.0),"Sphere1");
+	{
+		auto param = Cast<BlinnPhongI*>(s1->material->i[0]);
+		param->reflectness = 0;
+	}
+
+	auto box1 = op->PutShape(new Box(P(0.0, -1.2, -5.0), P(5.0, 0.1, 5.0)), "Box1");
+	{
+		auto param = Cast<BlinnPhongI*>(box1->material->i[0]);
+		param->reflectness = 0.7;
+	}
+
 	auto screen = new rayTraceScreen(1080,720);
 	op->PutScreen(screen);
+
 	auto light = new DirectionalLight(P(-1, -1, 0), P(1, 1, 1));
 	op->PutLight(light);
+
 	op->Evolve();
 	op->SaveScreenBufferFrame(screen,"color","D:\\PToyCache\\z.txt");
 	//system("D:\\PToyCache\\runTransToImg.bat");

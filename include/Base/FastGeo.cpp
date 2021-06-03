@@ -560,6 +560,20 @@ bool SphereCollide(const Sphere& s1, const Sphere& s2)
 }
 //### Global Sphere 
 
+//### Box
+Box::Box(P center_, P bound_)
+	:center(center_),bound(bound_)
+{
+
+}
+
+double Box::SDF(P p)
+{
+	P q = abs(p-center) - bound;
+	return len(max(q, 0.0)) + min(max(q.x, max(q.y, q.z)), 0.0);
+}
+//### Box
+
 //### ShapeHull
 bool ShapeHull::IsPointInside(P pos)
 {

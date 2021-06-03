@@ -60,9 +60,15 @@ P reflect(const P& i, const P& n);
 double dis(const P& p1, const P& p2);
 double dis2(const P& p1, const P& p2);
 P saturate(const P& p);
+P abs(const P& p);
+P max(const P& p, double n);
+P max(double n, const P& p);
+P min(const P& p, double n);
+P min(double n, const P& p);
 
 double clamp(double x, double low, double high);
 double max(double a, double b);
+double min(double a, double b);
 double sign(double n);
 double rand01();
 double equal(double a, double b, double tolerance = 0.00001);

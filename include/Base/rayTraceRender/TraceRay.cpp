@@ -47,8 +47,10 @@ TraceInfo TraceRay::SphereTracing(rayTraceWorld* world)
 	info.hitPos = o;
 	info.hitN = info.obj->shape->SDFNormal(o);
 	info.debugColor = P(1, 0, 0);
-	info.color = world->CalculateMaterial(info);
+	auto bounceInfo = world->CalculateMaterial(info);
+	info.color = bounceInfo.color;
 	color = world->BlendColor(info);
+	bStopTrace = bounceInfo.bStopRay;
 	return info;
 }
 
