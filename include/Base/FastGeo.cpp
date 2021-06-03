@@ -435,7 +435,6 @@ IntersectInfo Tri::Collide(const Capsule& cap) const
 	IntersectInfo b3 = Collide(cap.GetCylinder());
 	if (b3)
 	{
-		//???
 		P cen = b3.hitP;
 		P dir = -cap.dir();
 		b3.hitP = RayIntersect(cap,*this).hitP + project(n, cap.r, dir);

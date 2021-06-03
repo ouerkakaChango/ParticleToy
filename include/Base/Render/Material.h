@@ -31,7 +31,7 @@ public:
 	double kD = 0.5;			//Diffuse intensity
 	double kS = 1.0;			//Specular intensity
 
-	double reflectness = 0.1;		//when ray-traced,(reflectness percent of color is from bounce color)
+	//double reflectness = 0.1;		//when ray-traced,(reflectness percent of color is from bounce color)
 };
 
 class BlinnPhongO : public MaterialO

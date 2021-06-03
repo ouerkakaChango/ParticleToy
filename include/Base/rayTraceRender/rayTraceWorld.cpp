@@ -21,9 +21,10 @@ rayTraceWorld::rayTraceWorld()
 	r += new rayTraceWorldR(this);
 }
 
-void rayTraceWorld::SetTraceSettings(int bounceNum_)
+void rayTraceWorld::SetTraceSettings(int bounceNum_, rayTraceBounceMode bounceMode_)
 {
 	bounceNum = bounceNum_;
+	bounceMode = bounceMode_;
 }
 
 void rayTraceWorld::Evolve()
@@ -66,26 +67,61 @@ TraceInfo rayTraceWorld::SDF(P pos)
 	return re;
 }
 
-BounceInfo rayTraceWorld::CalculateMaterial(TraceRay& ray, const TraceInfo& info)
+void rayTraceWorld::PolicyPrepareMaterialForTrace(Material& mat)
 {
-	BounceInfo re;
+	if (typeStr(*mat.i[0]) == "class BlinnPhongI")
+	{
+		if (bounceMode == rayTraceBounceMode_cheap)
+		{
+			if (mat.i.size() == 1)
+			{
+				mat.i += new Extra_BlinnPhongI_CheapBounce;
+			}
+		}
+	}
+}
+
+void rayTraceWorld::PolicyUpdateRayAfterCalculate(TraceRay& ray, const Material& mat)
+{
+	if (typeStr(*mat.i[0]) == "class BlinnPhongI")
+	{
+		if (bounceMode == rayTraceBounceMode_cheap)
+		{
+			auto bounceParam = Cast<Extra_BlinnPhongI_CheapBounce*>(mat.i[1]);
+			ray.bStopTrace = zero(bounceParam->reflectness);
+		}
+	}
+}
+
+void rayTraceWorld::CalculateMaterial(TraceRay& ray, TraceInfo& info)
+{
 	if (info.obj && info.obj->shape)
 	{
 		auto mat = info.obj->material;
 		if (mat != nullptr)
 		{
+			
+			PolicyPrepareMaterialForTrace(*mat);
 			P n = info.hitN;
 			P v = -info.dir;
-			re.color = mat->Calculate(lights, n, v);
-			if (typeStr(*mat->i[0]) == "class BlinnPhongI")
-			{
-				auto param = Cast<BlinnPhongI*>(mat->i[0]);
-				re.bStopRay = zero(param->reflectness);
-				//ray.lastReflectness *= param->reflectness;
-			}
+			info.color = mat->Calculate(lights, n, v);
+			PolicyUpdateRayAfterCalculate(ray,*mat);
+			
 		}
 	}
-	return re;
+}
+
+void rayTraceWorld::PolicyBlendColor(TraceRay& ray, const Material& mat, const TraceInfo& info)
+{
+	if (typeStr(*mat.i[0]) == "class BlinnPhongI")
+	{
+		if (bounceMode == rayTraceBounceMode_cheap)
+		{
+			auto bounceParam = Cast<Extra_BlinnPhongI_CheapBounce*>(mat.i[1]);
+			ray.color = lerp(ray.color, info.color, ray.lastReflectness);
+			ray.lastReflectness *= bounceParam->reflectness;
+		}
+	}
 }
 
 void rayTraceWorld::BlendColor(TraceRay& ray, const TraceInfo& info)
@@ -95,13 +131,7 @@ void rayTraceWorld::BlendColor(TraceRay& ray, const TraceInfo& info)
 		auto mat = info.obj->material;
 		if (mat != nullptr)
 		{
-			if (typeStr(*mat->i[0]) == "class BlinnPhongI")
-			{
-				auto param = Cast<BlinnPhongI*>(mat->i[0]);
-				ray.color = lerp(ray.color, info.color,ray.lastReflectness);
-				ray.lastReflectness *= param->reflectness;
-				return ;
-			}
+			PolicyBlendColor(ray, *mat, info);
 		}
 	}
 }
@@ -121,7 +151,7 @@ Object* rayTraceWorldR::PutShape(Shape* shape, const str& name)
 	auto obj = new Object;
 	obj->SetShape(shape);
 	obj->name = name;
-
+	y->PolicyPrepareMaterialForTrace(*obj->material);
 	y->objs += obj;
 	return obj;
 }

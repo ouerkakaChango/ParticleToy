@@ -71,7 +71,6 @@ void CollisionSolver::SolvePntWithTri(const Pnt& prev, Pnt& newPnt, double dt, E
 				bool bSolve = SolveQuadra(prev.a / 2, prev.v, prev.pos - hitP, x1, x2);
 				if (!bSolve)
 				{
-					//???
 					//由于某些原因?，导致不能以匀加速运动模拟dt时间内prev到new的行为。
 					//(可能是这一帧给的加速度相比dt过大了，用prev.a没法近似了)
 					//那么直接上挤，速度damp。
@@ -154,20 +153,7 @@ void CollisionSolver::SolvePntWithPnt(const Pnt& prev, Pnt& newPnt, double dt, E
 			auto& other = (*info.newPnts)[p2Inx];
 			//由于两者都在动，所以用outer来判断相交，而不是effectSpace
 			auto interInfo = newPnt.Collide(other);
-			//???
-			bool go = true;
-			//if ( equal(interInfo.d, 0, 1.0e-4))
-			//{
-			//	P n1 = norm(newPnt.pos - other.pos);
-			//	newPnt.pos = other.pos + (interInfo.r1 + interInfo.r2)*n1;
-			//	newPnt.v = reflect(newPnt.v, n1);
-			//	P vPartAlignNorm = n1 * dot(n1, newPnt.v);
-			//	newPnt.v -= vPartAlignNorm;
-			//	newPnt.ignorePrev = true;
-			//	go = false;
-			//}		
-			//___
-			if (go&&interInfo.result)
+			if (interInfo.result)
 			{
 				auto& p1 = (*info.prevPnts)[info.pntInx];
 				auto& p2 = (*info.prevPnts)[p2Inx];

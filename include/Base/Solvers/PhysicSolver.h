@@ -14,7 +14,7 @@ public:
 
 	//默认为UE4的-980
 	P g = P(0.0, 0.0, -980.0);
-	double G = 1.0; //???
+	double G = 1.0; //!!! 万有引力常数
 	arr<P> insForces;
 	arr<int> uniGInxs;
 

@@ -4,6 +4,7 @@
 #include "Object.h"
 #include "rayTraceScreen.h"
 #include "Render/Lights.h"
+#include "rayTraceMaterialExtra.h"
 
 class TraceTime : public Ying
 {
@@ -16,10 +17,10 @@ class TraceTime : public Ying
 class rayTraceWorld : public TraceTime, public Space3D
 {
 	THISY(rayTraceWorld)
-	void SetTraceSettings(int bounceNum_);
+	void SetTraceSettings(int bounceNum_, rayTraceBounceMode bounceMode_);
 	void Evolve();
 	TraceInfo SDF(P pos);
-	BounceInfo CalculateMaterial(TraceRay& ray, const TraceInfo& info);
+	void CalculateMaterial(TraceRay& ray, TraceInfo& info);
 	void BlendColor(TraceRay& ray, const TraceInfo& info);
 
 	arr<Object*> objs;
@@ -27,6 +28,11 @@ class rayTraceWorld : public TraceTime, public Space3D
 	arr<Light*> lights;
 	double maxSDF = 1000.0;
 	rayTraceBounceMode bounceMode = rayTraceBounceMode_cheap;
+
+protected:
+	void PolicyPrepareMaterialForTrace(Material& mat);
+	void PolicyUpdateRayAfterCalculate(TraceRay& ray, const Material& mat);
+	void PolicyBlendColor(TraceRay& ray, const Material& mat, const TraceInfo& info);
 };
 
 class rayTraceWorldR : public R

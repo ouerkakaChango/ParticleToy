@@ -39,9 +39,10 @@ TraceInfo TraceRay::SphereTracing(rayTraceWorld* world)
 		info = world->SDF(Ray(info.dis));
 		if (info.dis >= world->maxSDF)
 		{
-			if (world->nowBounce == 2)
+			if (world->nowBounce > 1)
 			{
-				info.debugColor = P(0, 1, 0);
+				//@@@ 第二次Trace不到东西
+				debugColor = P(0, 1, 0);
 				color = lerp(color, P(0, 0, 0), lastReflectness);
 			}
 			bStopTrace = true;
@@ -52,25 +53,17 @@ TraceInfo TraceRay::SphereTracing(rayTraceWorld* world)
 	info.dir = dir;
 	info.hitPos = o;
 	info.hitN = info.obj->shape->SDFNormal(o);
-	auto bounceInfo = world->CalculateMaterial(*this, info);
-	info.color = bounceInfo.color;
-	//???
-	if (world->nowBounce == 1)
-	{
-		color = info.color;
-	}
+
+	world->CalculateMaterial(*this, info);
 	world->BlendColor(*this,info);
-	bStopTrace = bounceInfo.bStopRay;
-	//???
-	info.debugColor = P(1, 0, 0);
+	//@@@ Trace到东西了
+	debugColor = P(1, 0, 0);
 	if (bStopTrace && world->nowBounce == 1)
 	{
-		info.debugColor = P(0, 0, 1);
+		//@@@ 第一次Trace到不反射表面
+		debugColor = P(0, 0, 1);
 	}
-	if (zero(color))
-	{
-		abort();
-	}
+
 	return info;
 }
 

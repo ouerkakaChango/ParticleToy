@@ -132,6 +132,12 @@
     <ClInclude Include="..\include\Base\Render\Lights.h">
       <Filter>头文件\Base\Render</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\Base\rayTraceRender\rayTraceMaterialExtra.h">
+      <Filter>头文件\Base\rayTraceRender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Base\rayTraceRender\rayTraceUtility.h">
+      <Filter>头文件\Base\rayTraceRender</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -226,6 +232,12 @@
     </ClCompile>
     <ClCompile Include="..\include\Base\Render\Lights.cpp">
       <Filter>源文件\Base\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\rayTraceRender\rayTraceMaterialExtra.cpp">
+      <Filter>源文件\Base\rayTraceRender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\rayTraceRender\rayTraceUtility.cpp">
+      <Filter>源文件\Base\rayTraceRender</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

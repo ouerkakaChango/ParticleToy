@@ -24,14 +24,6 @@ public:
 	double dis=0.0;
 	Object* obj = nullptr;
 
-	P debugColor;
-	P color;
-};
-
-class BounceInfo
-{
-public:
-	bool bStopRay = false;
 	P color;
 };
 
@@ -50,7 +42,7 @@ public:
 	double startLen = 0.1;
 	double traceThre = 0.01;
 	P o,dir;
-	P color;
+	P color,debugColor;
 	bool bStopTrace = false;
 
 	//???

@@ -6,7 +6,8 @@
 	className();\
 	arr<ClassI*> i; \
 	arr<ClassO*> o; \
-	arr<R*> r;
+	arr<R*> r; \
+	friend class className##R;
 
 #define THISR(className) public:\
 	className##R(className* y_) :y(y_) {}\
