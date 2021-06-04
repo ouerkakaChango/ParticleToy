@@ -187,7 +187,7 @@ void rayTraceWorldR::PutScreen(rayTraceScreen* screen)
 	y->PutScreen(screen);
 }
 
-void rayTraceWorldR::PutLight(DirectionalLight* light)
+void rayTraceWorldR::PutLight(Light* light)
 {
 	y->lights += light;
 }

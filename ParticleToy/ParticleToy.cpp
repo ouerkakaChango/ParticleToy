@@ -31,7 +31,7 @@
 int main()
 {
 	rayTraceWorld* world = new rayTraceWorld;
-	world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_cheap, rayTraceMaterialMode_BlinnPhong);
+	world->SetTraceSettings(3, rayTraceMode_SDFSphere, rayTraceBounceMode_cheap, rayTraceMaterialMode_BlinnPhong);
 	rayTraceWorldR* op = (rayTraceWorldR*)world->r[0];
 
 	auto s1 = op->PutShape(new Sphere(P(0, 0, -5), 1.0),"Sphere1");
@@ -62,7 +62,8 @@ int main()
 		bounceParam->reflectness = 0.5;
 	}
 
-	auto light = new DirectionalLight(P(-1, -1, 0), P(1, 1, 1));
+	//auto light = new DirectionalLight(P(-1, -1, 0), P(1, 1, 1));
+	auto light = new PointLight(P(2, 2, -5), P(1, 1, 1));
 	op->PutLight(light);
 
 	op->Evolve();

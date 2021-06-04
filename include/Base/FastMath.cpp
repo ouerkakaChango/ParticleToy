@@ -209,6 +209,19 @@ P norm(const P& p)
 	}
 }
 
+P safeNorm(const P& p)
+{
+	double length = len(p);
+	if (abs(length) >= 0.00001)
+	{
+		return p / len(p);
+	}
+	else
+	{
+		return P(1, 0, 0);
+	}
+}
+
 P reflect(const P& i, const P& n)
 {
 	//https://www.cnblogs.com/graphics/archive/2013/02/21/2920627.html

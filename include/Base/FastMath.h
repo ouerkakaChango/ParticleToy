@@ -56,6 +56,7 @@ P cross(const P& p1, const P& p2);
 double dot(const P& p1, const P& p2);
 double len(const P& p);
 P norm(const P& p);
+P safeNorm(const P& p);
 P reflect(const P& i, const P& n);
 double dis(const P& p1, const P& p2);
 double dis2(const P& p1, const P& p2);

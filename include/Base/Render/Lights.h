@@ -22,3 +22,13 @@ public:
 	LightInfo GetLightInfo(const P& pos) override;
 	P dir;
 };
+
+class PointLight : public Light
+{
+public:
+	PointLight(P lightPos_, P color_, double intensity_= 1.0);
+
+	LightInfo GetLightInfo(const P& pos) override;
+	P lightPos;
+	double intensity;
+};

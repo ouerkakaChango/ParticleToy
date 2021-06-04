@@ -23,3 +23,21 @@ LightInfo DirectionalLight::GetLightInfo(const P& pos)
 	return re;
 }
 //### DirectionalLight
+
+//### PointLight
+PointLight::PointLight(P lightPos_, P color_, double intensity_):
+	Light(color_), lightPos(lightPos_), intensity(intensity_)
+{
+
+}
+
+LightInfo PointLight::GetLightInfo(const P& pos)
+{
+	double ldis2 = dis2(pos, lightPos);
+	double attenuation = intensity*10 / ldis2;
+	LightInfo re;
+	re.color = color*attenuation;
+	re.dir = safeNorm(pos-lightPos);
+	return re;
+}
+//### PointLight

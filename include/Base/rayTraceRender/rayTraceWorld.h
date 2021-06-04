@@ -49,7 +49,7 @@ class rayTraceWorldR : public R
 	THISR(rayTraceWorld)
 	Object* PutShape(Shape* shape, const str& name="");
 	void PutScreen(rayTraceScreen* screen);
-	void PutLight(DirectionalLight* light);
+	void PutLight(Light* light);
 	void Evolve();
 	void SaveScreenBufferFrame(rayTraceScreen* screen, const str& bufferName, const str& pngPath);
 };
