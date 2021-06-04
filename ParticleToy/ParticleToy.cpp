@@ -31,7 +31,7 @@
 int main()
 {
 	rayTraceWorld* world = new rayTraceWorld;
-	world->SetTraceSettings(2,rayTraceBounceMode_cheap);
+	world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_cheap, rayTraceMaterialMode_BlinnPhong);
 	rayTraceWorldR* op = (rayTraceWorldR*)world->r[0];
 
 	auto s1 = op->PutShape(new Sphere(P(0, 0, -5), 1.0),"Sphere1");
@@ -39,9 +39,6 @@ int main()
 		auto param = Cast<BlinnPhongI*>(s1->material->i[0]);
 		param->kS = 0.1;
 		param->specPower = 1.0;
-
-		auto bounceParam = Cast<Extra_BlinnPhongI_CheapBounce*>(s1->material->i[1]);
-		bounceParam->reflectness = 0;
 	}
 
 	auto box1 = op->PutShape(new Box(P(0.0, -1.2, -5.0), P(5.0, 0.1, 5.0)), "Box1");
@@ -51,13 +48,19 @@ int main()
 		param->kS = 1.0;
 		param->specPower = 5.0;
 		param->specularColor = P(1.0, 242 / 255.0, 0.0);
-
-		auto bounceParam = Cast<Extra_BlinnPhongI_CheapBounce*>(box1->material->i[1]);
-		bounceParam->reflectness = 0.5;
 	}
 
 	auto screen = new rayTraceScreen(1080,720);
 	op->PutScreen(screen);
+	//放完screen后，才给所有物体的材质加上了extra
+	{
+		auto bounceParam = Cast<Extra_BlinnPhongI_CheapBounce*>(s1->material->i[1]);
+		bounceParam->reflectness = 0.5;
+	}
+	{
+		auto bounceParam = Cast<Extra_BlinnPhongI_CheapBounce*>(box1->material->i[1]);
+		bounceParam->reflectness = 0.5;
+	}
 
 	auto light = new DirectionalLight(P(-1, -1, 0), P(1, 1, 1));
 	op->PutLight(light);

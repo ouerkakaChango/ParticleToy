@@ -11,23 +11,23 @@ Material::Material()
 
 }
 
-P Material::Calculate(const arr<Light*>& lights, P n, P v)
+P Material::Calculate(const arr<LightInfo>& lightsInfo, P n, P v)
 {
-	return Cast<MaterialO*>(o[0])->Calculate(Cast<MaterialI*>(i[0]), lights, n, v);
+	return Cast<MaterialO*>(o[0])->Calculate(Cast<MaterialI*>(i[0]), lightsInfo, n, v);
 }
 //### Material
 
 //### BlinnPhongO
-P BlinnPhongO::Calculate(MaterialI* matParam, const arr<class Light*>& lights, P n, P v)
+P BlinnPhongO::Calculate(MaterialI* matParam, const arr<LightInfo>& lightsInfo, P n, P v)
 {
 	P re;
 	BlinnPhongI* param = Cast<BlinnPhongI*>(matParam);
 	P ambient = param->ambientColor *  param->kA;
 	re += ambient;
-	for (int i = 0; i < lights.size(); i++)
+	for (int i = 0; i < lightsInfo.size(); i++)
 	{
-		P l = -lights[i]->dir;
-		P lightColor = lights[i]->color;
+		P l = -lightsInfo[i].dir;
+		P lightColor = lightsInfo[i].color;
 		P h = norm(l + v);
 		double NdotL = max(0, dot(n, l));
 		P diffuse = lightColor * param->diffuseColor * NdotL * param->kD;

@@ -17,22 +17,31 @@ class TraceTime : public Ying
 class rayTraceWorld : public TraceTime, public Space3D
 {
 	THISY(rayTraceWorld)
-	void SetTraceSettings(int bounceNum_, rayTraceBounceMode bounceMode_);
+	void SetTraceSettings(
+		int bounceNum_, 
+		rayTraceMode traceMode_,
+		rayTraceBounceMode bounceMode_,
+		rayTraceMaterialMode matMode_);
+	void PutScreen(rayTraceScreen* screen);
 	void Evolve();
 	TraceInfo SDF(P pos);
-	void CalculateMaterial(TraceRay& ray, TraceInfo& info);
-	void BlendColor(TraceRay& ray, const TraceInfo& info);
+	//void CalculateMaterial(TraceRay& ray, TraceInfo& info);
+	//void BlendColor(TraceRay& ray, const TraceInfo& info);
+	arr<LightInfo> GetLightsInfo(const P& pos);
 
 	arr<Object*> objs;
 	arr<rayTraceScreen*> screens;
 	arr<Light*> lights;
 	double maxSDF = 1000.0;
-	rayTraceBounceMode bounceMode = rayTraceBounceMode_cheap;
 
+	rayTraceMode traceMode;
+	rayTraceBounceMode bounceMode;
+	rayTraceMaterialMode matMode;
 protected:
-	void PolicyPrepareMaterialForTrace(Material& mat);
-	void PolicyUpdateRayAfterCalculate(TraceRay& ray, const Material& mat);
-	void PolicyBlendColor(TraceRay& ray, const Material& mat, const TraceInfo& info);
+	bool bLightInfoInitialized=false;
+	//void PolicyPrepareMaterialForTrace(Material& mat);
+	//void PolicyUpdateRayAfterCalculate(TraceRay& ray, const Material& mat);
+	//void PolicyBlendColor(TraceRay& ray, const Material& mat, const TraceInfo& info);
 };
 
 class rayTraceWorldR : public R

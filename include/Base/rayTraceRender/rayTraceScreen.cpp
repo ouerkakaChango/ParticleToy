@@ -8,10 +8,10 @@ using std::endl;
 rayTraceScreen::rayTraceScreen(int w_, int h_):
 	w(w_),h(h_)
 {
-	InitRays();
+	//InitRays();
 }
 
-void rayTraceScreen::InitRays()
+void rayTraceScreen::InitRays(rayTraceMode traceMode, rayTraceBounceMode bounceMode, rayTraceMaterialMode matMode)
 {
 	rays.resize(w, h);
 	debugFrameBuffer.resize(w, h);
@@ -28,7 +28,9 @@ void rayTraceScreen::InitRays()
 		for (int i = 0; i < w; i++)
 		{
 			P endPos = startPos + P(i*dx,j*dx,0.0);
-			rays[i][j] = TraceRay(P(0,0,1),endPos);
+			rays[i][j] = TraceRay(P(0, 0, 1), endPos); 
+			rays[i][j].SetMode(traceMode, bounceMode);
+			Cast<TraceRayO*>(rays[i][j].o[0])->InitMaterialPolicy(matMode);
 		}
 	}
 	int aa = 1;
@@ -52,7 +54,7 @@ void rayTraceScreen::Trace(rayTraceWorld* world)
 				GatherInfo(world, info, i, j);
 				if (world->nowBounce < world->bounceNum)
 				{
-					ray.Bounce(world->bounceMode, info);
+					ray.Bounce(info);
 				}
 			}
 

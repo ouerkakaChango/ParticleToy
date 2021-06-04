@@ -1,12 +1,12 @@
 #pragma once
 #include "Taiji.h"
 #include "FastMath.h"
-
+#include "Lights.h"
 
 class Material
 {
 	THISY(Material)
-	P Calculate(const arr<class Light*>& lights, P n, P v);
+	P Calculate(const arr<LightInfo>& lightsInfo, P n, P v);
 };
 
 class MaterialI : public ClassI
@@ -17,7 +17,7 @@ class MaterialI : public ClassI
 class MaterialO : public ClassO
 {
 public:
-	virtual P Calculate(MaterialI* param, const arr<class Light*>& lights, P n, P v)=0;
+	virtual P Calculate(MaterialI* param, const arr<LightInfo>& lightsInfo, P n, P v)=0;
 };
 
 class BlinnPhongI : public MaterialI
@@ -37,5 +37,5 @@ public:
 class BlinnPhongO : public MaterialO
 {
 public:
-	P Calculate(MaterialI* matParam, const arr<class Light*>& lights, P n, P v) override;
+	P Calculate(MaterialI* matParam, const arr<LightInfo>& lightsInfo, P n, P v) override;
 };

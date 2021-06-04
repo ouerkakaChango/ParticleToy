@@ -8,7 +8,7 @@ class rayTraceScreen : public Object
 {
 public:
 	rayTraceScreen(int w_, int h_);
-	void InitRays();
+	void InitRays(rayTraceMode traceMode, rayTraceBounceMode bounceMode, rayTraceMaterialMode matMode);
 	void Trace(rayTraceWorld* world);
 	void GatherInfo(rayTraceWorld* world, const TraceInfo& info, int i, int j);
 
