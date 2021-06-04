@@ -20,6 +20,7 @@ enum rayTraceBounceMode
 enum rayTraceMaterialMode
 {
 	rayTraceMaterialMode_BlinnPhong,
+	rayTraceMaterialMode_PBR,
 };
 
 class TraceInfo

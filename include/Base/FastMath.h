@@ -29,6 +29,7 @@ class P
 {
 public:
 	P();
+	P(double n);
 	P(double x_, double y_, double z_);
 	P(int x_, int y_, int z_);
 	P(P2 p2, str filter);
@@ -43,6 +44,7 @@ public:
 	void operator+=(const P& p);
 	void operator-=(const P& p);
 	void operator*=(double s);
+	void operator*=(const P& p);
 	void operator/=(double s);
 	friend P operator*(double s, const P& p);
 
@@ -51,6 +53,7 @@ public:
 	str ToStr();
 };
 
+P operator-(double s, const P& p);
 P operator*(double s, const P& p);
 P cross(const P& p1, const P& p2);
 double dot(const P& p1, const P& p2);
@@ -98,3 +101,5 @@ bool SolveQuadra(double a, double b, double c, double& x1, double& x2);
 bool SolveQuadra(P a, P b, P c, double& x1, double& x2);
 double QuadraFiliter(double x1, double x2, double xmin, double xmax);
 bool BisecitonSolve(std::function<double(double)> func, double tmin, double tmax, double& t, double tolerance = 0.000001);
+
+#define PI 3.1415926

@@ -173,9 +173,25 @@ void rayTraceWorldR::SayI()
 	}
 }
 
+void rayTraceWorldR::AddMaterial(Object* obj)
+{
+	obj->material = new Material;
+	if (y->matMode == rayTraceMaterialMode_BlinnPhong)
+	{
+		obj->material->i += new BlinnPhongI;
+		obj->material->o += new BlinnPhongO;
+	}
+	else if (y->matMode == rayTraceMaterialMode_PBR)
+	{
+		obj->material->i += new PBRI;
+		obj->material->o += new PBRO;
+	}
+}
+
 Object* rayTraceWorldR::PutShape(Shape* shape, const str& name)
 {
 	auto obj = new Object;
+	AddMaterial(obj);
 	obj->SetShape(shape);
 	obj->name = name;
 	y->objs += obj;

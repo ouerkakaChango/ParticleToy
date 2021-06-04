@@ -154,6 +154,10 @@ void TraceRayO_CheapBounce::PrepareMaterialExtra(Material& mat)
 		{
 			mat.i += new Extra_BlinnPhongI_CheapBounce;
 		}
+		//else if (typeStr(*mat.i[0]) == "class PBRI")
+		//{
+		//	mat.i += new Extra_BlinnPhongI_CheapBounce;
+		//}
 	}
 }
 
@@ -165,6 +169,10 @@ void TraceRayO_CheapBounce::InitMaterialPolicy(rayTraceMaterialMode matMode)
 		if (matMode == rayTraceMaterialMode_BlinnPhong)
 		{
 			matPolicy = new rayTraceMaterialPolicy<TraceRayO_CheapBounce, BlinnPhongI>;
+		}
+		else if (matMode == rayTraceMaterialMode_PBR)
+		{
+			matPolicy = new rayTraceMaterialPolicy<TraceRayO_CheapBounce, PBRI>;
 		}
 	}
 }
@@ -184,5 +192,10 @@ void rayTraceMaterialPolicy<TraceRayO_CheapBounce, BlinnPhongI>::BlendColor(Trac
 	auto cheapBounce = Cast<TraceRayO_CheapBounce*>(ray.o[0]);
 	ray.color = lerp(ray.color, info.color, cheapBounce->lastReflectness);
 	cheapBounce->lastReflectness *= bounceParam->reflectness;
+}
+
+void rayTraceMaterialPolicy<TraceRayO_CheapBounce, PBRI>::BlendColor(TraceRay& ray, const TraceInfo& info)
+{
+	ray.color = info.color;
 }
 //### rayTraceMaterialPolicy

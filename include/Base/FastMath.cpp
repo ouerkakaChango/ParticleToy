@@ -69,6 +69,11 @@ P::P()
 
 }
 
+P::P(double n) : x(n),y(n),z(n)
+{
+
+}
+
 P::P(double x_, double y_, double z_) :x(x_), y(y_), z(z_)
 {
 
@@ -146,6 +151,13 @@ void P::operator*=(double s)
 	z *= s;
 }
 
+void P::operator*=(const P& p)
+{
+	x *= p.x;
+	y *= p.y;
+	z *= p.z;
+}
+
 void P::operator/=(double s)
 {
 	x /= s;
@@ -171,6 +183,11 @@ str P::ToStr()
 //### P
 
 //### Global P
+P operator-(double s, const P& p)
+{
+	return P(s) - p;
+}
+
 P operator*(double s, const P& p)
 {
 	return p * s;

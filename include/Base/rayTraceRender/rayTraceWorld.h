@@ -39,14 +39,12 @@ class rayTraceWorld : public TraceTime, public Space3D
 	rayTraceMaterialMode matMode;
 protected:
 	bool bLightInfoInitialized=false;
-	//void PolicyPrepareMaterialForTrace(Material& mat);
-	//void PolicyUpdateRayAfterCalculate(TraceRay& ray, const Material& mat);
-	//void PolicyBlendColor(TraceRay& ray, const Material& mat, const TraceInfo& info);
 };
 
 class rayTraceWorldR : public R
 {
 	THISR(rayTraceWorld)
+	void AddMaterial(Object* obj);
 	Object* PutShape(Shape* shape, const str& name="");
 	void PutScreen(rayTraceScreen* screen);
 	void PutLight(Light* light);
