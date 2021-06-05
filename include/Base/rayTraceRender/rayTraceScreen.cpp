@@ -51,7 +51,7 @@ void rayTraceScreen::Trace(rayTraceWorld* world)
 			if (!ray.bStopTrace)
 			{
 				auto info = ray.Trace(world);
-				GatherInfo(world, info, i, j);
+				//GatherInfo(world, info, i, j);
 				if (world->nowBounce < world->bounceNum)
 				{
 					ray.Bounce(info);
@@ -74,15 +74,27 @@ void rayTraceScreen::Trace(rayTraceWorld* world)
 	cout << "ATTENTION:CPU rayTracing done" << endl;
 }
 
-void rayTraceScreen::GatherInfo(rayTraceWorld* world, const TraceInfo& info, int i, int j)
-{
-	//!!!
-	debugFrameBuffer[i][j] = rays[i][j].debugColor;
-	colorBuffer[i][j] = rays[i][j].color;
-	if (info.bHit)
-	{
-		normalBuffer[i][j] = info.hitN;
-		posBuffer[i][j] = info.hitPos;
-	}
+//void rayTraceScreen::GatherInfo(rayTraceWorld* world, const TraceInfo& info, int i, int j)
+//{
+//	//!!!
+//	debugFrameBuffer[i][j] = rays[i][j].debugColor;
+//	colorBuffer[i][j] = rays[i][j].color;
+//	if (info.bHit)
+//	{
+//		normalBuffer[i][j] = info.hitN;
+//		posBuffer[i][j] = info.hitPos;
+//	}
+//
+//}
 
+void rayTraceScreen::FinalGather()
+{
+	for (int j = 0; j < h; j++)
+	{
+		for (int i = 0; i < w; i++)
+		{
+			colorBuffer[i][j] = rays[i][j].color;
+		}
+
+	}
 }

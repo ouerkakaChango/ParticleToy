@@ -10,7 +10,8 @@ public:
 	rayTraceScreen(int w_, int h_);
 	void InitRays(rayTraceMode traceMode, rayTraceBounceMode bounceMode, rayTraceMaterialMode matMode);
 	void Trace(rayTraceWorld* world);
-	void GatherInfo(rayTraceWorld* world, const TraceInfo& info, int i, int j);
+	//void GatherInfo(rayTraceWorld* world, const TraceInfo& info, int i, int j);
+	void FinalGather();
 
 	int w, h;
 	arr2<TraceRay> rays;

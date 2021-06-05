@@ -14,7 +14,8 @@ enum rayTraceMode
 
 enum rayTraceBounceMode
 {
-	rayTraceBounceMode_cheap,
+	rayTraceBounceMode_cheap,	//通过材质reflectness混合反射
+	rayTraceBounceMode_reflect,	//仅使用单方向(trace反射方向)作为IndirectLight
 };
 
 enum rayTraceMaterialMode

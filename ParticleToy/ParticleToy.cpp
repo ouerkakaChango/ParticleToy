@@ -28,6 +28,15 @@
 //10.放置屏幕x属于[-1,1]，y根据分辨率变化的screen，eye在(0,1,0)对每个像素中心发射ray(trace束)
 //11.将debugFrameBuffer的内容保存成png
 
+//rayTraceBounceMode_reflect:
+//对于3Bounce:
+//trace1:infos += info1, ray.color=Calcu(lightsInfo1,p1,v...)
+//trace2:infos += info2,
+//trace3:infos += info3,
+//gather1:indir3 = reflectK1 * Calcu(lightsInfo3,p3,norm(p2-p3),...)
+//gather2:indir2 = reflectK2 * ( Calcu(indir3,p2,norm(p1-p2),...) + Calcu(lightsInfo2,p2,norm(p1-p2),...) )
+//gather3:ray.color += Calcu(indir2,p1,v,...) 
+
 int main()
 {
 	bool pbrMode = true;
