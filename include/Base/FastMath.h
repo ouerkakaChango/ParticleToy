@@ -41,6 +41,7 @@ public:
 	P operator*(double s) const;
 	P operator*(P p) const;
 	P operator/(double s) const;
+	P operator/(const P& p) const;
 	void operator+=(const P& p);
 	void operator-=(const P& p);
 	void operator*=(double s);
@@ -69,6 +70,7 @@ P max(const P& p, double n);
 P max(double n, const P& p);
 P min(const P& p, double n);
 P min(double n, const P& p);
+P pow(const P& p1, const P& p2);
 
 double clamp(double x, double low, double high);
 double max(double a, double b);

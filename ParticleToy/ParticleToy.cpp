@@ -43,7 +43,7 @@ int main()
 	rayTraceWorld* world = new rayTraceWorld;
 	if (pbrMode)
 	{
-		world->SetTraceSettings(1, rayTraceMode_SDFSphere, rayTraceBounceMode_cheap, rayTraceMaterialMode_PBR);
+		world->SetTraceSettings(3, rayTraceMode_SDFSphere, rayTraceBounceMode_reflect, rayTraceMaterialMode_PBR);
 	}
 	else
 	{
@@ -61,8 +61,8 @@ int main()
 	else
 	{
 		auto param = Cast<PBRI*>(s1->material->i[0]);
-		param->metallic = 0.5;
-		param->roughness = 0.8;
+		param->metallic = 0.4;
+		param->roughness = 0.5;
 	}
 
 	auto box1 = op->PutShape(new Box(P(0.0, -1.2, -5.0), P(5.0, 0.1, 5.0)), "Box1");
@@ -87,17 +87,29 @@ int main()
 	//放完screen后，才给所有物体的材质加上了extra
 	if (!pbrMode)
 	{
-		auto bounceParam = Cast<Extra_BlinnPhongI_CheapBounce*>(s1->material->i[1]);
-		bounceParam->reflectness = 0.0;
+		{
+			auto bounceParam = Cast<Extra_BlinnPhongI_CheapBounce*>(s1->material->i[1]);
+			bounceParam->reflectness = 0.5;
+		}
+		{
+			auto bounceParam = Cast<Extra_BlinnPhongI_CheapBounce*>(box1->material->i[1]);
+			bounceParam->reflectness = 0.5;
+		}
 	}
-	if (!pbrMode)
+	else
 	{
-		auto bounceParam = Cast<Extra_BlinnPhongI_CheapBounce*>(box1->material->i[1]);
-		bounceParam->reflectness = 0.0;
+		{
+			auto bounceParam = Cast<Extra_ReflectBounce*>(s1->material->i[1]);
+			bounceParam->reflectEnegyRate = 0.1;
+		}
+		{
+			auto bounceParam = Cast<Extra_ReflectBounce*>(box1->material->i[1]);
+			bounceParam->reflectEnegyRate = .8;
+		}
 	}
 
 	//auto light = new DirectionalLight(P(-1, -1, 0), P(1, 1, 1));
-	auto light = new PointLight(P(2, 2, -3), P(1, 1, 1),1.5);
+	auto light = new PointLight(P(2.0, 2.0, -3.0), P(1, 1, 1),1.5);
 	op->PutLight(light);
 
 	op->Evolve();

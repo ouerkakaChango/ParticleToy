@@ -28,14 +28,18 @@ void TraceRay::SetMode(rayTraceMode traceMode, rayTraceBounceMode bounceMode)
 	{
 		o += new TraceRayO_CheapBounce(this);
 	}
+	else if (bounceMode == rayTraceBounceMode_reflect)
+	{
+		o += new TraceRayO_ReflectBounce(this);
+	}
 
 	Cast<TraceRayI*>(i[0])->o = Cast<TraceRayO*>(o[0]);
 }
 
-TraceInfo TraceRay::Trace(rayTraceWorld* world)
+void TraceRay::Trace(rayTraceWorld* world)
 {
 	auto tracei = Cast<TraceRayI*>(i[0]);
-	return tracei->Trace(world);
+	tracei->Trace(world);
 }
 
 P TraceRay::Ray(double len)
@@ -51,24 +55,16 @@ void TraceRay::Bounce(const TraceInfo& info)
 //### TraceRay
 
 //### TraceRayI
-void TraceRayI::CalculateMaterial(const arr<LightInfo>& lightsInfo, TraceInfo& info)
-{
-	if (info.obj && info.obj->shape)
-	{
-		auto mat = info.obj->material;
-		if (mat != nullptr)
-		{
-			o->PrepareMaterialExtra(*mat);
-			P n = info.hitN;
-			P v = -info.dir;
-			info.color = mat->Calculate(lightsInfo, n, v);
-			o->matPolicy->UpdateRayAfterCalculate(*y, *mat);
-		}
-	}
-}
+
 //### TraceRayI
 
 //### TraceRayO
+TraceRayO::TraceRayO(TraceRay* y_)
+	:y(y_)
+{
+
+}
+
 void TraceRayO::InitMaterialPolicy(rayTraceMaterialMode matMode)
 {
 
@@ -79,9 +75,28 @@ void TraceRayO::FinalUnhitGather()
 
 }
 
+void TraceRayO::FinalHitGather()
+{
+
+}
+
 void TraceRayO::PrepareMaterialExtra(Material& mat)
 {
 
+}
+
+void TraceRayO::CalculateMaterial(rayTraceWorld* world, TraceInfo& info)
+{
+	auto lightsInfo = world->GetLightsInfo(info.hitPos);
+	if (info.obj && info.obj->material)
+	{
+		auto mat = info.obj->material;
+		PrepareMaterialExtra(*mat);
+		P n = info.hitN;
+		P v = -info.dir;
+		info.color = mat->Calculate(lightsInfo, n, v);
+		matPolicy->UpdateRayAfterCalculate(*y, *mat);
+	}
 }
 //### TraceRayO
 
@@ -91,7 +106,7 @@ TraceRayI_SDFSphere::TraceRayI_SDFSphere(TraceRay* y_)
 	TraceRayI::y = y_;
 }
 
-TraceInfo TraceRayI_SDFSphere::Trace(rayTraceWorld* world)
+void TraceRayI_SDFSphere::Trace(rayTraceWorld* world)
 {
 
 	TraceInfo info = world->SDF(y->Ray(y->startLen));
@@ -109,7 +124,7 @@ TraceInfo TraceRayI_SDFSphere::Trace(rayTraceWorld* world)
 				o->FinalUnhitGather();
 			}
 			y->bStopTrace = true;
-			return info;
+			return;
 		}
 	}
 	info.bHit = true;
@@ -118,24 +133,35 @@ TraceInfo TraceRayI_SDFSphere::Trace(rayTraceWorld* world)
 	info.hitN = info.obj->shape->SDFNormal(y->ori);
 
 	arr<LightInfo> lightsInfo = world->GetLightsInfo(info.hitPos);
-	CalculateMaterial(lightsInfo, info);
-	o->matPolicy->BlendColor(*y, info);
+	o->CalculateMaterial(world, info);
+	o->matPolicy->BlendColor(world, *y, info);
 
-	//@@@ Trace到东西了
-	y->debugColor = P(1, 0, 0);
-	if (y->bStopTrace && world->nowBounce == 1)
+	//{
+	//	//@@@ Trace到东西了
+	//	y->debugColor = P(1, 0, 0);
+	//	if (y->bStopTrace && world->nowBounce == 1)
+	//	{
+	//		//@@@ 第一次Trace到不反射表面
+	//		y->debugColor = P(0, 0, 1);
+	//	}
+	//}
+
+	if (world->nowBounce == world->bounceNum)
 	{
-		//@@@ 第一次Trace到不反射表面
-		y->debugColor = P(0, 0, 1);
+		y->bStopTrace = true;
+		o->FinalHitGather();
 	}
-
-	return info;
+	if (world->nowBounce < world->bounceNum)
+	{
+		y->Bounce(info);
+	}
+	return;
 }
 //### TraceRayI_SDFSphere
 
 //### TraceRayO_CheapBounce
 TraceRayO_CheapBounce::TraceRayO_CheapBounce(TraceRay* y_):
-	y(y_)
+	TraceRayO(y_)
 {
 
 }
@@ -149,15 +175,11 @@ void TraceRayO_CheapBounce::PrepareMaterialExtra(Material& mat)
 {
 	if (mat.i.size() == 1)
 	{
-		//!!! 由于只会在PutScreen的时候调用一次，所以字符串比较耗时也不在意
+		//由于只会在PutScreen的时候调用一次，所以字符串比较耗时也不在意
 		if (typeStr(*mat.i[0]) == "class BlinnPhongI")
 		{
 			mat.i += new Extra_BlinnPhongI_CheapBounce;
 		}
-		//else if (typeStr(*mat.i[0]) == "class PBRI")
-		//{
-		//	mat.i += new Extra_BlinnPhongI_CheapBounce;
-		//}
 	}
 }
 
@@ -165,7 +187,6 @@ void TraceRayO_CheapBounce::InitMaterialPolicy(rayTraceMaterialMode matMode)
 {
 	if (matPolicy == nullptr)
 	{
-		//!!! 由于只会在InitRay的时候调用一次
 		if (matMode == rayTraceMaterialMode_BlinnPhong)
 		{
 			matPolicy = new rayTraceMaterialPolicy<TraceRayO_CheapBounce, BlinnPhongI>;
@@ -178,14 +199,72 @@ void TraceRayO_CheapBounce::InitMaterialPolicy(rayTraceMaterialMode matMode)
 }
 //### TraceRayO_CheapBounce
 
-//### rayTraceMaterialPolicy
+//### TraceRayO_ReflectBounce
+TraceRayO_ReflectBounce::TraceRayO_ReflectBounce(TraceRay* y_)
+	:TraceRayO(y_)
+{
+
+}
+
+void TraceRayO_ReflectBounce::FinalUnhitGather()
+{
+	ReflectBounceGather();
+}
+
+void TraceRayO_ReflectBounce::FinalHitGather()
+{
+	ReflectBounceGather();
+}
+
+void TraceRayO_ReflectBounce::ReflectBounceGather()
+{
+	for (int inx = shadeTasks.size()-1; inx >= 1; inx--)
+	{
+		P indirectLightColor = shadeTasks[inx].Calculate();
+
+		PointLight tLight(shadeTasks[inx].p, indirectLightColor);
+		shadeTasks[inx - 1].lightInfos += tLight.GetLightInfo(shadeTasks[inx-1].p, reflectKs[inx]);
+	}
+	y->color = shadeTasks[0].Calculate();
+}
+
+void TraceRayO_ReflectBounce::PrepareMaterialExtra(Material& mat)
+{
+	if (mat.i.size() == 1)
+	{
+		//不论什么材质类型，在ReflectBounce中的MatExtra都一样
+		mat.i += new Extra_ReflectBounce;
+	}
+}
+
+void TraceRayO_ReflectBounce::InitMaterialPolicy(rayTraceMaterialMode matMode)
+{
+	if (matPolicy == nullptr)
+	{
+		//不论什么材质类型，在ReflectBounce中的Policy都一样
+		matPolicy = new rayTraceMaterialPolicy<TraceRayO_ReflectBounce, MaterialI>;
+	}
+}
+
+void TraceRayO_ReflectBounce::CalculateMaterial(rayTraceWorld* world, TraceInfo& info)
+{
+	if (info.obj && info.obj->material)
+	{
+		auto mat = info.obj->material;
+		PrepareMaterialExtra(*mat);
+		matPolicy->UpdateRayAfterCalculate(*y, *mat);
+	}
+}
+//### TraceRayO_ReflectBounce
+
+//### rayTraceMaterialPolicy<TraceRayO_CheapBounce, BlinnPhongI>
 void rayTraceMaterialPolicy<TraceRayO_CheapBounce, BlinnPhongI>::UpdateRayAfterCalculate(TraceRay& ray, const Material& mat)
 {
 	auto bounceParam = Cast<Extra_BlinnPhongI_CheapBounce*>(mat.i[1]);
 	ray.bStopTrace = zero(bounceParam->reflectness);
 }
 
-void rayTraceMaterialPolicy<TraceRayO_CheapBounce, BlinnPhongI>::BlendColor(TraceRay& ray, const TraceInfo& info)
+void rayTraceMaterialPolicy<TraceRayO_CheapBounce, BlinnPhongI>::BlendColor(rayTraceWorld* world, TraceRay& ray, const TraceInfo& info)
 {
 	Material& mat = *info.obj->material;
 	auto bounceParam = Cast<Extra_BlinnPhongI_CheapBounce*>(mat.i[1]);
@@ -193,9 +272,28 @@ void rayTraceMaterialPolicy<TraceRayO_CheapBounce, BlinnPhongI>::BlendColor(Trac
 	ray.color = lerp(ray.color, info.color, cheapBounce->lastReflectness);
 	cheapBounce->lastReflectness *= bounceParam->reflectness;
 }
+//### rayTraceMaterialPolicy<TraceRayO_CheapBounce, BlinnPhongI>
 
-void rayTraceMaterialPolicy<TraceRayO_CheapBounce, PBRI>::BlendColor(TraceRay& ray, const TraceInfo& info)
+//### rayTraceMaterialPolicy<TraceRayO_ReflectBounce, MaterialI>
+void rayTraceMaterialPolicy<TraceRayO_ReflectBounce, MaterialI>::UpdateRayAfterCalculate(TraceRay& ray, const Material& mat)
 {
-	ray.color = info.color;
+	auto bounceParam = Cast<Extra_ReflectBounce*>(mat.i[1]);
+	auto reflectO = Cast<TraceRayO_ReflectBounce*>(ray.o[0]);
+	reflectO->reflectKs += bounceParam->reflectEnegyRate;
 }
-//### rayTraceMaterialPolicy
+
+void rayTraceMaterialPolicy<TraceRayO_ReflectBounce, MaterialI>::BlendColor(rayTraceWorld* world, TraceRay& ray, const TraceInfo& info)
+{
+	auto reflectO = Cast<TraceRayO_ReflectBounce*>(ray.o[0]);
+	reflectO->traceInfos += info;
+
+	if (info.obj && info.obj->material)
+	{
+		auto mat = info.obj->material;
+		P n = info.hitN;
+		P v = -info.dir;
+		auto lightsInfo = world->GetLightsInfo(info.hitPos);
+		reflectO->shadeTasks += ShadeTask(mat, info.hitPos, n, v, lightsInfo);
+	}
+}
+//### rayTraceMaterialPolicy<TraceRayO_ReflectBounce, MaterialI>

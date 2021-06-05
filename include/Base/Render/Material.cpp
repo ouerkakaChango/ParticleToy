@@ -35,6 +35,7 @@ P BlinnPhongO::Calculate(MaterialI* matParam, const arr<LightInfo>& lightsInfo, 
 		re += diffuse;
 		re += spec;
 	}
+	//!!!
 	re = saturate(re);
 	return re;
 }
@@ -90,10 +91,11 @@ P PBRO::Calculate(MaterialI* matParam, const arr<LightInfo>& lightsInfo, P n, P 
 		P specular = nominator / denominator;
 
 		P Lo = diffuse + specular;
-		Lo *= lightColor*dot(n,l);
+		Lo *= lightColor*max(dot(n,l),0);
 
 		re += Lo;
 	}
+
 	return re;
 }
 

@@ -130,6 +130,11 @@ P P::operator/(double s) const
 	return P(x/s, y/s, z/s);
 }
 
+P P::operator/(const P& p) const
+{
+	return P(x / p.x, y / p.y, z / p.z);
+}
+
 void P::operator+=(const P& p)
 {
 	x += p.x;
@@ -295,6 +300,11 @@ P min(const P& p, double n)
 P min(double n, const P& p)
 {
 	return min(p, n);
+}
+
+P pow(const P& p1, const P& p2)
+{
+	return P(pow(p1.x, p2.x), pow(p1.y, p2.y), pow(p1.z, p2.z));
 }
 //### Global P
 

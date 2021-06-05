@@ -50,12 +50,7 @@ void rayTraceScreen::Trace(rayTraceWorld* world)
 
 			if (!ray.bStopTrace)
 			{
-				auto info = ray.Trace(world);
-				//GatherInfo(world, info, i, j);
-				if (world->nowBounce < world->bounceNum)
-				{
-					ray.Bounce(info);
-				}
+				ray.Trace(world);
 			}
 
 			count += 1.0;

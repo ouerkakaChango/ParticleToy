@@ -34,10 +34,20 @@ PointLight::PointLight(P lightPos_, P color_, double intensity_):
 LightInfo PointLight::GetLightInfo(const P& pos)
 {
 	double ldis2 = dis2(pos, lightPos);
-	double attenuation = intensity*10 / ldis2;
+	double attenuation = min(1,intensity*10 / ldis2);
 	LightInfo re;
 	re.color = color*attenuation;
 	re.dir = safeNorm(pos-lightPos);
+	return re;
+}
+
+LightInfo PointLight::GetLightInfo(const P& pos, double enengyRate)
+{
+	double ldis2 = dis2(pos, lightPos);
+	double attenuation = enengyRate * min(1, intensity * 10 / ldis2);
+	LightInfo re;
+	re.color = color * attenuation;
+	re.dir = safeNorm(pos - lightPos);
 	return re;
 }
 //### PointLight
