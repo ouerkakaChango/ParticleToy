@@ -96,6 +96,7 @@ P PBRO::Calculate(MaterialI* matParam, const arr<LightInfo>& lightsInfo, P n, P 
 		re += Lo;
 	}
 
+	re += param->emissive;
 	return re;
 }
 

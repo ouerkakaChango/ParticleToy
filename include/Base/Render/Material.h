@@ -11,7 +11,8 @@ class Material
 
 class MaterialI : public ClassI
 {
-
+public:
+	P emissive;
 };
 
 class MaterialO : public ClassO

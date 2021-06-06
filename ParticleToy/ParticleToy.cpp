@@ -63,6 +63,7 @@ int main()
 		auto param = Cast<PBRI*>(s1->material->i[0]);
 		param->metallic = 0.4;
 		param->roughness = 0.5;
+		param->emissive = P(0, 0, 1);
 	}
 
 	auto box1 = op->PutShape(new Box(P(0.0, -1.2, -5.0), P(5.0, 0.1, 5.0)), "Box1");
@@ -79,8 +80,14 @@ int main()
 		auto param = Cast<PBRI*>(box1->material->i[0]);
 		param->metallic = 0.7;
 		param->roughness = 0.3;
-		param->albedo = P(1.0, 242 / 255.0, 0.0);
+		//param->albedo = P(1.0, 242 / 255.0, 0.0);
 	}
+	//###
+	//auto box2 = op->PutShape(new Box(P(0.0, 3.0, -5.0), P(5.0, 0.1, 5.0)), "Box2");
+	//auto box3 = op->PutShape(new Box(P(-5.0, 0.0, -5.0), P(0.1, 5.0, 5.0)), "Box3");
+	//auto box4 = op->PutShape(new Box(P(5.0, 0.0, -5.0), P(0.1, 5.0, 5.0)), "Box4");
+	//auto box5 = op->PutShape(new Box(P(0.0, 0.0, -5.0), P(5.0, 5.0, 0.1)), "Box5");
+	//###
 
 	auto screen = new rayTraceScreen(1080,720);
 	op->PutScreen(screen);
@@ -109,8 +116,8 @@ int main()
 	}
 
 	//auto light = new DirectionalLight(P(-1, -1, 0), P(1, 1, 1));
-	auto light = new PointLight(P(2.0, 2.0, -3.0), P(1, 1, 1),1.5);
-	op->PutLight(light);
+	//auto light = new PointLight(P(2.0, 2.0, -3.0), P(1, 1, 1),1.5);
+	//op->PutLight(light);
 
 	op->Evolve();
 	op->SaveScreenBufferFrame(screen,"color","D:\\PToyCache\\z.txt");
