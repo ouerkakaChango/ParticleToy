@@ -45,7 +45,7 @@ public:
 		return data_[inx];
 	}
 
-	int size() const
+	unsigned int size() const
 	{
 		return data_.size();
 	}

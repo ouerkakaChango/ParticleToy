@@ -10,5 +10,6 @@ public:
 
 	Material* material=nullptr;
 	P p, n, v;
+	MaterialExtraControl* control=nullptr;
 	arr<LightInfo> lightInfos;
 };

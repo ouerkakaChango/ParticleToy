@@ -23,6 +23,10 @@ void TraceRayO_ReflectBounce::FinalHitGather()
 
 void TraceRayO_ReflectBounce::ReflectBounceGather()
 {
+	if (shadeTasks.size() == 0)
+	{
+		return;
+	}
 	for (int inx = shadeTasks.size() - 1; inx >= 1; inx--)
 	{
 		P indirectLightColor = shadeTasks[inx].Calculate();

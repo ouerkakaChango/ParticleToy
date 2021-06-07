@@ -8,6 +8,8 @@
 #include "BounceMode/MonteCarlo/TraceRayO_MonteCarlo.h"
 
 //### TraceRay
+double TraceRay::startLen=0.1;
+double TraceRay::traceThre=0.01;
 TraceRay::TraceRay()
 {
 
@@ -18,6 +20,19 @@ TraceRay::TraceRay(P a, P b)
 	line.Set(a, b);
 	ori = a;
 	dir = line.dir();
+}
+
+void TraceRay::Clear()
+{
+	for (auto& ti : i)
+	{
+		delete ti;
+	}
+
+	for (auto& to : o)
+	{
+		delete to;
+	}
 }
 
 void TraceRay::SetMode(rayTraceMode traceMode, rayTraceBounceMode bounceMode)
@@ -71,7 +86,10 @@ void TraceRay::Bounce(const TraceInfo& info)
 //### TraceRay
 
 //### TraceRayI
+TraceRayI::TraceRayI(TraceRay* y_):y(y_)
+{
 
+}
 //### TraceRayI
 
 //### TraceRayO

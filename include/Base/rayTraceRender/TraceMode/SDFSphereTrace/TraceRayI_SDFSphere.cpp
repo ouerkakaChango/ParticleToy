@@ -3,9 +3,10 @@
 #include "../../rayTraceWorld.h"
 
 //### TraceRayI_SDFSphere
-TraceRayI_SDFSphere::TraceRayI_SDFSphere(TraceRay* y_)
+TraceRayI_SDFSphere::TraceRayI_SDFSphere(TraceRay* y_):
+	TraceRayI(y_)
 {
-	TraceRayI::y = y_;
+
 }
 
 void TraceRayI_SDFSphere::Trace(rayTraceWorld* world)

@@ -11,14 +11,14 @@ Material::Material()
 
 }
 
-P Material::Calculate(const arr<LightInfo>& lightsInfo, P n, P v)
+P Material::Calculate(const arr<LightInfo>& lightsInfo, P n, P v, MaterialExtraControl* control)
 {
-	return Cast<MaterialO*>(o[0])->Calculate(Cast<MaterialI*>(i[0]), lightsInfo, n, v);
+	return Cast<MaterialO*>(o[0])->Calculate(Cast<MaterialI*>(i[0]), lightsInfo, n, v, control);
 }
 //### Material
 
 //### BlinnPhongO
-P BlinnPhongO::Calculate(MaterialI* matParam, const arr<LightInfo>& lightsInfo, P n, P v)
+P BlinnPhongO::Calculate(MaterialI* matParam, const arr<LightInfo>& lightsInfo, P n, P v, MaterialExtraControl* control)
 {
 	P re;
 	BlinnPhongI* param = Cast<BlinnPhongI*>(matParam);
@@ -35,8 +35,12 @@ P BlinnPhongO::Calculate(MaterialI* matParam, const arr<LightInfo>& lightsInfo, 
 		re += diffuse;
 		re += spec;
 	}
-	//!!!
-	re = saturate(re);
+	
+	if (control == nullptr || !control->bIgnoreEmissive)
+	{
+		re += param->emissive;
+	}
+
 	return re;
 }
 //### BlinnPhongO
@@ -61,7 +65,7 @@ double PBRO::DistributionGGX(const P& N, const P& H, double roughness)
 	return nom / denom;
 }
 
-P PBRO::Calculate(MaterialI* matParam, const arr<LightInfo>& lightsInfo, P n, P v)
+P PBRO::Calculate(MaterialI* matParam, const arr<LightInfo>& lightsInfo, P n, P v, MaterialExtraControl* control)
 {
 	P re;
 	PBRI* param = Cast<PBRI*>(matParam);
@@ -96,7 +100,10 @@ P PBRO::Calculate(MaterialI* matParam, const arr<LightInfo>& lightsInfo, P n, P 
 		re += Lo;
 	}
 
-	re += param->emissive;
+	if (control==nullptr || !control->bIgnoreEmissive)
+	{
+		re += param->emissive ;
+	}
 	return re;
 }
 

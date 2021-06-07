@@ -127,6 +127,10 @@ P P::operator*(P p) const
 
 P P::operator/(double s) const
 {
+	if (zero(s))
+	{
+		abort();
+	}
 	return P(x/s, y/s, z/s);
 }
 
@@ -240,7 +244,7 @@ P safeNorm(const P& p)
 	}
 	else
 	{
-		return P(1, 0, 0);
+		return P(0, 0, 0);
 	}
 }
 
@@ -310,12 +314,31 @@ P pow(const P& p1, const P& p2)
 P randP()
 {
 	P re;
-	std::default_random_engine random(time(NULL));
-	std::uniform_real_distribution<double> dis2(0, std::nextafter(1, DBL_MAX));
-	re.x = dis2(random);
-	re.y = dis2(random);
-	re.z = dis2(random);
+	std::uniform_real_distribution<double> unidis(0, std::nextafter(1, DBL_MAX));
+
+	std::random_device rand_dev;
+	std::mt19937 rand_engine(rand_dev());
+	re.x = unidis(rand_engine);
+	re.y = unidis(rand_engine);
+	re.z = unidis(rand_engine);
+
+	//由于CPU光追代码需要大量rand,运行间隔短，用时间做种子，随机性不行
+	//std::default_random_engine random(time(NULL));
+	//re.x = unidis(random);
+	//re.y = unidis(random);
+	//re.z = unidis(random);
 	return re;
+}
+
+//https://blog.csdn.net/weixin_44176696/article/details/113418991
+P diskRandP()
+{
+	P d;
+	do
+	{
+		d = 2.0f * randP() - P(1);
+	} while (dot(d, d) > 1.0);
+	return safeNorm(d);
 }
 //### Global P
 

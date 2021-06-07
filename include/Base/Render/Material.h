@@ -3,10 +3,16 @@
 #include "FastMath.h"
 #include "Lights.h"
 
+class MaterialExtraControl
+{
+public:
+	bool bIgnoreEmissive = false;
+};
+
 class Material
 {
 	THISY(Material)
-	P Calculate(const arr<LightInfo>& lightsInfo, P n, P v);
+	P Calculate(const arr<LightInfo>& lightsInfo, P n, P v, MaterialExtraControl* control = nullptr);
 };
 
 class MaterialI : public ClassI
@@ -18,7 +24,7 @@ public:
 class MaterialO : public ClassO
 {
 public:
-	virtual P Calculate(MaterialI* param, const arr<LightInfo>& lightsInfo, P n, P v)=0;
+	virtual P Calculate(MaterialI* param, const arr<LightInfo>& lightsInfo, P n, P v, MaterialExtraControl* control)=0;
 };
 
 class BlinnPhongI : public MaterialI
@@ -36,7 +42,7 @@ public:
 class BlinnPhongO : public MaterialO
 {
 public:
-	P Calculate(MaterialI* matParam, const arr<LightInfo>& lightsInfo, P n, P v) override;
+	P Calculate(MaterialI* matParam, const arr<LightInfo>& lightsInfo, P n, P v, MaterialExtraControl* control) override;
 };
 
 class PBRI : public MaterialI
@@ -53,7 +59,7 @@ public:
 class PBRO : public MaterialO
 {
 public:
-	P Calculate(MaterialI* matParam, const arr<LightInfo>& lightsInfo, P n, P v) override;
+	P Calculate(MaterialI* matParam, const arr<LightInfo>& lightsInfo, P n, P v, MaterialExtraControl* control) override;
 
 	P fresnelSchlick(double cosTheta, P F0);
 

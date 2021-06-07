@@ -7,8 +7,8 @@ public:
 	TraceRayI_SDFSphereMonteCarlo(TraceRay* y_);
 
 	virtual void Trace(rayTraceWorld* world) override;
-	void CreateSubRays(const TraceInfo& traceInfo);
+	void CreateSubRays(rayTraceWorld* world, const TraceInfo& traceInfo);
 
 	arr<TraceRay> subRays;
-	int spp = 5;	//sample per pixel
+	int spp = 128;	//sample per pixel
 };
