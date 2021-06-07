@@ -21,6 +21,12 @@ enum rayTraceMaterialMode
 	rayTraceMaterialMode_PBR,
 };
 
+enum rayTraceOptimizeMode
+{
+	rayTraceOptimizeMode_None,
+	rayTraceOptimizeMode_PerTask,	//不一下子生成w*h个ray，而是每n个ray bounce到结束，写入结果；然后下一组
+};
+
 class TraceInfo
 {
 public:

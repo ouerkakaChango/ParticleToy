@@ -9,6 +9,7 @@ class rayTraceScreen : public Object
 public:
 	rayTraceScreen(int w_, int h_);
 	void InitRays(rayTraceMode traceMode, rayTraceBounceMode bounceMode, rayTraceMaterialMode matMode);
+	void InitBuffers();
 	void Trace(rayTraceWorld* world);
 	//void GatherInfo(rayTraceWorld* world, const TraceInfo& info, int i, int j);
 	void FinalGather();
@@ -21,6 +22,8 @@ public:
 	arr2<P> normalBuffer;
 	arr2<P> colorBuffer;
 	arr2<P> posBuffer;
+
+	arr<TraceRay> optRays;
 
 	P pos;
 };

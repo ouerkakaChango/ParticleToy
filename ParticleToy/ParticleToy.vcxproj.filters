@@ -192,6 +192,9 @@
     <ClInclude Include="..\include\Base\rayTraceRender\TraceMode\SDFSphereTrace\TraceRayI_SDFSphereMonteCarlo.h">
       <Filter>头文件\Base\rayTraceRender\TraceMode\SDFSphereTrace</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\Base\rayTraceRender\rayTraceOptimizePolicy.h">
+      <Filter>头文件\Base\rayTraceRender</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -310,6 +313,9 @@
     </ClCompile>
     <ClCompile Include="..\include\Base\rayTraceRender\TraceMode\SDFSphereTrace\TraceRayI_SDFSphereMonteCarlo.cpp">
       <Filter>源文件\Base\rayTraceRender\TraceMode\SDFSphereTrace</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\rayTraceRender\rayTraceOptimizePolicy.cpp">
+      <Filter>源文件\Base\rayTraceRender</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

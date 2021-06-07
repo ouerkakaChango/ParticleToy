@@ -180,6 +180,7 @@
     <ClInclude Include="..\include\Base\rayTraceRender\BounceMode\MonteCarlo\TraceRayO_MonteCarlo.h" />
     <ClInclude Include="..\include\Base\rayTraceRender\BounceMode\ReflectBounce\TraceRayO_ReflectBounce.h" />
     <ClInclude Include="..\include\Base\rayTraceRender\rayTraceMaterialExtra.h" />
+    <ClInclude Include="..\include\Base\rayTraceRender\rayTraceOptimizePolicy.h" />
     <ClInclude Include="..\include\Base\rayTraceRender\rayTraceScreen.h" />
     <ClInclude Include="..\include\Base\rayTraceRender\rayTraceUtility.h" />
     <ClInclude Include="..\include\Base\rayTraceRender\rayTraceWorld.h" />
@@ -220,6 +221,7 @@
     <ClCompile Include="..\include\Base\rayTraceRender\BounceMode\MonteCarlo\TraceRayO_MonteCarlo.cpp" />
     <ClCompile Include="..\include\Base\rayTraceRender\BounceMode\ReflectBounce\TraceRayO_ReflectBounce.cpp" />
     <ClCompile Include="..\include\Base\rayTraceRender\rayTraceMaterialExtra.cpp" />
+    <ClCompile Include="..\include\Base\rayTraceRender\rayTraceOptimizePolicy.cpp" />
     <ClCompile Include="..\include\Base\rayTraceRender\rayTraceScreen.cpp" />
     <ClCompile Include="..\include\Base\rayTraceRender\rayTraceUtility.cpp" />
     <ClCompile Include="..\include\Base\rayTraceRender\rayTraceWorld.cpp" />

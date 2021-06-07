@@ -11,13 +11,18 @@ rayTraceScreen::rayTraceScreen(int w_, int h_):
 	//InitRays();
 }
 
-void rayTraceScreen::InitRays(rayTraceMode traceMode, rayTraceBounceMode bounceMode, rayTraceMaterialMode matMode)
+void rayTraceScreen::InitBuffers()
 {
-	rays.resize(w, h);
 	debugFrameBuffer.resize(w, h);
 	colorBuffer.resize(w, h);
 	normalBuffer.resize(w, h);
 	posBuffer.resize(w, h);
+}
+
+void rayTraceScreen::InitRays(rayTraceMode traceMode, rayTraceBounceMode bounceMode, rayTraceMaterialMode matMode)
+{
+	rays.resize(w, h);
+	InitBuffers();
 	//屏幕x属于[-1,1]，y根据分辨率变化的screen，eye在(0,1,0)对每个像素中心发射ray(trace束)
 	double dx = 2.0 / w;
 	double ylen = (2.0*h) / w;

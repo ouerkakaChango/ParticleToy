@@ -5,6 +5,7 @@
 #include "rayTraceScreen.h"
 #include "Render/Lights.h"
 #include "rayTraceMaterialExtra.h"
+#include "rayTraceOptimizePolicy.h"
 
 class TraceTime : public Ying
 {
@@ -25,9 +26,8 @@ class rayTraceWorld : public TraceTime, public Space3D
 	void PutScreen(rayTraceScreen* screen);
 	void Evolve();
 	TraceInfo SDF(P pos);
-	//void CalculateMaterial(TraceRay& ray, TraceInfo& info);
-	//void BlendColor(TraceRay& ray, const TraceInfo& info);
 	arr<LightInfo> GetLightsInfo(const P& pos);
+	void SetOptimizeMode(rayTraceOptimizeMode optimizeMode_);
 
 	arr<Object*> objs;
 	arr<rayTraceScreen*> screens;
@@ -37,6 +37,9 @@ class rayTraceWorld : public TraceTime, public Space3D
 	rayTraceMode traceMode;
 	rayTraceBounceMode bounceMode;
 	rayTraceMaterialMode matMode;
+	rayTraceOptimizeMode optimizeMode = rayTraceOptimizeMode_None;
+
+	rayTraceOptimizePolicyBase* optimizePolicy = nullptr;
 protected:
 	bool bLightInfoInitialized=false;
 };

@@ -13,7 +13,7 @@ class TraceRay
 {
 	THISY(TraceRay)
 	TraceRay(P a, P b);
-	void Clear();
+	void Clear(bool keepColor=false);
 	void SetMode(rayTraceMode traceMode, rayTraceBounceMode bounceMode);
 	void Trace(rayTraceWorld* world);
 	P Ray(double len);
@@ -30,6 +30,7 @@ class TraceRayI : public ClassI
 {
 public:
 	TraceRayI(TraceRay* y_);
+	virtual ~TraceRayI();
 	virtual void Trace(rayTraceWorld* world) = 0;
 
 	TraceRay* y = nullptr;
@@ -39,6 +40,7 @@ class TraceRayO : public ClassO
 {
 public:
 	TraceRayO(TraceRay* y_);
+	virtual ~TraceRayO();
 	virtual void InitMaterialPolicy(rayTraceMaterialMode matMode);
 	virtual void PrepareMaterialExtra(Material& mat);
 	virtual void FinalUnhitGather();
@@ -53,6 +55,7 @@ public:
 class rayTraceMaterialPolicyBase
 {
 public:
+	virtual ~rayTraceMaterialPolicyBase() {};
 	virtual void UpdateRayAfterCalculate(TraceRay& ray, const Material& mat) = 0;
 	virtual void BlendColor(rayTraceWorld* world, TraceRay& ray, const TraceInfo& info) = 0;
 };

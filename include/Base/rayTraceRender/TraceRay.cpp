@@ -21,17 +21,30 @@ TraceRay::TraceRay(P a, P b)
 	dir = safeNorm(b - a);
 }
 
-void TraceRay::Clear()
+void TraceRay::Clear(bool keepColor)
 {
-	for (auto& ti : i)
+	for (auto& iter : i)
 	{
+		auto ti = Cast<TraceRayI*>(iter);
 		delete ti;
 	}
 
-	for (auto& to : o)
+	for (auto& iter : o)
 	{
+		auto to = Cast<TraceRayO*>(iter);
 		delete to;
 	}
+
+	i.clear();
+	o.clear();
+
+	bStopTrace = false;
+	if (!keepColor)
+	{
+		color = 0;
+	}
+	dir = 0;
+	ori = 0;
 }
 
 void TraceRay::SetMode(rayTraceMode traceMode, rayTraceBounceMode bounceMode)
@@ -88,6 +101,11 @@ TraceRayI::TraceRayI(TraceRay* y_):y(y_)
 {
 
 }
+
+TraceRayI:: ~TraceRayI()
+{
+
+}
 //### TraceRayI
 
 //### TraceRayO
@@ -95,6 +113,14 @@ TraceRayO::TraceRayO(TraceRay* y_)
 	:y(y_)
 {
 
+}
+
+TraceRayO::~TraceRayO()
+{
+	if (matPolicy != nullptr)
+	{
+		delete matPolicy;
+	}
 }
 
 void TraceRayO::InitMaterialPolicy(rayTraceMaterialMode matMode)

@@ -5,6 +5,7 @@ class TraceRayO_ReflectBounce : public TraceRayO
 {
 public:
 	TraceRayO_ReflectBounce(TraceRay* y_);
+	~TraceRayO_ReflectBounce();
 	void FinalUnhitGather() override;
 	void FinalHitGather() override;
 	void PrepareMaterialExtra(Material& mat) override;

@@ -38,6 +38,9 @@
 //---gather2:indir2 = reflectK2 * ( Calcu(indir3,p2,norm(p1-p2),...) + Calcu(lightsInfo2,p2,norm(p1-p2),...) )
 //---gather3:ray.color += Calcu(indir2,p1,v,...) 
 
+//12.为了解决内存不够的问题：增加screen的traceMode。之前是screen保存所有ray,下一个bounce更新所有ray。
+//增加screen的模式，能一个ray一个ray的Trace，写进buffer，然后释放此ray的内存，再进行下一次
+
 int main()
 {
 	bool pbrMode = true;
@@ -46,7 +49,11 @@ int main()
 	{
 		//world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_reflect, rayTraceMaterialMode_PBR);
 		world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
-		//TraceRayI_SDFSphereMonteCarlo::spp = 512;
+
+		TraceRayI_SDFSphereMonteCarlo::spp = 512;
+		world->SetOptimizeMode(rayTraceOptimizeMode_PerTask);
+		auto opt = Cast<rayTraceOptimizePolicy_PerTask*>(world->optimizePolicy);
+		opt->rayPerTask = 540*6;
 	}
 	else
 	{
@@ -98,7 +105,7 @@ int main()
 	//auto screen = new rayTraceScreen(1080,720);
 	auto screen = new rayTraceScreen(540, 360);
 	//auto screen = new rayTraceScreen(270, 180);
-	screen->Translate(P(0.0, 0.0, -2.5));
+	//screen->Translate(P(0.0, 0.0, -2.5));
 	op->PutScreen(screen);
 	//放完screen后，才给所有物体的材质加上了extra
 	if (!pbrMode)

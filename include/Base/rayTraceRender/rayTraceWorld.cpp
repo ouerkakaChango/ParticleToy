@@ -34,29 +34,62 @@ void rayTraceWorld::SetTraceSettings(int bounceNum_,
 
 void rayTraceWorld::PutScreen(rayTraceScreen* screen)
 {
-	//!!! 多screen正确性还没考虑
-	screen->InitRays(traceMode, bounceMode, matMode);
-	TraceRay& ray = screen->rays[0][0];
-	for (auto& obj : objs)
+	if (optimizeMode == rayTraceOptimizeMode_None)
 	{
-		Cast<TraceRayO*>(ray.o[0])->PrepareMaterialExtra(*obj->material);
+		//!!! 多screen正确性还没考虑
+		screen->InitRays(traceMode, bounceMode, matMode);
+		TraceRay& ray = screen->rays[0][0];
+		for (auto& obj : objs)
+		{
+			Cast<TraceRayO*>(ray.o[0])->PrepareMaterialExtra(*obj->material);
+		}
+	}
+	else if (optimizeMode == rayTraceOptimizeMode_PerTask)
+	{
+		screen->InitBuffers();
 	}
 	screens += screen;
 }
 
 void rayTraceWorld::Evolve()
 {
-	for (int i = 0; i < bounceNum; i++)
+	if (optimizeMode == rayTraceOptimizeMode_None)
 	{
+		for (int i = 0; i < bounceNum; i++)
+		{
+			for (auto& screen : screens)
+			{
+				nowBounce += 1;
+				screen->Trace(this);
+			}
+		}
 		for (auto& screen : screens)
 		{
-			nowBounce += 1;
-			screen->Trace(this);
+			screen->FinalGather();
 		}
 	}
-	for (auto& screen : screens)
+	else if (optimizeMode == rayTraceOptimizeMode_PerTask)
 	{
-		screen->FinalGather();
+		auto opt = Cast<rayTraceOptimizePolicy_PerTask*>(optimizePolicy);
+		auto rayPerTask = opt->rayPerTask;
+		for (auto& screen : screens)
+		{
+			screen->optRays.resize(rayPerTask);
+			int loopNum = ceil((screen->w * screen->h) / double(rayPerTask));
+			for (int loopInx = 0; loopInx < loopNum; loopInx++)
+			{
+				opt->InitTaskRays(this, screen, loopInx);
+				for (int i = 0; i < bounceNum; i++)
+				{
+					nowBounce += 1;
+					opt->Trace(this, screen, loopInx);
+				}
+				opt->FinalGather(screen, loopInx);
+				nowBounce = 0;
+				opt->Clear(screen);
+			}
+			int aa = 1;
+		}
 	}
 }
 
@@ -96,6 +129,15 @@ arr<LightInfo> rayTraceWorld::GetLightsInfo(const P& pos)
 		re += light->GetLightInfo(pos);
 	}
 	return re;
+}
+
+void rayTraceWorld::SetOptimizeMode(rayTraceOptimizeMode optimizeMode_)
+{
+	optimizeMode = optimizeMode_;
+	if (optimizeMode == rayTraceOptimizeMode_PerTask)
+	{
+		optimizePolicy = new rayTraceOptimizePolicy_PerTask;
+	}
 }
 
 //### rayTraceWorld

@@ -10,6 +10,14 @@ TraceRayI_SDFSphereMonteCarlo::TraceRayI_SDFSphereMonteCarlo(TraceRay* y_)
 
 }
 
+TraceRayI_SDFSphereMonteCarlo::~TraceRayI_SDFSphereMonteCarlo()
+{
+	for (auto& ray : subRays)
+	{
+		ray.Clear();
+	}
+}
+
 void TraceRayI_SDFSphereMonteCarlo::CreateSubRays(rayTraceWorld* world, const TraceInfo& traceInfo)
 {
 	//1.创建spp条子Ray,子Ray的i是TraceRayI_SDFSphere，子Ray的o是TraceRayO_ReflectBounce

@@ -11,6 +11,11 @@ TraceRayO_ReflectBounce::TraceRayO_ReflectBounce(TraceRay* y_)
 
 }
 
+TraceRayO_ReflectBounce::~TraceRayO_ReflectBounce()
+{
+	int aaa=1;
+}
+
 void TraceRayO_ReflectBounce::FinalUnhitGather()
 {
 	ReflectBounceGather();

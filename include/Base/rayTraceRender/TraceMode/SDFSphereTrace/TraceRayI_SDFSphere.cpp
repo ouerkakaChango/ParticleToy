@@ -9,6 +9,11 @@ TraceRayI_SDFSphere::TraceRayI_SDFSphere(TraceRay* y_):
 
 }
 
+TraceRayI_SDFSphere::~TraceRayI_SDFSphere()
+{
+
+}
+
 void TraceRayI_SDFSphere::Trace(rayTraceWorld* world)
 {
 	auto o = Cast<TraceRayO*>(y->o[0]);
