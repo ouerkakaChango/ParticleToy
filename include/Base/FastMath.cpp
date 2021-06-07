@@ -306,6 +306,17 @@ P pow(const P& p1, const P& p2)
 {
 	return P(pow(p1.x, p2.x), pow(p1.y, p2.y), pow(p1.z, p2.z));
 }
+
+P randP()
+{
+	P re;
+	std::default_random_engine random(time(NULL));
+	std::uniform_real_distribution<double> dis2(0, std::nextafter(1, DBL_MAX));
+	re.x = dis2(random);
+	re.y = dis2(random);
+	re.z = dis2(random);
+	return re;
+}
 //### Global P
 
 //### Global Utility

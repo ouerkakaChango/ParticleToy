@@ -71,6 +71,7 @@ P max(double n, const P& p);
 P min(const P& p, double n);
 P min(double n, const P& p);
 P pow(const P& p1, const P& p2);
+P randP();
 
 double clamp(double x, double low, double high);
 double max(double a, double b);

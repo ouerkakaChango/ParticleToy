@@ -49,6 +49,42 @@
     <Filter Include="源文件\Base\Render">
       <UniqueIdentifier>{bff15e2b-7e4f-491f-bf25-43e2e39b9b9f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Base\rayTraceRender\BounceMode">
+      <UniqueIdentifier>{0a125163-52bc-4547-8ef6-0d3ea1eab335}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Base\rayTraceRender\BounceMode\CheapBounce">
+      <UniqueIdentifier>{650b6c0e-e5a4-4c6c-a788-4dabaf27f175}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Base\rayTraceRender\BounceMode\ReflectBounce">
+      <UniqueIdentifier>{992ac6eb-0e4f-4fae-9627-87cd7daefbdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Base\rayTraceRender\BounceMode\MonteCarlo">
+      <UniqueIdentifier>{86e44918-438b-4999-a14a-866506bf7494}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Base\rayTraceRender\BounceMode">
+      <UniqueIdentifier>{ce1c74fd-87f0-41b1-a66e-9f5bbd4c3dff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Base\rayTraceRender\BounceMode\CheapBounce">
+      <UniqueIdentifier>{75eb11a5-8f38-4484-acb6-b978cc65cdbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Base\rayTraceRender\BounceMode\ReflectBounce">
+      <UniqueIdentifier>{5bab2d11-b9c4-408b-a254-89e6ecb005fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Base\rayTraceRender\BounceMode\MonteCarlo">
+      <UniqueIdentifier>{4a66e6b3-dea3-4ea3-afba-08c3cafe5ff9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Base\rayTraceRender\TraceMode">
+      <UniqueIdentifier>{f685407b-ef2e-4809-9d80-adad2d581a3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Base\rayTraceRender\TraceMode\SDFSphereTrace">
+      <UniqueIdentifier>{47aacbc2-2123-4ff9-822f-71dfe20d6cf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Base\rayTraceRender\TraceMode">
+      <UniqueIdentifier>{6d718dae-3bb6-4e26-942b-49b041b0596e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Base\rayTraceRender\TraceMode\SDFSphereTrace">
+      <UniqueIdentifier>{bac21f3f-17f4-4962-8547-bdf62c9576ad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -140,6 +176,21 @@
     </ClInclude>
     <ClInclude Include="..\include\Base\Render\ShadeTask.h">
       <Filter>头文件\Base\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Base\rayTraceRender\TraceMode\SDFSphereTrace\TraceRayI_SDFSphere.h">
+      <Filter>头文件\Base\rayTraceRender\TraceMode\SDFSphereTrace</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Base\rayTraceRender\BounceMode\CheapBounce\TraceRayO_CheapBounce.h">
+      <Filter>头文件\Base\rayTraceRender\BounceMode\CheapBounce</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Base\rayTraceRender\BounceMode\ReflectBounce\TraceRayO_ReflectBounce.h">
+      <Filter>头文件\Base\rayTraceRender\BounceMode\ReflectBounce</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Base\rayTraceRender\BounceMode\MonteCarlo\TraceRayO_MonteCarlo.h">
+      <Filter>头文件\Base\rayTraceRender\BounceMode\MonteCarlo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Base\rayTraceRender\TraceMode\SDFSphereTrace\TraceRayI_SDFSphereMonteCarlo.h">
+      <Filter>头文件\Base\rayTraceRender\TraceMode\SDFSphereTrace</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -244,6 +295,21 @@
     </ClCompile>
     <ClCompile Include="..\include\Base\Render\ShadeTask.cpp">
       <Filter>源文件\Base\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\rayTraceRender\TraceMode\SDFSphereTrace\TraceRayI_SDFSphere.cpp">
+      <Filter>源文件\Base\rayTraceRender\TraceMode\SDFSphereTrace</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\rayTraceRender\BounceMode\CheapBounce\TraceRayO_CheapBounce.cpp">
+      <Filter>源文件\Base\rayTraceRender\BounceMode\CheapBounce</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\rayTraceRender\BounceMode\ReflectBounce\TraceRayO_ReflectBounce.cpp">
+      <Filter>源文件\Base\rayTraceRender\BounceMode\ReflectBounce</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\rayTraceRender\BounceMode\MonteCarlo\TraceRayO_MonteCarlo.cpp">
+      <Filter>源文件\Base\rayTraceRender\BounceMode\MonteCarlo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\rayTraceRender\TraceMode\SDFSphereTrace\TraceRayI_SDFSphereMonteCarlo.cpp">
+      <Filter>源文件\Base\rayTraceRender\TraceMode\SDFSphereTrace</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

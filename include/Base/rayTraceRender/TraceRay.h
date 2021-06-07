@@ -17,6 +17,7 @@ enum rayTraceBounceMode
 {
 	rayTraceBounceMode_cheap,	//仅使用单方向(trace反射方向)作为IndirectLight，通过材质reflectness混合反射
 	rayTraceBounceMode_reflect,	//和cheap几乎一样，但将indirect点作为点光源进入光照模型计算，混合更物理
+	rayTraceBounceMode_MonteCarlo, //经典蒙特卡洛路径追踪，也就是只考虑2trace多条采样（比如spp32）,而不是n*n。也算是reflect升级版。
 };
 
 enum rayTraceMaterialMode
@@ -60,7 +61,6 @@ class TraceRayI : public ClassI
 {
 public:
 	virtual void Trace(rayTraceWorld* world) = 0;
-	//virtual void CalculateMaterial(const arr<LightInfo>& lightsInfo, TraceInfo& info);
 
 	class TraceRayO* o = nullptr;
 	TraceRay* y = nullptr;
@@ -74,47 +74,11 @@ public:
 	virtual void PrepareMaterialExtra(Material& mat);
 	virtual void FinalUnhitGather();
 	virtual void FinalHitGather();
+	//??? 没啥用，之后去掉，都放在matPolicy->BlendColor
 	virtual void CalculateMaterial(rayTraceWorld* world, TraceInfo& info);
 
 	class rayTraceMaterialPolicyBase* matPolicy=nullptr;
 	TraceRay* y = nullptr;
-};
-
-class TraceRayI_SDFSphere : public TraceRayI
-{
-public:
-	TraceRayI_SDFSphere(TraceRay* y_);
-	virtual void Trace(rayTraceWorld* world);
-};
-
-class TraceRayO_CheapBounce : public TraceRayO
-{
-public:
-	TraceRayO_CheapBounce(TraceRay* y_);
-
-	void FinalUnhitGather() override;
-	void PrepareMaterialExtra(Material& mat) override;
-	void InitMaterialPolicy(rayTraceMaterialMode matMode) override;
-
-	double lastReflectness = 1.0;
-};
-
-class TraceRayO_ReflectBounce : public TraceRayO
-{
-public:
-	TraceRayO_ReflectBounce(TraceRay* y_);
-	void FinalUnhitGather() override;
-	void FinalHitGather() override;
-	void PrepareMaterialExtra(Material& mat) override;
-	void InitMaterialPolicy(rayTraceMaterialMode matMode) override;
-	void CalculateMaterial(rayTraceWorld* world, TraceInfo& info) override;
-
-	arr<double> reflectKs;
-	arr<ShadeTask> shadeTasks;
-	arr<TraceInfo> traceInfos;
-
-protected:
-	void ReflectBounceGather();
 };
 
 class rayTraceMaterialPolicyBase
