@@ -17,9 +17,8 @@ TraceRay::TraceRay()
 
 TraceRay::TraceRay(P a, P b)
 {
-	line.Set(a, b);
 	ori = a;
-	dir = line.dir();
+	dir = safeNorm(b - a);
 }
 
 void TraceRay::Clear()
@@ -64,7 +63,6 @@ void TraceRay::SetMode(rayTraceMode traceMode, rayTraceBounceMode bounceMode)
 		o += new TraceRayO_MonteCarlo(this);
 	}
 
-	Cast<TraceRayI*>(i[0])->o = Cast<TraceRayO*>(o[0]);
 }
 
 void TraceRay::Trace(rayTraceWorld* world)

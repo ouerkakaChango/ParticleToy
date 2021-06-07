@@ -17,4 +17,5 @@ class Object : public Yang
 	int uid = -1;
 	str name="obj";
 	static int maxInx;
+
 };

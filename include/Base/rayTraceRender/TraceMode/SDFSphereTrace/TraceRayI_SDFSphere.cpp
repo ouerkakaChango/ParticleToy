@@ -11,7 +11,7 @@ TraceRayI_SDFSphere::TraceRayI_SDFSphere(TraceRay* y_):
 
 void TraceRayI_SDFSphere::Trace(rayTraceWorld* world)
 {
-
+	auto o = Cast<TraceRayO*>(y->o[0]);
 	TraceInfo info = world->SDF(y->Ray(y->startLen));
 	info.dir = y->dir;
 	while (info.dis > y->traceThre)

@@ -3,6 +3,7 @@
 #include"../../rayTraceWorld.h"
 
 //### TraceRayI_SDFSphereMonteCarlo
+int TraceRayI_SDFSphereMonteCarlo::spp = 128;
 TraceRayI_SDFSphereMonteCarlo::TraceRayI_SDFSphereMonteCarlo(TraceRay* y_)
 	:TraceRayI_SDFSphere(y_)
 {
@@ -29,6 +30,7 @@ void TraceRayI_SDFSphereMonteCarlo::CreateSubRays(rayTraceWorld* world, const Tr
 
 void TraceRayI_SDFSphereMonteCarlo::Trace(rayTraceWorld* world)
 {
+	auto o = Cast<TraceRayO*>(y->o[0]);
 	if (world->nowBounce == 1)
 	{
 		TraceInfo info = world->SDF(y->Ray(y->startLen));

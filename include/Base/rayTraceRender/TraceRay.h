@@ -19,7 +19,6 @@ class TraceRay
 	P Ray(double len);
 	void Bounce(const TraceInfo& info);
 
-	Line line;
 	static double startLen;
 	static double traceThre;
 	P ori,dir;
@@ -33,7 +32,6 @@ public:
 	TraceRayI(TraceRay* y_);
 	virtual void Trace(rayTraceWorld* world) = 0;
 
-	class TraceRayO* o = nullptr;
 	TraceRay* y = nullptr;
 };
 

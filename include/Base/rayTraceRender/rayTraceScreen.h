@@ -13,10 +13,14 @@ public:
 	//void GatherInfo(rayTraceWorld* world, const TraceInfo& info, int i, int j);
 	void FinalGather();
 
+	void Translate(P offset);
+
 	int w, h;
 	arr2<TraceRay> rays;
 	arr2<P> debugFrameBuffer;
 	arr2<P> normalBuffer;
 	arr2<P> colorBuffer;
 	arr2<P> posBuffer;
+
+	P pos;
 };

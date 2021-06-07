@@ -35,12 +35,12 @@ public:
 		}
 	}
 
-	T& operator[](int inx)
+	inline T& operator[](int inx)
 	{
 		return data_[inx];
 	}
 
-	const T& operator[](int inx) const
+	inline const T& operator[](int inx) const
 	{
 		return data_[inx];
 	}

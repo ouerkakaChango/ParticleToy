@@ -10,5 +10,5 @@ public:
 	void CreateSubRays(rayTraceWorld* world, const TraceInfo& traceInfo);
 
 	arr<TraceRay> subRays;
-	int spp = 128;	//sample per pixel
+	static int spp;	//sample per pixel
 };

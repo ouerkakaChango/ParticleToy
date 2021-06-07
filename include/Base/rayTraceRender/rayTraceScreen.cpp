@@ -28,7 +28,7 @@ void rayTraceScreen::InitRays(rayTraceMode traceMode, rayTraceBounceMode bounceM
 		for (int i = 0; i < w; i++)
 		{
 			P endPos = startPos + P(i*dx,j*dx,0.0);
-			rays[i][j] = TraceRay(P(0, 0, 1), endPos); 
+			rays[i][j] = TraceRay(pos + P(0, 0, 1), pos + endPos); 
 			rays[i][j].SetMode(traceMode, bounceMode);
 			Cast<TraceRayO*>(rays[i][j].o[0])->InitMaterialPolicy(matMode);
 		}
@@ -61,26 +61,12 @@ void rayTraceScreen::Trace(rayTraceWorld* world)
 				log += percen * 100;
 				log += "%...";
 				cout << log << endl;
-				//cout << ray.dir.ToStr() << endl;
 				step += 1;
 			}
 		}
 	}
 	cout << "ATTENTION:CPU rayTracing done" << endl;
 }
-
-//void rayTraceScreen::GatherInfo(rayTraceWorld* world, const TraceInfo& info, int i, int j)
-//{
-//	//!!!
-//	debugFrameBuffer[i][j] = rays[i][j].debugColor;
-//	colorBuffer[i][j] = rays[i][j].color;
-//	if (info.bHit)
-//	{
-//		normalBuffer[i][j] = info.hitN;
-//		posBuffer[i][j] = info.hitPos;
-//	}
-//
-//}
 
 void rayTraceScreen::FinalGather()
 {
@@ -92,4 +78,9 @@ void rayTraceScreen::FinalGather()
 		}
 
 	}
+}
+
+void rayTraceScreen::Translate(P offset)
+{
+	pos += offset;
 }

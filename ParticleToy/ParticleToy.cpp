@@ -7,6 +7,7 @@
 #include "Render/Material.h"
 #include "rayTraceRender/rayTraceWorld.h"
 #include "rayTraceRender/rayTraceScreen.h"
+#include "rayTraceRender/TraceMode/SDFSphereTrace/TraceRayI_SDFSphereMonteCarlo.h"
 
 //### 架构心得
 //1.基本的Space+Evolver+Solver一套，如同template,如同原点。
@@ -45,6 +46,7 @@ int main()
 	{
 		//world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_reflect, rayTraceMaterialMode_PBR);
 		world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
+		//TraceRayI_SDFSphereMonteCarlo::spp = 512;
 	}
 	else
 	{
@@ -95,6 +97,8 @@ int main()
 
 	//auto screen = new rayTraceScreen(1080,720);
 	auto screen = new rayTraceScreen(540, 360);
+	//auto screen = new rayTraceScreen(270, 180);
+	screen->Translate(P(0.0, 0.0, -2.5));
 	op->PutScreen(screen);
 	//放完screen后，才给所有物体的材质加上了extra
 	if (!pbrMode)
