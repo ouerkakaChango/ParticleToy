@@ -28,7 +28,7 @@ P BlinnPhongO::Calculate(MaterialI* matParam, const arr<LightInfo>& lightsInfo, 
 	{
 		P l = -lightsInfo[i].dir;
 		P lightColor = lightsInfo[i].color;
-		P h = norm(l + v);
+		P h = safeNorm(l + v);
 		double NdotL = max(0, dot(n, l));
 		P diffuse = lightColor * param->diffuseColor * NdotL * param->kD;
 		P spec = lightColor * param->specularColor * pow(max(0, dot(n, h)), param->specPower) * param->kS;
@@ -76,7 +76,7 @@ P PBRO::Calculate(MaterialI* matParam, const arr<LightInfo>& lightsInfo, P n, P 
 	{
 		P l = -lightsInfo[i].dir;
 		P lightColor = lightsInfo[i].color;
-		P h = norm(l + v);
+		P h = safeNorm(l + v);
 
 		//Calculate F
 		P F0 = P(0.04);

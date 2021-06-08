@@ -48,9 +48,9 @@ int main()
 	if (pbrMode)
 	{
 		//world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_reflect, rayTraceMaterialMode_PBR);
-		world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
+		world->SetTraceSettings(8, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
 
-		TraceRayI_SDFSphereMonteCarlo::spp = 1;
+		TraceRayI_SDFSphereMonteCarlo::spp = 128;
 		world->SetOptimizeMode(rayTraceOptimizeMode_PerTask);
 		auto opt = Cast<rayTraceOptimizePolicy_PerTask*>(world->optimizePolicy);
 		opt->rayPerTask = 540*6;
@@ -103,7 +103,7 @@ int main()
 	{
 		auto param = Cast<PBRI*>(lightBox->material->i[0]);
 		param->ambientRate = 0;
-		param->emissive = P(1,1,1);
+		param->emissive = P(5,5,5);
 	}
 
 	if(true)
