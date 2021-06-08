@@ -50,7 +50,7 @@ int main()
 		//world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_reflect, rayTraceMaterialMode_PBR);
 		world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
 
-		TraceRayI_SDFSphereMonteCarlo::spp = 512;
+		TraceRayI_SDFSphereMonteCarlo::spp = 1;
 		world->SetOptimizeMode(rayTraceOptimizeMode_PerTask);
 		auto opt = Cast<rayTraceOptimizePolicy_PerTask*>(world->optimizePolicy);
 		opt->rayPerTask = 540*6;
@@ -71,10 +71,9 @@ int main()
 	else
 	{
 		auto param = Cast<PBRI*>(s1->material->i[0]);
-		param->metallic = 0.4;
-		param->roughness = 0.5;
-		param->ambientRate = 0;
-		param->emissive = P(0, 0, 1);
+		//白/红色球
+		//param->albedo = P(1, 0, 0);
+		//param->emissive = P(0, 0, 1);
 	}
 
 	auto box1 = op->PutShape(new Box(P(0.0, -1.2, -5.0), P(5.0, 0.1, 5.0)), "Box1");
@@ -89,21 +88,52 @@ int main()
 	else
 	{
 		auto param = Cast<PBRI*>(box1->material->i[0]);
-		param->metallic = 0.7;
-		param->roughness = 0.3;
-		param->ambientRate = 0;
-		param->emissive = P(0.1, 0.0, 0.0);
+		//param->albedo = P(0, 1, 0);
+		//param->metallic = 0.7;
+		//param->roughness = 0.3;
+		//param->ambientRate = 0;
+		//param->emissive = P(0.1, 0.0, 0.0);
+		//param->albedo = P(1, 0, 0);
 		//param->albedo = P(1.0, 242 / 255.0, 0.0);
 	}
 	//###
-	//auto box2 = op->PutShape(new Box(P(0.0, 3.0, -5.0), P(5.0, 0.1, 5.0)), "Box2");
-	//auto box3 = op->PutShape(new Box(P(-5.0, 0.0, -5.0), P(0.1, 5.0, 5.0)), "Box3");
-	//auto box4 = op->PutShape(new Box(P(5.0, 0.0, -5.0), P(0.1, 5.0, 5.0)), "Box4");
-	//auto box5 = op->PutShape(new Box(P(0.0, 0.0, -5.0), P(5.0, 5.0, 0.1)), "Box5");
+	//灯Box
+	auto lightBox = op->PutShape(new Box(P(0.0, 4.0, -5.0), P(1.0, 0.1, 1.0)*0.8), "Box2");
+	if (pbrMode)
+	{
+		auto param = Cast<PBRI*>(lightBox->material->i[0]);
+		param->ambientRate = 0;
+		param->emissive = P(1,1,1);
+	}
+
+	if(true)
+	{
+		double xDis = 2.0;
+		//上
+		auto box2 = op->PutShape(new Box(P(0.0, 4.05, -5.0), P(8.0, 0.1, 8.0)), "Box2");
+		//左
+		auto box3 = op->PutShape(new Box(P(-xDis, 0.0, -5.0), P(0.1, 5.0, 5.0)), "Box3");
+		if (pbrMode)
+		{
+			auto param = Cast<PBRI*>(box3->material->i[0]);
+			//左红
+			param->albedo = P(1, 0, 0);
+		}
+		//右
+		auto box4 = op->PutShape(new Box(P(xDis, 0.0, -5.0), P(0.1, 5.0, 5.0)), "Box4");
+		if (pbrMode)
+		{
+			auto param = Cast<PBRI*>(box4->material->i[0]);
+			//右绿
+			param->albedo = P(0, 1, 0);
+		}
+		//后
+		auto box5 = op->PutShape(new Box(P(0.0, 0.0, -6.5), P(8.0, 8.0, 0.1)), "Box5");
+	}
 	//###
 
-	//auto screen = new rayTraceScreen(1080,720);
-	auto screen = new rayTraceScreen(540, 360);
+	auto screen = new rayTraceScreen(1080,720);
+	//auto screen = new rayTraceScreen(540, 360);
 	//auto screen = new rayTraceScreen(270, 180);
 	//screen->Translate(P(0.0, 0.0, -2.5));
 	op->PutScreen(screen);
@@ -111,12 +141,12 @@ int main()
 	if (!pbrMode)
 	{
 		{
-			auto bounceParam = Cast<Extra_BlinnPhongI_CheapBounce*>(s1->material->i[1]);
-			bounceParam->reflectness = 0.5;
+			//auto bounceParam = Cast<Extra_BlinnPhongI_CheapBounce*>(s1->material->i[1]);
+			//bounceParam->reflectness = 0.5;
 		}
 		{
-			auto bounceParam = Cast<Extra_BlinnPhongI_CheapBounce*>(box1->material->i[1]);
-			bounceParam->reflectness = 0.5;
+			//auto bounceParam = Cast<Extra_BlinnPhongI_CheapBounce*>(box1->material->i[1]);
+			//bounceParam->reflectness = 0.5;
 		}
 	}
 	else
@@ -124,12 +154,12 @@ int main()
 		if (world->bounceMode == rayTraceBounceMode_reflect)
 		{
 			{
-				auto bounceParam = Cast<Extra_ReflectBounce*>(s1->material->i[1]);
-				bounceParam->reflectEnegyRate = 1.0;
+				//auto bounceParam = Cast<Extra_ReflectBounce*>(s1->material->i[1]);
+				//bounceParam->reflectEnegyRate = 1.0;
 			}
 			{
-				auto bounceParam = Cast<Extra_ReflectBounce*>(box1->material->i[1]);
-				bounceParam->reflectEnegyRate = .8;
+				//auto bounceParam = Cast<Extra_ReflectBounce*>(box1->material->i[1]);
+				//bounceParam->reflectEnegyRate = .8;
 			}
 		}
 		else if (world->bounceMode == rayTraceBounceMode_MonteCarlo)

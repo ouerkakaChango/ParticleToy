@@ -41,10 +41,10 @@ void TraceRay::Clear(bool keepColor)
 	bStopTrace = false;
 	if (!keepColor)
 	{
-		color = 0;
+		color = P(0.0);
 	}
-	dir = 0;
-	ori = 0;
+	dir = P(0.0);
+	ori = P(0.0);
 }
 
 void TraceRay::SetMode(rayTraceMode traceMode, rayTraceBounceMode bounceMode)

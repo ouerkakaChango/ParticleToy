@@ -29,6 +29,7 @@ class P
 {
 public:
 	P();
+	P(int n) = delete;//防止 auto p=(1,0,0)使用了括号计算器的写法
 	P(double n);
 	P(double x_, double y_, double z_);
 	P(int x_, int y_, int z_);

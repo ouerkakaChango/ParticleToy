@@ -50,10 +50,10 @@ class PBRI : public MaterialI
 public:
 	P albedo = P(1, 1, 1);
 	double ao = 1.0;
-	double ambientRate = 1.0;
+	double ambientRate = 0.0;
 
-	double metallic = 0.0;
-	double roughness = 0.8;
+	double metallic = 0.4;
+	double roughness = 0.5;
 };
 
 class PBRO : public MaterialO

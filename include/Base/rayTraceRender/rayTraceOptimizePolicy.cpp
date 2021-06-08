@@ -33,11 +33,15 @@ void rayTraceOptimizePolicy_PerTask::InitTaskRays(rayTraceWorld* world, rayTrace
 
 void rayTraceOptimizePolicy_PerTask::Trace(rayTraceWorld* world, rayTraceScreen* screen, int loopInx)
 {
+	int loopNum = ceil((screen->w * screen->h) / double(rayPerTask));
+
 	if (world->nowBounce == 1)
 	{
 		str info = "ATTENTION:CPU rayTracing Task ";
 		info += loopInx;
-		info += " ...";
+		info += " Progress ";
+		info += loopInx / (double)loopNum * 100;
+		info += "%  ...";
 		cout << info << endl;
 	}
 	for (int i = 0; i<rayPerTask; i++)
@@ -50,7 +54,6 @@ void rayTraceOptimizePolicy_PerTask::Trace(rayTraceWorld* world, rayTraceScreen*
 		}
 	}
 
-	int loopNum = ceil((screen->w * screen->h) / double(rayPerTask));
 	if (loopInx == loopNum - 1 && world->nowBounce == world->bounceNum)
 	{
 		cout << "ATTENTION:CPU rayTracing All Task done." << endl;

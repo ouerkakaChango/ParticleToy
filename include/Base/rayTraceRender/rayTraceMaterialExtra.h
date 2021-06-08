@@ -12,5 +12,5 @@ public:
 class Extra_ReflectBounce : public ClassI
 {
 public:
-	double reflectEnegyRate = 0.1;	//reflectEnegyRate percent if color is kept when consider the color as indirLight
+	double reflectEnegyRate = 0.5;	//reflectEnegyRate percent if color is kept when consider the color as indirLight
 };

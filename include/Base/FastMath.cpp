@@ -336,7 +336,7 @@ P diskRandP()
 	P d;
 	do
 	{
-		d = 2.0f * randP() - P(1);
+		d = 2.0f * randP() - P(1.0);
 	} while (dot(d, d) > 1.0);
 	return safeNorm(d);
 }
