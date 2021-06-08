@@ -85,6 +85,12 @@
     <Filter Include="源文件\Base\rayTraceRender\TraceMode\SDFSphereTrace">
       <UniqueIdentifier>{bac21f3f-17f4-4962-8547-bdf62c9576ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Base\Tools">
+      <UniqueIdentifier>{33295c08-642b-48a5-806d-535b81833cbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Base\Tools">
+      <UniqueIdentifier>{fda4a71f-8c7e-4ca6-a8cb-66484bd17702}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -194,6 +200,9 @@
     </ClInclude>
     <ClInclude Include="..\include\Base\rayTraceRender\rayTraceOptimizePolicy.h">
       <Filter>头文件\Base\rayTraceRender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Base\Tools\Timer.h">
+      <Filter>头文件\Base\Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -316,6 +325,9 @@
     </ClCompile>
     <ClCompile Include="..\include\Base\rayTraceRender\rayTraceOptimizePolicy.cpp">
       <Filter>源文件\Base\rayTraceRender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\Tools\Timer.cpp">
+      <Filter>源文件\Base\Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

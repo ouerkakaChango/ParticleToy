@@ -39,9 +39,12 @@ void rayTraceOptimizePolicy_PerTask::Trace(rayTraceWorld* world, rayTraceScreen*
 	{
 		str info = "ATTENTION:CPU rayTracing Task ";
 		info += loopInx;
+		info += " NowTime ";
+		info += timer.Record_FormatStr();
 		info += " Progress ";
 		info += loopInx / (double)loopNum * 100;
-		info += "%  ...";
+		info += "% ...";
+
 		cout << info << endl;
 	}
 	for (int i = 0; i<rayPerTask; i++)

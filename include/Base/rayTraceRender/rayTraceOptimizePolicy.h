@@ -1,4 +1,5 @@
 #pragma once
+#include "Tools/Timer.h"
 
 class rayTraceScreen;
 class rayTraceWorld;
@@ -18,4 +19,5 @@ public:
 	void Clear(rayTraceScreen* screen);
 
 	unsigned int rayPerTask = 0;
+	Timer timer;
 };

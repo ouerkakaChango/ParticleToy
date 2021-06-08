@@ -76,6 +76,7 @@ void rayTraceWorld::Evolve()
 		{
 			screen->optRays.resize(rayPerTask);
 			int loopNum = ceil((screen->w * screen->h) / double(rayPerTask));
+			opt->timer.Start();
 			for (int loopInx = 0; loopInx < loopNum; loopInx++)
 			{
 				opt->InitTaskRays(this, screen, loopInx);
