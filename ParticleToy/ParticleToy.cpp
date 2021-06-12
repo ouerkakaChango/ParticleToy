@@ -41,6 +41,15 @@
 //12.为了解决内存不够的问题：增加screen的traceMode。之前是screen保存所有ray,下一个bounce更新所有ray。
 //增加screen的模式，能一个ray一个ray的Trace，写进buffer，然后释放此ray的内存，再进行下一次
 
+//13.重要性采样。 根据：https://agraphicsguy.wordpress.com/2015/11/01/sampling-microfacet-brdf/ ,
+//在CreateSubRays时候：
+//13.1 均撒e,phi，根据公式生成theta
+//13.2 根据theta,phi用球坐标系生成向量h_local
+//13.4 根据n法平面调整h_local为h_world
+//13.5 令l = safeNorm(h-v)，如果l为0就重新撒。
+//13.6 沿l方向生成subray
+//13.7 在材质的pdf里根据cos(theta) = dot(h,n)的theta计算pdf，此theta和球面theta是一样的。
+
 int main()
 {
 	bool pbrMode = true;
@@ -48,7 +57,7 @@ int main()
 	if (pbrMode)
 	{
 		//world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_reflect, rayTraceMaterialMode_PBR);
-		world->SetTraceSettings(8, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
+		world->SetTraceSettings(3, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
 
 		TraceRayI_SDFSphereMonteCarlo::spp = 2;
 		world->SetOptimizeMode(rayTraceOptimizeMode_PerTask);

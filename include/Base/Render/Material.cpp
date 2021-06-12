@@ -18,7 +18,7 @@ P Material::Calculate(const arr<LightInfo>& lightsInfo, P n, P v, MaterialExtraC
 //### Material
 
 //### MaterialO
-double MaterialO::pdf(const P& n, const P& l, rayTraceSampleMode sampleMode)
+double MaterialO::pdf(const P& n, const P& h, rayTraceSampleMode sampleMode)
 {
 	if (sampleMode == rayTraceSampleMode_UniformSampling)
 	{
@@ -113,7 +113,7 @@ P PBRO::Calculate(MaterialI* matParam, const arr<LightInfo>& lightsInfo, P n, P 
 
 		if (control != nullptr && control->bDividePDF)
 		{
-			re /= pdf(n, l, control->sampleMode);
+			re /= pdf(n, h, control->sampleMode);
 		}
 	}
 
@@ -147,7 +147,7 @@ double PBRO::GeometrySchlickGGX(double NdotV, double roughness)
 	return nom / denom;
 }
 
-double PBRO::pdf(const P& n, const P& l, rayTraceSampleMode sampleMode)
+double PBRO::pdf(const P& n, const P& h, rayTraceSampleMode sampleMode)
 {
 	if (sampleMode == rayTraceSampleMode_UniformSampling)
 	{

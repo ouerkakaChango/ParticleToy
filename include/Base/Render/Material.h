@@ -80,5 +80,5 @@ public:
 
 	double GeometrySchlickGGX(double NdotV, double roughness);
 
-	double pdf(const P& n, const P& l, rayTraceSampleMode sampleMode) override;
+	double pdf(const P& n, const P& h, rayTraceSampleMode sampleMode) override;
 };
