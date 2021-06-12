@@ -4,6 +4,8 @@
 
 //### TraceRayI_SDFSphereMonteCarlo
 int TraceRayI_SDFSphereMonteCarlo::spp = 128;
+rayTraceSampleMode TraceRayI_SDFSphereMonteCarlo::sampleMode = rayTraceSampleMode_UniformSampling;
+
 TraceRayI_SDFSphereMonteCarlo::TraceRayI_SDFSphereMonteCarlo(TraceRay* y_)
 	:TraceRayI_SDFSphere(y_)
 {

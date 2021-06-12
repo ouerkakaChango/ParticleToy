@@ -17,6 +17,18 @@ P Material::Calculate(const arr<LightInfo>& lightsInfo, P n, P v, MaterialExtraC
 }
 //### Material
 
+//### MaterialO
+double MaterialO::pdf(const P& n, const P& l, rayTraceSampleMode sampleMode)
+{
+	if (sampleMode == rayTraceSampleMode_UniformSampling)
+	{
+		return 2 * PI;
+	}
+	abort();
+	return 1.0;
+}
+//### MaterialO
+
 //### BlinnPhongO
 P BlinnPhongO::Calculate(MaterialI* matParam, const arr<LightInfo>& lightsInfo, P n, P v, MaterialExtraControl* control)
 {
@@ -98,12 +110,18 @@ P PBRO::Calculate(MaterialI* matParam, const arr<LightInfo>& lightsInfo, P n, P 
 		Lo *= lightColor*max(dot(n,l),0);
 
 		re += Lo;
+
+		if (control != nullptr && control->bDividePDF)
+		{
+			re /= pdf(n, l, control->sampleMode);
+		}
 	}
 
 	if (control==nullptr || !control->bIgnoreEmissive)
 	{
 		re += param->emissive ;
 	}
+
 	return re;
 }
 
@@ -127,5 +145,15 @@ double PBRO::GeometrySchlickGGX(double NdotV, double roughness)
 	double denom = NdotV * (1.0 - k) + k;
 
 	return nom / denom;
+}
+
+double PBRO::pdf(const P& n, const P& l, rayTraceSampleMode sampleMode)
+{
+	if (sampleMode == rayTraceSampleMode_UniformSampling)
+	{
+		return 2 * PI;
+	}
+	abort();
+	return 1.0;
 }
 //### PBRO

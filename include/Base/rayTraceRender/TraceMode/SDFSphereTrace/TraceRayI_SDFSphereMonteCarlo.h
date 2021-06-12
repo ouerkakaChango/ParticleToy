@@ -12,4 +12,5 @@ public:
 
 	arr<TraceRay> subRays;
 	static int spp;	//sample per pixel
+	static rayTraceSampleMode sampleMode;
 };

@@ -3,10 +3,18 @@
 #include "FastMath.h"
 #include "Lights.h"
 
+enum rayTraceSampleMode
+{
+	rayTraceSampleMode_UniformSampling,
+	rayTraceSampleMode_ImportanceSampling,
+};
+
 class MaterialExtraControl
 {
 public:
 	bool bIgnoreEmissive = false;
+	bool bDividePDF = false;
+	rayTraceSampleMode sampleMode = rayTraceSampleMode_UniformSampling;
 };
 
 class Material
@@ -25,6 +33,9 @@ class MaterialO : public ClassO
 {
 public:
 	virtual P Calculate(MaterialI* param, const arr<LightInfo>& lightsInfo, P n, P v, MaterialExtraControl* control)=0;
+	//由于参考:https://agraphicsguy.wordpress.com/2015/11/01/sampling-microfacet-brdf/
+	//光追重要性采样时会根据渲染方程的不同而用相应推导出的pdf，所以pdf实现放material里比较合适
+	virtual double pdf(const P& n, const P& l, rayTraceSampleMode sampleMode);
 };
 
 class BlinnPhongI : public MaterialI
@@ -68,4 +79,6 @@ public:
 	double GeometrySmith(const P& N, const P& V, const P& L, double roughness);
 
 	double GeometrySchlickGGX(double NdotV, double roughness);
+
+	double pdf(const P& n, const P& l, rayTraceSampleMode sampleMode) override;
 };

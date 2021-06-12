@@ -44,6 +44,8 @@ void TraceRayO_MonteCarlo::FinalHitGather()
 	indirTask.lightInfos.clear();
 	indirTask.control = new MaterialExtraControl;
 	indirTask.control->bIgnoreEmissive = true;
+	indirTask.control->bDividePDF = true;
+	indirTask.control->sampleMode = TraceRayI_SDFSphereMonteCarlo::sampleMode;
 	int validCount = 0;
 	for (int i = 0; i < subRays.size(); i++)
 	{
@@ -54,7 +56,7 @@ void TraceRayO_MonteCarlo::FinalHitGather()
 			P lpos = to->traceInfos[0].hitPos;
 			P pos = shadeTask.p;
 			PointLight tLight(lpos, ray.color);
-			indirTask.lightInfos += tLight.GetLightInfo(pos, 1.0);
+			indirTask.lightInfos += tLight.GetLightInfo(pos);
 			validCount++;
 		}
 	}
@@ -63,7 +65,7 @@ void TraceRayO_MonteCarlo::FinalHitGather()
 		y->color = shadeTask.Calculate();
 		return;
 	}
-	P indirColor = indirTask.Calculate()* 2.0 * PI / validCount;
+	P indirColor = indirTask.Calculate() / validCount;
 	y->color = shadeTask.Calculate() + indirColor;
 	y->Clear(true);
 
