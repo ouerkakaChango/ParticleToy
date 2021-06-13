@@ -18,17 +18,17 @@ P Material::Calculate(const arr<LightInfo>& lightsInfo, P n, P v, MaterialExtraC
 //### Material
 
 //### MaterialO
-double MaterialO::pdf(const P& n, const P& h, rayTraceSampleMode sampleMode)
+double MaterialO::pdf(const P& n, const P& h, rayTraceSampleMode sampleMode, MaterialI* matParam)
 {
 	if (sampleMode == rayTraceSampleMode_UniformSampling)
 	{
-		return 2 * PI;
+		return 1/(2 * PI);
 	}
 	abort();
 	return 1.0;
 }
 
-P MaterialO::ImportanceRandSampleDir(const P& n)
+P MaterialO::ImportanceRandSampleDir(MaterialI* matParam, const P& n, const P& v)
 {
 	return n;
 }
@@ -111,15 +111,23 @@ P PBRO::Calculate(MaterialI* matParam, const arr<LightInfo>& lightsInfo, P n, P 
 		double denominator = 4.0 * max(dot(n, v), 0.0) * max(dot(n, l), 0.0) + 0.001;
 		P specular = nominator / denominator;
 
+		if (!zero(specular) && control != nullptr && control->bDividePDF)
+		{
+			double deno = pdf(n, h, control->sampleMode, matParam);
+			//!!!
+			//if(NDF>10
+			//if ((specular.x / deno) > 100 || (specular.y / deno) > 10 || (specular.z / deno) > 10)
+			//{
+			//	abort();
+			//}
+			specular /= deno;
+		}
+
 		P Lo = diffuse + specular;
 		Lo *= lightColor*max(dot(n,l),0);
 
 		re += Lo;
 
-		if (control != nullptr && control->bDividePDF)
-		{
-			re /= pdf(n, h, control->sampleMode);
-		}
 	}
 
 	if (control==nullptr || !control->bIgnoreEmissive)
@@ -152,18 +160,84 @@ double PBRO::GeometrySchlickGGX(double NdotV, double roughness)
 	return nom / denom;
 }
 
-double PBRO::pdf(const P& n, const P& h, rayTraceSampleMode sampleMode)
+double PBRO::pdf(const P& n, const P& h, rayTraceSampleMode sampleMode, MaterialI* matParam)
 {
 	if (sampleMode == rayTraceSampleMode_UniformSampling)
 	{
 		return 1.0/(2.0 * PI);
 	}
+	else if (sampleMode == rayTraceSampleMode_ImportanceSampling)
+	{
+		double re;
+		//https://agraphicsguy.wordpress.com/2015/11/01/sampling-microfacet-brdf/
+		//关于pdf的除0问题,和除爆了的问题，搜了半天也没找到合适解决办法：
+		//https://stackoverflow.com/questions/8271210/upper-confidence-bounds-in-monte-carlo-tree-search-when-plays-or-visited-are-0/8273267
+		//!!! 我就让pdf计算时加上小数，避免0,并且使用函数，保证func(c*s)>=1
+		PBRI* param = Cast<PBRI*>(matParam);
+		double a = lerp(0.00001,1.0,param->roughness * param->roughness);
+		double theta = acos(dot(n, h));
+		theta = lerp(0.00001, PI/2, theta/(PI/2));
+		double c = cos(theta);
+		double s = sin(theta);
+		if (s < 0)
+		{
+			abort();
+		}
+		double nomi = a * a * (tan(c * s * PI / 2)+1);
+		double deno = c * c * (a*a - 1) + 1;
+		deno = PI * deno * deno;
+		re = nomi / deno;
+		if (re < 0)
+		{
+			int aa = 1;
+		}
+		return re/2/PI;
+	}
 	abort();
 	return 1.0;
 }
 
-P PBRO::ImportanceRandSampleDir(const P& n)
+P PBRO::ImportanceRandSampleDir(MaterialI* matParam, const P& n, const P& v)
 {
-	return n;
+	//根据：https://agraphicsguy.wordpress.com/2015/11/01/sampling-microfacet-brdf/ ,
+	//1 均撒e,phi，e根据公式生成theta
+	//2 根据theta,phi用球坐标系生成向量h_local
+	//4 根据n法平面调整h_local为h_world
+	//5 令l = safeNorm(h-v)，如果l为0就重新撒。
+	//6 沿l方向生成subray
+
+	P dir;
+	//根据目前DistributionGGX的实现,a=rougness * rougness
+	PBRI* param = Cast<PBRI*>(matParam);
+	double a = param->roughness * param->roughness;
+
+	while (zero(dir))
+	{
+		double phi = rand01() * 2 * PI;
+		double e = rand01();
+		double theta = atan(a*sqrt(e / (1 - e)));
+		P h_local = PFromSpherical(theta, phi);
+		Q rot = QFrom(P(0, 0, 1), n);
+		P h = rot.Rotate(h_local);
+		auto func = [=](double t)
+		{
+			P p = t * h - v;
+			return p.len()-1.0;
+		};
+		//solve l when know h,v
+		double k = 0;
+		bool bSolved = BisecitonSolve(func, dot(h,v), 5, k,0.0001);
+		if (!bSolved)
+		{
+			abort();
+		}
+		P l = safeNorm(k * h - v);
+		if (dot(l, n) > 0)
+		{
+			dir = l;
+		}
+	}
+
+	return dir;
 }
 //### PBRO

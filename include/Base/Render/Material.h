@@ -32,12 +32,12 @@ public:
 class MaterialO : public ClassO
 {
 public:
-	virtual P Calculate(MaterialI* param, const arr<LightInfo>& lightsInfo, P n, P v, MaterialExtraControl* control)=0;
+	virtual P Calculate(MaterialI* matParam, const arr<LightInfo>& lightsInfo, P n, P v, MaterialExtraControl* control)=0;
 	//由于参考:https://agraphicsguy.wordpress.com/2015/11/01/sampling-microfacet-brdf/
 	//光追重要性采样时会根据渲染方程的不同而用相应推导出的pdf，所以pdf实现放material里比较合适
-	virtual double pdf(const P& n, const P& l, rayTraceSampleMode sampleMode);
+	virtual double pdf(const P& n, const P& h, rayTraceSampleMode sampleMode, MaterialI* matParam=nullptr);
 	//同pdf理，重要性采样的采样方式放material里比较合适
-	virtual P ImportanceRandSampleDir(const P& n);
+	virtual P ImportanceRandSampleDir(MaterialI* matParam, const P& n, const P& v);
 };
 
 class BlinnPhongI : public MaterialI
@@ -82,6 +82,6 @@ public:
 
 	double GeometrySchlickGGX(double NdotV, double roughness);
 
-	double pdf(const P& n, const P& h, rayTraceSampleMode sampleMode) override;
-	P ImportanceRandSampleDir(const P& n) override;
+	double pdf(const P& n, const P& h, rayTraceSampleMode sampleMode, MaterialI* matParam = nullptr) override;
+	P ImportanceRandSampleDir(MaterialI* matParam, const P& n, const P& v) override;
 };

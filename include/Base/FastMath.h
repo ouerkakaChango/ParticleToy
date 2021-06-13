@@ -74,6 +74,24 @@ P min(double n, const P& p);
 P pow(const P& p1, const P& p2);
 P randP();
 P diskRandP();
+P PFromSpherical(double theta, double phi, double r=1.0);
+
+//只接受归一化的Quaternion
+//四元数相关公式 https://blog.csdn.net/silangquan/article/details/39008903
+class Q
+{
+public:
+	Q() {}
+	Q(double x_, double y_,double z_, double w_);
+	Q(const P& axis, double theta);
+	Q operator*(const Q& q) const;
+	Q Conjugate() const;
+	P Rotate(const P& v) const;
+	P Axis() const;
+	double x, y, z, w;
+};
+
+Q QFrom(const P& vecFrom, const P& vecTo);
 
 double clamp(double x, double low, double high);
 double max(double a, double b);

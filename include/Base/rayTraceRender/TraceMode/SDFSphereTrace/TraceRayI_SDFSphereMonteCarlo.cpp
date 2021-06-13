@@ -30,8 +30,11 @@ P TraceRayI_SDFSphereMonteCarlo::RandSampleDir(const TraceInfo& traceInfo)
 	}
 	else if (sampleMode == rayTraceSampleMode_ImportanceSampling)
 	{
-		return Cast<MaterialO*>(traceInfo.obj->material->o[0])->ImportanceRandSampleDir(traceInfo.hitN);
+		auto matParam = Cast<MaterialI*>(traceInfo.obj->material->i[0]);
+		return Cast<MaterialO*>(traceInfo.obj->material->o[0])->ImportanceRandSampleDir(matParam, traceInfo.hitN, -traceInfo.dir);
 	}
+	abort();
+	return P(0.0);
 }
 
 void TraceRayI_SDFSphereMonteCarlo::CreateSubRays(rayTraceWorld* world, const TraceInfo& traceInfo)
@@ -42,7 +45,7 @@ void TraceRayI_SDFSphereMonteCarlo::CreateSubRays(rayTraceWorld* world, const Tr
 	subRays.resize(spp);
 	for (int i = 0; i < spp; i++)
 	{
-		P b = a + safeNorm(diskRandP() + traceInfo.hitN);//RandSampleDir(traceInfo);//
+		P b = a + RandSampleDir(traceInfo);
 		subRays[i] = TraceRay(a, b);
 		subRays[i].SetMode(rayTraceMode_SDFSphere, rayTraceBounceMode_reflect);
 		Cast<TraceRayO*>(subRays[i].o[0])->InitMaterialPolicy(world->matMode);

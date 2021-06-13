@@ -48,7 +48,7 @@
 //13.4 根据n法平面调整h_local为h_world
 //13.5 令l = safeNorm(h-v)，如果l为0就重新撒。
 //13.6 沿l方向生成subray
-//13.7 在材质的pdf里根据cos(theta) = dot(h,n)的theta计算pdf，此theta和createSubRay的球坐标系theta是一样的。
+//13.7 在材质的pdf里根据cos(theta) = dot(h,n)计算pdf，此theta和createSubRay的球坐标系theta是一样的。
 
 int main()
 {
@@ -57,7 +57,7 @@ int main()
 	if (pbrMode)
 	{
 		//world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_reflect, rayTraceMaterialMode_PBR);
-		world->SetTraceSettings(3, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
+		world->SetTraceSettings(8, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
 
 		//TraceRayI_SDFSphereMonteCarlo::sampleMode = rayTraceSampleMode_ImportanceSampling;
 		TraceRayI_SDFSphereMonteCarlo::spp = 5;
@@ -142,8 +142,8 @@ int main()
 	}
 	//###
 
-	auto screen = new rayTraceScreen(1080,720);
-	//auto screen = new rayTraceScreen(540, 360);
+	//auto screen = new rayTraceScreen(1080,720);
+	auto screen = new rayTraceScreen(540, 360);
 	//auto screen = new rayTraceScreen(270, 180);
 	//screen->Translate(P(0.0, 0.0, -2.5));
 	op->PutScreen(screen);

@@ -340,7 +340,81 @@ P diskRandP()
 	} while (dot(d, d) > 1.0);
 	return safeNorm(d);
 }
+
+P PFromSpherical(double theta, double phi, double r)
+{
+	return P(
+		r*sin(theta)*cos(phi),
+		r*sin(theta)*sin(phi),
+		r*cos(theta)
+	);
+}
 //### Global P
+
+//### Q
+Q::Q(double x_, double y_, double z_, double w_):
+	x(x_),y(y_),z(z_),w(w_)
+{
+
+}
+
+Q::Q(const P& axis, double theta)
+{
+	w = cos(theta / 2);
+	P v = safeNorm(axis);
+	double s = sin(theta / 2);
+	x = v.x * s;
+	y = v.y * s;
+	z = v.z * s;
+}
+
+Q Q::operator*(const Q& q) const
+{
+	Q re;
+	re.w = w * q.w - x * q.x - y * q.y - z * q.z;
+	re.x = w * q.x + x * q.w + y * q.z - z * q.y;
+	re.y = w * q.y - x * q.z + y * q.w + z * q.x;
+	re.z = w * q.z + x * q.y - y * q.x + z * q.w;
+	return re;
+}
+
+Q Q::Conjugate() const
+{
+	return Q(-x, -y, -z, w);
+}
+
+P Q::Rotate(const P& v) const
+{
+	double len = v.len();
+	if (zero(len))
+	{
+		return v;
+	}
+	P oriDir = safeNorm(v);
+	Q p(oriDir.x, oriDir.y, oriDir.z,0);
+	//因为默认归一化，所以四元数的取逆就是取共轭
+	Q re = (*this) *p * Conjugate();
+	return re.Axis() * len;
+}
+
+P Q::Axis() const
+{
+	return safeNorm(P(x, y, z));
+}
+//### Q
+
+//### Global Q
+Q QFrom(const P& vecFrom, const P& vecTo)
+{
+	if (zero(vecFrom) || zero(vecTo))
+	{
+		abort();
+	}
+	double cosTheta = dot(vecFrom, vecTo) / vecFrom.len() / vecTo.len();
+	P axis = cross(vecFrom, vecTo);
+	return Q(axis, acos(cosTheta));
+}
+//### Global Q
 
 //### Global Utility
 
@@ -442,10 +516,17 @@ double sign(double n)
 
 double rand01()
 {
-	static std::default_random_engine e;        // 生成无符号随机整数
-	// 0 到 1 （包含）的均匀分布
-	static std::uniform_real_distribution<double>u(0, 1);
-	return u(e);
+	//static std::default_random_engine e;        // 生成无符号随机整数
+	//// 0 到 1 （包含）的均匀分布
+	//static std::uniform_real_distribution<double>u(0, 1);
+	//return u(e);
+
+	//!!! 为了和randP 统一，随机种子也改成mt19937
+	P re;
+	std::uniform_real_distribution<double> unidis(0, 1);
+	std::random_device rand_dev;
+	std::mt19937 rand_engine(rand_dev());
+	return unidis(rand_engine);
 }
 
 double equal(double a, double b, double tolerance)
