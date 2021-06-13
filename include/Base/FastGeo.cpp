@@ -16,7 +16,7 @@ double Shape::SDF(P pos)
 
 P Shape::SDFNormal(P p)
 {
-	return norm(P(
+	return safeNorm(P(
 		SDF(P(p.x + epsilon, p.y, p.z)) - SDF(P(p.x - epsilon, p.y, p.z)),
 		SDF(P(p.x, p.y + epsilon, p.z)) - SDF(P(p.x, p.y - epsilon, p.z)),
 		SDF(P(p.x, p.y, p.z + epsilon)) - SDF(P(p.x, p.y, p.z - epsilon))

@@ -71,7 +71,16 @@ void TraceRayI_SDFSphereMonteCarlo::Trace(rayTraceWorld* world)
 		info.bHit = true;
 		info.dir = y->dir;
 		info.hitPos = y->ori;
-		info.hitN = info.obj->shape->SDFNormal(y->ori);
+		info.hitN = info.obj->shape->SDFNormal(info.hitPos);
+
+		int count = 1;
+		while (zero(info.hitN))
+		{
+			//有可能发生，获取SDF Normal失败
+			//那就获取上一个位置的SDF Normal
+			info.hitN = info.obj->shape->SDFNormal(info.hitPos - info.dir*0.00001*count);
+			count++;
+		}
 
 		arr<LightInfo> lightsInfo = world->GetLightsInfo(info.hitPos);
 		o->matPolicy->BlendColor(world, *y, info);

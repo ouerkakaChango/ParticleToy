@@ -114,12 +114,6 @@ P PBRO::Calculate(MaterialI* matParam, const arr<LightInfo>& lightsInfo, P n, P 
 		if (!zero(specular) && control != nullptr && control->bDividePDF)
 		{
 			double deno = pdf(n, h, control->sampleMode, matParam);
-			//!!!
-			//if(NDF>10
-			//if ((specular.x / deno) > 100 || (specular.y / deno) > 10 || (specular.z / deno) > 10)
-			//{
-			//	abort();
-			//}
 			specular /= deno;
 		}
 
@@ -170,7 +164,7 @@ double PBRO::pdf(const P& n, const P& h, rayTraceSampleMode sampleMode, Material
 	{
 		double re;
 		//https://agraphicsguy.wordpress.com/2015/11/01/sampling-microfacet-brdf/
-		//关于pdf的除0问题,和除爆了的问题，搜了半天也没找到合适解决办法：
+		//关于pdf的除0问题，搜了半天也没找到合适解决办法：
 		//https://stackoverflow.com/questions/8271210/upper-confidence-bounds-in-monte-carlo-tree-search-when-plays-or-visited-are-0/8273267
 		//!!! 我就让pdf计算时加上小数，避免0,并且使用函数，保证func(c*s)>=1
 		PBRI* param = Cast<PBRI*>(matParam);
@@ -179,19 +173,13 @@ double PBRO::pdf(const P& n, const P& h, rayTraceSampleMode sampleMode, Material
 		theta = lerp(0.00001, PI/2, theta/(PI/2));
 		double c = cos(theta);
 		double s = sin(theta);
-		if (s < 0)
-		{
-			abort();
-		}
-		double nomi = a * a * (tan(c * s * PI / 2)+1);
+
+		double nomi = a * a * c * s;
 		double deno = c * c * (a*a - 1) + 1;
 		deno = PI * deno * deno;
 		re = nomi / deno;
-		if (re < 0)
-		{
-			int aa = 1;
-		}
-		return re/2/PI;
+
+		return re;
 	}
 	abort();
 	return 1.0;

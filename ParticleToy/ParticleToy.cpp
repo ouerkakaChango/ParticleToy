@@ -60,7 +60,7 @@ int main()
 		world->SetTraceSettings(8, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
 
 		//TraceRayI_SDFSphereMonteCarlo::sampleMode = rayTraceSampleMode_ImportanceSampling;
-		TraceRayI_SDFSphereMonteCarlo::spp = 5;
+		TraceRayI_SDFSphereMonteCarlo::spp = 128;
 		world->SetOptimizeMode(rayTraceOptimizeMode_PerTask);
 		auto opt = Cast<rayTraceOptimizePolicy_PerTask*>(world->optimizePolicy);
 		opt->rayPerTask = 540*6;
@@ -142,8 +142,8 @@ int main()
 	}
 	//###
 
-	//auto screen = new rayTraceScreen(1080,720);
-	auto screen = new rayTraceScreen(540, 360);
+	auto screen = new rayTraceScreen(1080,720);
+	//auto screen = new rayTraceScreen(540, 360);
 	//auto screen = new rayTraceScreen(270, 180);
 	//screen->Translate(P(0.0, 0.0, -2.5));
 	op->PutScreen(screen);
