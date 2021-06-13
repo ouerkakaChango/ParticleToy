@@ -60,25 +60,9 @@ void TraceRayO_ReflectBounce::InitMaterialPolicy(rayTraceMaterialMode matMode)
 	}
 }
 
-//void TraceRayO_ReflectBounce::CalculateMaterial(rayTraceWorld* world, TraceInfo& info)
-//{
-//	if (info.obj && info.obj->material)
-//	{
-//		auto mat = info.obj->material;
-//		PrepareMaterialExtra(*mat);
-//		matPolicy->UpdateRayAfterCalculate(*y, *mat);
-//	}
-//}
 //### TraceRayO_ReflectBounce
 
 //### rayTraceMaterialPolicy<TraceRayO_ReflectBounce, MaterialI>
-void rayTraceMaterialPolicy<TraceRayO_ReflectBounce, MaterialI>::UpdateRayAfterCalculate(TraceRay& ray, const Material& mat)
-{
-	auto bounceParam = Cast<Extra_ReflectBounce*>(mat.i[1]);
-	auto reflectO = Cast<TraceRayO_ReflectBounce*>(ray.o[0]);
-	reflectO->reflectKs += bounceParam->reflectEnegyRate;
-}
-
 void rayTraceMaterialPolicy<TraceRayO_ReflectBounce, MaterialI>::BlendColor(rayTraceWorld* world, TraceRay& ray, const TraceInfo& info)
 {
 	auto reflectO = Cast<TraceRayO_ReflectBounce*>(ray.o[0]);
@@ -87,7 +71,9 @@ void rayTraceMaterialPolicy<TraceRayO_ReflectBounce, MaterialI>::BlendColor(rayT
 	{
 		auto mat = info.obj->material;
 		reflectO->PrepareMaterialExtra(*mat);
-		UpdateRayAfterCalculate(ray, *mat);
+		
+		auto bounceParam = Cast<Extra_ReflectBounce*>(mat->i[1]);
+		reflectO->reflectKs += bounceParam->reflectEnegyRate;
 	}
 
 	reflectO->traceInfos += info;

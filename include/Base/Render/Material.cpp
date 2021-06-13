@@ -156,7 +156,7 @@ double PBRO::pdf(const P& n, const P& h, rayTraceSampleMode sampleMode)
 {
 	if (sampleMode == rayTraceSampleMode_UniformSampling)
 	{
-		return 2 * PI;
+		return 1.0/(2.0 * PI);
 	}
 	abort();
 	return 1.0;

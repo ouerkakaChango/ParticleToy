@@ -11,17 +11,6 @@ TraceRayO_MonteCarlo::TraceRayO_MonteCarlo(TraceRay* y_)
 
 }
 
-//void TraceRayO_MonteCarlo::CalculateMaterial(rayTraceWorld* world, TraceInfo& info)
-//{
-//	//if (info.obj && info.obj->material)
-//	//{
-//		//auto mat = info.obj->material;
-//		//PrepareMaterialExtra(*mat);
-//		//matPolicy->UpdateRayAfterCalculate(*y, *mat);
-//	//}
-//}
-
-
 void TraceRayO_MonteCarlo::InitMaterialPolicy(rayTraceMaterialMode matMode)
 {
 	if (matPolicy == nullptr)

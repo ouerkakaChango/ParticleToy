@@ -45,11 +45,6 @@ void TraceRayO_CheapBounce::InitMaterialPolicy(rayTraceMaterialMode matMode)
 //### TraceRayO_CheapBounce
 
 //### rayTraceMaterialPolicy<TraceRayO_CheapBounce, BlinnPhongI>
-void rayTraceMaterialPolicy<TraceRayO_CheapBounce, BlinnPhongI>::UpdateRayAfterCalculate(TraceRay& ray, const Material& mat)
-{
-	auto bounceParam = Cast<Extra_BlinnPhongI_CheapBounce*>(mat.i[1]);
-	ray.bStopTrace = zero(bounceParam->reflectness);
-}
 
 void rayTraceMaterialPolicy<TraceRayO_CheapBounce, BlinnPhongI>::BlendColor(rayTraceWorld* world, TraceRay& ray, const TraceInfo& info)
 {
@@ -64,7 +59,9 @@ void rayTraceMaterialPolicy<TraceRayO_CheapBounce, BlinnPhongI>::BlendColor(rayT
 		P n = info.hitN;
 		P v = -info.dir;
 		nowColor = mat->Calculate(lightsInfo, n, v);
-		UpdateRayAfterCalculate(ray, *mat);
+
+		auto bounceParam = Cast<Extra_BlinnPhongI_CheapBounce*>(mat->i[1]);
+		ray.bStopTrace = zero(bounceParam->reflectness);
 	}
 
 	Material& mat = *info.obj->material;
