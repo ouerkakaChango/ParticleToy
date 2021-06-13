@@ -39,7 +39,7 @@ void TraceRayI_SDFSphere::Trace(rayTraceWorld* world)
 	info.hitN = info.obj->shape->SDFNormal(y->ori);
 
 	arr<LightInfo> lightsInfo = world->GetLightsInfo(info.hitPos);
-	o->CalculateMaterial(world, info);
+	//o->CalculateMaterial(world, info);
 	o->matPolicy->BlendColor(world, *y, info);
 
 	if (world->nowBounce == world->bounceNum)

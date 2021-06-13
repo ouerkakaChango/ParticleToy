@@ -27,6 +27,11 @@ double MaterialO::pdf(const P& n, const P& h, rayTraceSampleMode sampleMode)
 	abort();
 	return 1.0;
 }
+
+P MaterialO::ImportanceRandSampleDir(const P& n)
+{
+	return n;
+}
 //### MaterialO
 
 //### BlinnPhongO
@@ -155,5 +160,10 @@ double PBRO::pdf(const P& n, const P& h, rayTraceSampleMode sampleMode)
 	}
 	abort();
 	return 1.0;
+}
+
+P PBRO::ImportanceRandSampleDir(const P& n)
+{
+	return n;
 }
 //### PBRO

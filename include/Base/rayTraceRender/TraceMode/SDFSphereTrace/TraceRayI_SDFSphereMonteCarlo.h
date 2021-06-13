@@ -9,6 +9,7 @@ public:
 
 	virtual void Trace(rayTraceWorld* world) override;
 	void CreateSubRays(rayTraceWorld* world, const TraceInfo& traceInfo);
+	P RandSampleDir(const TraceInfo& traceInfo);
 
 	arr<TraceRay> subRays;
 	static int spp;	//sample per pixel

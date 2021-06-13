@@ -43,12 +43,12 @@
 
 //13.重要性采样。 根据：https://agraphicsguy.wordpress.com/2015/11/01/sampling-microfacet-brdf/ ,
 //在CreateSubRays时候：
-//13.1 均撒e,phi，根据公式生成theta
+//13.1 均撒e,phi，e根据公式生成theta
 //13.2 根据theta,phi用球坐标系生成向量h_local
 //13.4 根据n法平面调整h_local为h_world
 //13.5 令l = safeNorm(h-v)，如果l为0就重新撒。
 //13.6 沿l方向生成subray
-//13.7 在材质的pdf里根据cos(theta) = dot(h,n)的theta计算pdf，此theta和球面theta是一样的。
+//13.7 在材质的pdf里根据cos(theta) = dot(h,n)的theta计算pdf，此theta和createSubRay的球坐标系theta是一样的。
 
 int main()
 {
@@ -57,9 +57,10 @@ int main()
 	if (pbrMode)
 	{
 		//world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_reflect, rayTraceMaterialMode_PBR);
-		world->SetTraceSettings(3, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
+		world->SetTraceSettings(8, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
 
-		TraceRayI_SDFSphereMonteCarlo::spp = 2;
+		//TraceRayI_SDFSphereMonteCarlo::sampleMode = rayTraceSampleMode_ImportanceSampling;
+		TraceRayI_SDFSphereMonteCarlo::spp = 128;
 		world->SetOptimizeMode(rayTraceOptimizeMode_PerTask);
 		auto opt = Cast<rayTraceOptimizePolicy_PerTask*>(world->optimizePolicy);
 		opt->rayPerTask = 540*6;

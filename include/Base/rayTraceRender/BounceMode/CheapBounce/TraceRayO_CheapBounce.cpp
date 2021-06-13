@@ -1,5 +1,6 @@
 #include "TraceRayO_CheapBounce.h"
 
+#include "../../rayTraceWorld.h"
 #include "../../rayTraceMaterialExtra.h"
 #include "Object.h"
 
@@ -52,10 +53,23 @@ void rayTraceMaterialPolicy<TraceRayO_CheapBounce, BlinnPhongI>::UpdateRayAfterC
 
 void rayTraceMaterialPolicy<TraceRayO_CheapBounce, BlinnPhongI>::BlendColor(rayTraceWorld* world, TraceRay& ray, const TraceInfo& info)
 {
+	auto cheapBounceO = Cast<TraceRayO_CheapBounce*>(ray.o[0]);
+
+	P nowColor;
+	auto lightsInfo = world->GetLightsInfo(info.hitPos);
+	if (info.obj && info.obj->material)
+	{
+		auto mat = info.obj->material;
+		cheapBounceO->PrepareMaterialExtra(*mat);
+		P n = info.hitN;
+		P v = -info.dir;
+		nowColor = mat->Calculate(lightsInfo, n, v);
+		UpdateRayAfterCalculate(ray, *mat);
+	}
+
 	Material& mat = *info.obj->material;
 	auto bounceParam = Cast<Extra_BlinnPhongI_CheapBounce*>(mat.i[1]);
-	auto cheapBounce = Cast<TraceRayO_CheapBounce*>(ray.o[0]);
-	ray.color = lerp(ray.color, info.color, cheapBounce->lastReflectness);
-	cheapBounce->lastReflectness *= bounceParam->reflectness;
+	ray.color = lerp(ray.color, nowColor, cheapBounceO->lastReflectness);
+	cheapBounceO->lastReflectness *= bounceParam->reflectness;
 }
 //### rayTraceMaterialPolicy<TraceRayO_CheapBounce, BlinnPhongI>

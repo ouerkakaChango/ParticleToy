@@ -46,7 +46,7 @@ public:
 	virtual void FinalUnhitGather();
 	virtual void FinalHitGather();
 	//??? 没啥用，之后去掉，都放在matPolicy->BlendColor
-	virtual void CalculateMaterial(rayTraceWorld* world, TraceInfo& info);
+	//virtual void CalculateMaterial(rayTraceWorld* world, TraceInfo& info);
 
 	class rayTraceMaterialPolicyBase* matPolicy=nullptr;
 	TraceRay* y = nullptr;
@@ -56,6 +56,7 @@ class rayTraceMaterialPolicyBase
 {
 public:
 	virtual ~rayTraceMaterialPolicyBase() {};
+	//???
 	virtual void UpdateRayAfterCalculate(TraceRay& ray, const Material& mat) = 0;
 	virtual void BlendColor(rayTraceWorld* world, TraceRay& ray, const TraceInfo& info) = 0;
 };

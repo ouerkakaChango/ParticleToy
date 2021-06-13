@@ -20,18 +20,29 @@ TraceRayI_SDFSphereMonteCarlo::~TraceRayI_SDFSphereMonteCarlo()
 	}
 }
 
+P TraceRayI_SDFSphereMonteCarlo::RandSampleDir(const TraceInfo& traceInfo)
+{
+	if (sampleMode == rayTraceSampleMode_UniformSampling)
+	{
+		//如果是均匀sample,不用考虑材质的影响
+		//子Ray的出射方向是半球上的均匀分布，决定方向的方式参考：https://blog.csdn.net/weixin_44176696/article/details/113418991
+		return safeNorm(diskRandP() + traceInfo.hitN);
+	}
+	else if (sampleMode == rayTraceSampleMode_ImportanceSampling)
+	{
+		return Cast<MaterialO*>(traceInfo.obj->material->o[0])->ImportanceRandSampleDir(traceInfo.hitN);
+	}
+}
+
 void TraceRayI_SDFSphereMonteCarlo::CreateSubRays(rayTraceWorld* world, const TraceInfo& traceInfo)
 {
 	//1.创建spp条子Ray,子Ray的i是TraceRayI_SDFSphere，子Ray的o是TraceRayO_ReflectBounce
-	//2.子Ray的出射方向是半球上的均匀分布，决定方向的方式参考：https://blog.csdn.net/weixin_44176696/article/details/113418991
-	//也就是normalize(randomVec3() + n);
-	//子Ray的bounce次数到达
 
 	P a = traceInfo.hitPos;
 	subRays.resize(spp);
 	for (int i = 0; i < spp; i++)
 	{
-		P b = a + safeNorm(diskRandP() + traceInfo.hitN);
+		P b = a + safeNorm(diskRandP() + traceInfo.hitN);//RandSampleDir(traceInfo);//
 		subRays[i] = TraceRay(a, b);
 		subRays[i].SetMode(rayTraceMode_SDFSphere, rayTraceBounceMode_reflect);
 		Cast<TraceRayO*>(subRays[i].o[0])->InitMaterialPolicy(world->matMode);

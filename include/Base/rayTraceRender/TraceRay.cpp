@@ -143,17 +143,17 @@ void TraceRayO::PrepareMaterialExtra(Material& mat)
 
 }
 
-void TraceRayO::CalculateMaterial(rayTraceWorld* world, TraceInfo& info)
-{
-	auto lightsInfo = world->GetLightsInfo(info.hitPos);
-	if (info.obj && info.obj->material)
-	{
-		auto mat = info.obj->material;
-		PrepareMaterialExtra(*mat);
-		P n = info.hitN;
-		P v = -info.dir;
-		info.color = mat->Calculate(lightsInfo, n, v);
-		matPolicy->UpdateRayAfterCalculate(*y, *mat);
-	}
-}
+//void TraceRayO::CalculateMaterial(rayTraceWorld* world, TraceInfo& info)
+//{
+//	auto lightsInfo = world->GetLightsInfo(info.hitPos);
+//	if (info.obj && info.obj->material)
+//	{
+//		auto mat = info.obj->material;
+//		PrepareMaterialExtra(*mat);
+//		P n = info.hitN;
+//		P v = -info.dir;
+//		info.color = mat->Calculate(lightsInfo, n, v);
+//		matPolicy->UpdateRayAfterCalculate(*y, *mat);
+//	}
+//}
 //### TraceRayO
