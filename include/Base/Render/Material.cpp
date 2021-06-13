@@ -111,14 +111,14 @@ P PBRO::Calculate(MaterialI* matParam, const arr<LightInfo>& lightsInfo, P n, P 
 		double denominator = 4.0 * max(dot(n, v), 0.0) * max(dot(n, l), 0.0) + 0.001;
 		P specular = nominator / denominator;
 
-		if (!zero(specular) && control != nullptr && control->bDividePDF)
-		{
-			double deno = pdf(n, h, control->sampleMode, matParam);
-			specular /= deno;
-		}
-
 		P Lo = diffuse + specular;
 		Lo *= lightColor*max(dot(n,l),0);
+
+		if ( control != nullptr && control->bDividePDF)
+		{
+			double deno = pdf(n, h, control->sampleMode, matParam);
+			Lo /= deno;
+		}
 
 		re += Lo;
 

@@ -59,8 +59,8 @@ int main()
 		//world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_reflect, rayTraceMaterialMode_PBR);
 		world->SetTraceSettings(8, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
 
-		//TraceRayI_SDFSphereMonteCarlo::sampleMode = rayTraceSampleMode_ImportanceSampling;
-		TraceRayI_SDFSphereMonteCarlo::spp = 128;
+		TraceRayI_SDFSphereMonteCarlo::sampleMode = rayTraceSampleMode_ImportanceSampling;
+		TraceRayI_SDFSphereMonteCarlo::spp = 32;
 		world->SetOptimizeMode(rayTraceOptimizeMode_PerTask);
 		auto opt = Cast<rayTraceOptimizePolicy_PerTask*>(world->optimizePolicy);
 		opt->rayPerTask = 540*6;
