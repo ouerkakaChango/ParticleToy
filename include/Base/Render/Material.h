@@ -65,8 +65,13 @@ public:
 	double ao = 1.0;
 	double ambientRate = 0.0;
 
-	double metallic = 0.4;
-	double roughness = 0.5;
+	//比较反光
+	double metallic = 0.4;;
+	double roughness = 0.5;;
+
+	//比较粗糙
+	//double metallic = 0.01;
+	//double roughness = 0.98;
 };
 
 class PBRO : public MaterialO
