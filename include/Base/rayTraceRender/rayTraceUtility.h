@@ -1,6 +1,12 @@
 #pragma once
 #include "FastMath.h"
 
+#define RAYTRACE_OpenMP
+#ifdef RAYTRACE_OpenMP
+#include <omp.h>
+#include <thread>
+#include <mutex>
+#endif 
 class Object;
 
 enum rayTraceMode
@@ -39,3 +45,13 @@ public:
 
 	P color;
 };
+
+#ifdef RAYTRACE_OpenMP
+class ClassRayTraceGod
+{
+public:
+	static ClassRayTraceGod& GetInstance();
+	std::mutex mtx;
+};
+#define rayTraceGod ClassRayTraceGod::GetInstance()
+#endif

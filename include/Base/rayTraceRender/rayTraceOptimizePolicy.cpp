@@ -47,6 +47,11 @@ void rayTraceOptimizePolicy_PerTask::Trace(rayTraceWorld* world, rayTraceScreen*
 
 		cout << info << endl;
 	}
+
+#ifdef RAYTRACE_OpenMP
+	omp_set_num_threads(rayPerTask); // 线程个数
+	#pragma omp parallel for
+#endif
 	for (int i = 0; i<rayPerTask; i++)
 	{
 		auto& ray = screen->optRays[i];

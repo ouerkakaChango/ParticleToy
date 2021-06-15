@@ -44,11 +44,18 @@ void TraceRayO_ReflectBounce::ReflectBounceGather()
 
 void TraceRayO_ReflectBounce::PrepareMaterialExtra(Material& mat)
 {
+#ifdef  RAYTRACE_OpenMP
+	rayTraceGod.mtx.lock();
+#endif 
+
 	if (mat.i.size() == 1)
 	{
 		//不论什么材质类型，在ReflectBounce中的MatExtra都一样
 		mat.i += new Extra_ReflectBounce;
 	}
+#ifdef  RAYTRACE_OpenMP
+	rayTraceGod.mtx.unlock();
+#endif 
 }
 
 void TraceRayO_ReflectBounce::InitMaterialPolicy(rayTraceMaterialMode matMode)
