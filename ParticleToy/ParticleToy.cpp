@@ -57,13 +57,13 @@ int main()
 	if (pbrMode)
 	{
 		//world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_reflect, rayTraceMaterialMode_PBR);
-		world->SetTraceSettings(8, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
+		world->SetTraceSettings(40, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
 
-		TraceRayI_SDFSphereMonteCarlo::sampleMode = rayTraceSampleMode_ImportanceSampling;
-		TraceRayI_SDFSphereMonteCarlo::spp = 128;
+		//TraceRayI_SDFSphereMonteCarlo::sampleMode = rayTraceSampleMode_ImportanceSampling;
+		TraceRayI_SDFSphereMonteCarlo::spp = 32;
 		world->SetOptimizeMode(rayTraceOptimizeMode_PerTask);
 		auto opt = Cast<rayTraceOptimizePolicy_PerTask*>(world->optimizePolicy);
-		opt->rayPerTask = 540*6;
+		opt->rayPerTask = 54;
 	}
 	else
 	{
@@ -86,34 +86,37 @@ int main()
 		//param->emissive = P(0, 0, 1);
 	}
 
-	auto box1 = op->PutShape(new Box(P(0.0, -1.2, -5.0), P(5.0, 0.1, 5.0)), "Box1");
-	if (!pbrMode)
+	if (true)
 	{
-		auto param = Cast<BlinnPhongI*>(box1->material->i[0]);
-		param->kD = 0.05;
-		param->kS = 1.0;
-		param->specPower = 5.0;
-		param->specularColor = P(1.0, 242 / 255.0, 0.0);
-	}
-	else
-	{
-		auto param = Cast<PBRI*>(box1->material->i[0]);
-		//param->albedo = P(0, 1, 0);
-		//param->metallic = 0.7;
-		//param->roughness = 0.3;
-		//param->ambientRate = 0;
-		//param->emissive = P(0.1, 0.0, 0.0);
-		//param->albedo = P(1, 0, 0);
-		//param->albedo = P(1.0, 242 / 255.0, 0.0);
+		auto box1 = op->PutShape(new Box(P(0.0, -1.2, -5.0), P(5.0, 0.1, 5.0)), "Box1");
+		if (!pbrMode)
+		{
+			auto param = Cast<BlinnPhongI*>(box1->material->i[0]);
+			param->kD = 0.05;
+			param->kS = 1.0;
+			param->specPower = 5.0;
+			param->specularColor = P(1.0, 242 / 255.0, 0.0);
+		}
+		else
+		{
+			auto param = Cast<PBRI*>(box1->material->i[0]);
+			//param->albedo = P(0, 1, 0);
+			//param->metallic = 0.7;
+			//param->roughness = 0.3;
+			//param->ambientRate = 0;
+			//param->emissive = P(0.1, 0.0, 0.0);
+			//param->albedo = P(1, 0, 0);
+			//param->albedo = P(1.0, 242 / 255.0, 0.0);
+		}
 	}
 	//###
 	//灯Box
-	auto lightBox = op->PutShape(new Box(P(0.0, 4.0, -5.0), P(1.0, 0.1, 1.0)*0.8), "Box2");
+	auto lightBox = op->PutShape(new Box(P(0.0, 3.9, -5.0), P(1.0, 0.1, 1.0)*0.8), "Box2");
 	if (pbrMode)
 	{
 		auto param = Cast<PBRI*>(lightBox->material->i[0]);
 		param->ambientRate = 0;
-		param->emissive = P(5,5,5);
+		param->emissive = P(1,1,1)*10.0;
 	}
 
 	if(true)
@@ -139,12 +142,14 @@ int main()
 		}
 		//后
 		auto box5 = op->PutShape(new Box(P(0.0, 0.0, -6.5), P(8.0, 8.0, 0.1)), "Box5");
+		//??? 前
+		auto box6 = op->PutShape(new Box(P(0.0, 0.0, 1.1), P(8.0, 8.0, 0.1)), "Box6");
 	}
 	//###
 
-	auto screen = new rayTraceScreen(1080,720);
+	//auto screen = new rayTraceScreen(1080,720);
 	//auto screen = new rayTraceScreen(540, 360);
-	//auto screen = new rayTraceScreen(270, 180);
+	auto screen = new rayTraceScreen(270, 180);
 	//screen->Translate(P(0.0, 0.0, -2.5));
 	op->PutScreen(screen);
 	//放完screen后，才给所有物体的材质加上了extra

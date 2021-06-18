@@ -26,7 +26,7 @@ LightInfo DirectionalLight::GetLightInfo(const P& pos)
 
 //### PointLight
 PointLight::PointLight(P lightPos_, P color_, double intensity_):
-	Light(color_), lightPos(lightPos_), intensity(intensity_)
+	Light(color_), lightPos(lightPos_)
 {
 
 }
@@ -34,7 +34,16 @@ PointLight::PointLight(P lightPos_, P color_, double intensity_):
 LightInfo PointLight::GetLightInfo(const P& pos)
 {
 	double ldis2 = dis2(pos, lightPos);
-	double attenuation = min(1,intensity*10 / ldis2);
+	double attenuation = 1.0;
+	//防止距离太近的时候除爆了，衰减亮度需要一个最小值
+	if (ldis2 > d2min)
+	{
+		attenuation = (d2max - ldis2) / (d2max - d2min);
+	}
+	if (attenuation > 1)
+	{
+		abort();
+	}
 	LightInfo re;
 	re.color = color*attenuation;
 	re.dir = safeNorm(pos-lightPos);
@@ -44,7 +53,17 @@ LightInfo PointLight::GetLightInfo(const P& pos)
 LightInfo PointLight::GetLightInfo(const P& pos, double enengyRate)
 {
 	double ldis2 = dis2(pos, lightPos);
-	double attenuation = enengyRate * min(1, intensity * 10 / ldis2);
+	double attenuation = 1.0;
+	//防止距离太近的时候除爆了，衰减亮度需要一个最小值
+	if (ldis2 > d2min)
+	{
+		attenuation = (d2max - ldis2) / (d2max - d2min);
+	}
+	if (attenuation > 1)
+	{
+		abort();
+	}
+	attenuation *= enengyRate;
 	LightInfo re;
 	re.color = color * attenuation;
 	re.dir = safeNorm(pos - lightPos);

@@ -412,6 +412,11 @@ Q QFrom(const P& vecFrom, const P& vecTo)
 	}
 	double cosTheta = dot(vecFrom, vecTo) / vecFrom.len() / vecTo.len();
 	P axis = cross(vecFrom, vecTo);
+	//有可能from和to方向相反，叉乘出来为0
+	while (zero(axis))
+	{
+		axis = cross(vecFrom, diskRandP());
+	}
 	return Q(axis, acos(cosTheta));
 }
 //### Global Q

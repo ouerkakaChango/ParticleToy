@@ -31,5 +31,6 @@ public:
 	LightInfo GetLightInfo(const P& pos) override;
 	LightInfo GetLightInfo(const P& pos, double enengyRate);
 	P lightPos;
-	double intensity;
+	double d2min = 0.01;
+	double d2max = 2000;
 };

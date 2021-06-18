@@ -102,7 +102,7 @@ P PBRO::Calculate(MaterialI* matParam, const arr<LightInfo>& lightsInfo, P n, P 
 
 		//Calculate diffuse
 		P kD = 1.0 - F;
-		P diffuse = kD * param->albedo / PI;
+		P diffuse = (1.0 - param->metallic) * kD * param->albedo / PI;
 
 		//Calculate specular
 		double NDF = DistributionGGX(n, h, param->roughness);
@@ -128,6 +128,9 @@ P PBRO::Calculate(MaterialI* matParam, const arr<LightInfo>& lightsInfo, P n, P 
 	{
 		re += param->emissive ;
 	}
+
+	//re = re / (re + P(1.0));
+	//re = pow(re, P(1.0 / 2.2));
 
 	return re;
 }
