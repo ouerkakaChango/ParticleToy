@@ -57,10 +57,10 @@ int main()
 	if (pbrMode)
 	{
 		//world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_reflect, rayTraceMaterialMode_PBR);
-		world->SetTraceSettings(40, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
+		world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
 
-		//TraceRayI_SDFSphereMonteCarlo::sampleMode = rayTraceSampleMode_ImportanceSampling;
-		TraceRayI_SDFSphereMonteCarlo::spp = 32;
+		TraceRayI_SDFSphereMonteCarlo::sampleMode = rayTraceSampleMode_ImportanceSampling;
+		TraceRayI_SDFSphereMonteCarlo::spp = 512;
 		world->SetOptimizeMode(rayTraceOptimizeMode_PerTask);
 		auto opt = Cast<rayTraceOptimizePolicy_PerTask*>(world->optimizePolicy);
 		opt->rayPerTask = 54;
@@ -86,7 +86,7 @@ int main()
 		//param->emissive = P(0, 0, 1);
 	}
 
-	if (true)
+	if (false)
 	{
 		auto box1 = op->PutShape(new Box(P(0.0, -1.2, -5.0), P(5.0, 0.1, 5.0)), "Box1");
 		if (!pbrMode)
@@ -123,7 +123,7 @@ int main()
 	{
 		double xDis = 2.0;
 		//上
-		auto box2 = op->PutShape(new Box(P(0.0, 4.05, -5.0), P(8.0, 0.1, 8.0)), "Box2");
+		//auto box2 = op->PutShape(new Box(P(0.0, 4.05, -5.0), P(8.0, 0.1, 8.0)), "Box2");
 		//左
 		auto box3 = op->PutShape(new Box(P(-xDis, 0.0, -5.0), P(0.1, 5.0, 5.0)), "Box3");
 		if (pbrMode)
@@ -133,17 +133,17 @@ int main()
 			param->albedo = P(1, 0, 0);
 		}
 		//右
-		auto box4 = op->PutShape(new Box(P(xDis, 0.0, -5.0), P(0.1, 5.0, 5.0)), "Box4");
-		if (pbrMode)
-		{
-			auto param = Cast<PBRI*>(box4->material->i[0]);
-			//右绿
-			param->albedo = P(0, 1, 0);
-		}
-		//后
-		auto box5 = op->PutShape(new Box(P(0.0, 0.0, -6.5), P(8.0, 8.0, 0.1)), "Box5");
-		//??? 前
-		auto box6 = op->PutShape(new Box(P(0.0, 0.0, 1.1), P(8.0, 8.0, 0.1)), "Box6");
+		//auto box4 = op->PutShape(new Box(P(xDis, 0.0, -5.0), P(0.1, 5.0, 5.0)), "Box4");
+		//if (pbrMode)
+		//{
+		//	auto param = Cast<PBRI*>(box4->material->i[0]);
+		//	//右绿
+		//	param->albedo = P(0, 1, 0);
+		//}
+		////后
+		//auto box5 = op->PutShape(new Box(P(0.0, 0.0, -6.5), P(8.0, 8.0, 0.1)), "Box5");
+		////??? 前
+		//auto box6 = op->PutShape(new Box(P(0.0, 0.0, 1.1), P(8.0, 8.0, 0.1)), "Box6");
 	}
 	//###
 

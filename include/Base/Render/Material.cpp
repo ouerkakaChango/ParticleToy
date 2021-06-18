@@ -105,9 +105,10 @@ P PBRO::Calculate(MaterialI* matParam, const arr<LightInfo>& lightsInfo, P n, P 
 		P diffuse = (1.0 - param->metallic) * kD * param->albedo / PI;
 
 		//Calculate specular
-		double NDF = DistributionGGX(n, h, param->roughness);
 		double G = GeometrySmith(n, v, l, param->roughness);
-		P nominator = NDF * G * F;
+		P nominator;
+		double NDF = DistributionGGX(n, h, param->roughness);
+		nominator = NDF * G * F;
 		double denominator = 4.0 * max(dot(n, v), 0.0) * max(dot(n, l), 0.0) + 0.001;
 		P specular = nominator / denominator;
 
@@ -177,9 +178,9 @@ double PBRO::pdf(const P& n, const P& h, rayTraceSampleMode sampleMode, Material
 		double c = cos(theta);
 		double s = sin(theta);
 
-		double nomi = a * a * c * s;
+		double nomi = 2 * a * a * c * s;
 		double deno = c * c * (a*a - 1) + 1;
-		deno = PI * deno * deno;
+		deno = deno * deno;
 		re = nomi / deno;
 
 		return re;
