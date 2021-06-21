@@ -1,0 +1,2 @@
+python transToImg.py
+pause
