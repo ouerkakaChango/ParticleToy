@@ -33,7 +33,7 @@ void rayTraceOptimizePolicy_PerTask::InitTaskRays(rayTraceWorld* world, rayTrace
 
 void rayTraceOptimizePolicy_PerTask::Trace(rayTraceWorld* world, rayTraceScreen* screen, int loopInx)
 {
-	int loopNum = ceil((screen->w * screen->h) / double(rayPerTask));
+	int loopNum = static_cast<int>(ceil((screen->w * screen->h) / double(rayPerTask)));
 
 	if (world->nowBounce == 1)
 	{

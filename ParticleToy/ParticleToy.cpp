@@ -9,6 +9,8 @@
 #include "rayTraceRender/rayTraceScreen.h"
 #include "rayTraceRender/TraceMode/SDFSphereTrace/TraceRayI_SDFSphereMonteCarlo.h"
 
+#include "direct.h"
+
 //### 架构心得
 //1.基本的Space+Evolver+Solver一套，如同template,如同原点。
 
@@ -57,13 +59,15 @@ int main()
 	if (pbrMode)
 	{
 		//world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_reflect, rayTraceMaterialMode_PBR);
-		world->SetTraceSettings(40, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
+		world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
 
 		TraceRayI_SDFSphereMonteCarlo::sampleMode = rayTraceSampleMode_ImportanceSampling;
-		TraceRayI_SDFSphereMonteCarlo::spp = 512;
-		world->SetOptimizeMode(rayTraceOptimizeMode_PerTask);
-		auto opt = Cast<rayTraceOptimizePolicy_PerTask*>(world->optimizePolicy);
-		opt->rayPerTask = 54;
+		TraceRayI_SDFSphereMonteCarlo::spp = 10;
+		//world->SetOptimizeMode(rayTraceOptimizeMode_PerTask);
+		world->SetOptimizeMode(rayTraceOptimizeMode_PerTaskNumbaCUDA);
+		//auto opt = Cast<rayTraceOptimizePolicy_PerTask*>(world->optimizePolicy);
+		auto opt = Cast<rayTraceOptimizePolicy_PerTaskNumbaCUDA*>(world->optimizePolicy);
+		opt->rayPerTask = 540;
 	}
 	else
 	{
@@ -189,8 +193,12 @@ int main()
 	//op->PutLight(light);
 
 	op->Evolve();
-	op->SaveScreenBufferFrame(screen,"color","D:\\PToyCache\\z.txt");
-	//system("D:\\PToyCache\\runTransToImg.bat");
+	str workPath = "C:\\Users\\hasee\\source\\repos\\ParticleToy";
+	op->SaveScreenBufferFrame(screen,"color", workPath+"\\PythonWorkSpace\\z.txt");
+	str s = workPath + "\\PythonWorkSpace";
+	_chdir(s.data.c_str());
+	//system("dir");
+	system("ZZZRUN_TransToImg.bat");
 	//op->SayI();
 	return 0;
 }

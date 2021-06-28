@@ -14,7 +14,7 @@ ylen = (2.0*h) / w;
 offset = np.zeros(3,np.float32)
 startPos = np.array([-1.0, -ylen/2, 0.0]) + 0.5*np.array([pixelDx, pixelDx, 0.0]);
 @cuda.jit
-def cudakernel1(array,re,offset,startPos,ra,rb,sdf,objSDF,traceDis,tDis):
+def cudakernel1(array,re,offset,startPos,ra,rb,sdf,objSDF,traceDis,tDis,tVec):
     i,j = cuda.grid(2)
     #print(i,j)
     for k in range(3):
@@ -49,8 +49,23 @@ def cudakernel1(array,re,offset,startPos,ra,rb,sdf,objSDF,traceDis,tDis):
         objSDF[i,j,0] += pow(rb[i,j,2]+5,2)
         objSDF[i,j,0] = sqrt(objSDF[i,j,0])
         objSDF[i,j,0] -= 1.0
+        
+        #sdf box1 center:(0,-1.2,-5),bound:(5.0, 0.1, 5.0)
+        objSDF[i,j,1] = 0
+        #1.1 q = abs(p-center) - bound;
+        tVec[i,j,0] = abs(rb[i,j,0]-0.0)-5.0
+        tVec[i,j,1] = abs(rb[i,j,1]+1.2)-0.1
+        tVec[i,j,2] = abs(rb[i,j,2]+5.0)-5.0
+        #1.2 len(max(q, 0.0)) + min(max(q.x, max(q.y, q.z)), 0.0);
+        for k in range(3):
+            tVec[i,j,k] = max(tVec[i,j,k], 0.0)
+        objSDF[i,j,1] += pow(tVec[i,j,0],2)
+        objSDF[i,j,1] += pow(tVec[i,j,1],2)
+        objSDF[i,j,1] += pow(tVec[i,j,2],2)
+        objSDF[i,j,1] = sqrt(objSDF[i,j,1])
+        objSDF[i,j,1] += min(max(tVec[i,j,0], max(tVec[i,j,1], tVec[i,j,2])), 0.0);
         #choose minSDF
-        sdf[i,j,0] = objSDF[i,j,0]
+        sdf[i,j,0] = min(objSDF[i,j,0],objSDF[i,j,1])
         #???
         #if i==2 and j==135:
             #print(objSDF[i,j,0],rb[i,j,0],rb[i,j,1],rb[i,j,2])
@@ -72,16 +87,15 @@ array = np.zeros((w,h,3), np.float32)
 re = np.zeros((w,h,3), np.float32)
 print('Initial array:', array)
 
-#ra = np.zeros(3,np.float32)
 ra = np.zeros((w,h,3), np.float32)
-#rb = np.zeros(3,np.float32)
 rb = np.zeros((w,h,3), np.float32)
-objSDF = np.full((w,h,1), -1.0)
+objSDF = np.full((w,h,2), -1.0)
 sdf = np.full((w,h,1), -1.0)
 traceDis = np.full((w,h,1), -1.0)
 tDis = np.full((w,h,1), 0.0)
+tVec = np.full((w,h,3), 0.0)
 print('Kernel launch...')
-cudakernel1[(w,h,1), 1](array,re,offset,startPos,ra,rb,sdf,objSDF,traceDis,tDis)
+cudakernel1[(w,h,1), 1](array,re,offset,startPos,ra,rb,sdf,objSDF,traceDis,tDis,tVec)
 print('Updated array:', traceDis)
 
 #for i in range(w):

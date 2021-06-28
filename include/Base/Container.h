@@ -146,6 +146,7 @@ class str
 public:
 	str() :data(string("")) {}
 	str(const char* s):data(string(s)) {}
+	str operator+(const char* s) const;
 	void operator+=(const str& other);
 	void operator+=(double other);
 	void operator+=(int other);
@@ -159,6 +160,7 @@ public:
 	string data;
 };
 ostream& operator <<(ostream & os, const str & s);
+str operator+(const char* s, const str other);
 #define typeStr(obj) str(typeid(obj).name())
 
 class int2

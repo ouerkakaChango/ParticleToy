@@ -21,3 +21,9 @@ public:
 	unsigned int rayPerTask = 0;
 	Timer timer;
 };
+
+class rayTraceOptimizePolicy_PerTaskNumbaCUDA : public rayTraceOptimizePolicy_PerTask
+{
+public:
+
+};

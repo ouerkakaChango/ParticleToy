@@ -26,7 +26,7 @@ str Timer::Record_FormatStr()
 	}
 	else
 	{
-		int minute = floor(t / 60);
+		int minute = static_cast<int>(floor(t / 60));
 		double sec = t - minute * 60;
 		re += minute;
 		re += "min ";

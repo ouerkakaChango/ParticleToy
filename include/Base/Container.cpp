@@ -1,6 +1,14 @@
 #include "Container.h"
 
 //### str
+str str::operator+(const char* s) const
+{
+	str re = *this;
+	re+=s;
+	return re;
+}
+
+
 void str::operator+=(const str& other)
 {
 	data += other.data;
@@ -53,6 +61,13 @@ bool str::Has(str s) const
 ostream& operator <<(ostream & os, const str & s)
 {
 	return os << s.data;
+}
+
+str operator+(const char* s, const str other)
+{
+	str re = s;
+	re += other;
+	return re;
 }
 //### global str
 
