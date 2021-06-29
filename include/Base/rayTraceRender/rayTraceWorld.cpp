@@ -34,9 +34,9 @@ void rayTraceWorld::SetTraceSettings(int bounceNum_,
 
 void rayTraceWorld::PutScreen(rayTraceScreen* screen)
 {
+	//!!! 多screen正确性还没考虑
 	if (optimizeMode == rayTraceOptimizeMode_None)
 	{
-		//!!! 多screen正确性还没考虑
 		screen->InitRays(traceMode, bounceMode, matMode);
 		TraceRay& ray = screen->rays[0][0];
 		for (auto& obj : objs)
@@ -44,10 +44,18 @@ void rayTraceWorld::PutScreen(rayTraceScreen* screen)
 			Cast<TraceRayO*>(ray.o[0])->PrepareMaterialExtra(*obj->material);
 		}
 	}
-	else if (optimizeMode == rayTraceOptimizeMode_PerTask ||
-		optimizeMode == rayTraceOptimizeMode_PerTaskNumbaCUDA)
+	else if (optimizeMode == rayTraceOptimizeMode_PerTask)
 	{
 		screen->InitBuffers();
+	}
+	else if (optimizeMode == rayTraceOptimizeMode_NumbaCUDA)
+	{
+		screen->InitRays(traceMode, bounceMode, matMode);
+		TraceRay& ray = screen->rays[0][0];
+		for (auto& obj : objs)
+		{
+			Cast<TraceRayO*>(ray.o[0])->PrepareMaterialExtra(*obj->material);
+		}
 	}
 	screens += screen;
 }
@@ -92,27 +100,21 @@ void rayTraceWorld::Evolve()
 			}
 		}
 	}
-	else if (optimizeMode == rayTraceOptimizeMode_PerTaskNumbaCUDA)
+	else if (optimizeMode == rayTraceOptimizeMode_NumbaCUDA)
 	{
-		auto opt = Cast<rayTraceOptimizePolicy_PerTaskNumbaCUDA*>(optimizePolicy);
-		auto rayPerTask = opt->rayPerTask;
+		auto opt = Cast<rayTraceOptimizePolicy_NumbaCUDA*>(optimizePolicy);
 		for (auto& screen : screens)
 		{
-			screen->optRays.resize(rayPerTask);
-			int loopNum = static_cast<int>(ceil((screen->w * screen->h) / double(rayPerTask)));
-			opt->timer.Start();
-			for (int loopInx = 0; loopInx < loopNum; loopInx++)
+			opt->InitRequest(this, screen);
+			for (nowBounce=1; nowBounce <= bounceNum; nowBounce++)
 			{
-				opt->InitTaskRays(this, screen, loopInx);
-				for (int i = 0; i < bounceNum; i++)
-				{
-					nowBounce += 1;
-					opt->Trace(this, screen, loopInx);
-				}
-				opt->FinalGather(screen, loopInx);
-				nowBounce = 0;
-				opt->Clear(screen);
+				opt->Trace(this, screen);
 			}
+		}
+
+		for (auto& screen : screens)
+		{
+			screen->FinalGather();
 		}
 	}
 }
@@ -162,9 +164,9 @@ void rayTraceWorld::SetOptimizeMode(rayTraceOptimizeMode optimizeMode_)
 	{
 		optimizePolicy = new rayTraceOptimizePolicy_PerTask;
 	}
-	else if (optimizeMode == rayTraceOptimizeMode_PerTaskNumbaCUDA)
+	else if (optimizeMode == rayTraceOptimizeMode_NumbaCUDA)
 	{
-		optimizePolicy = new rayTraceOptimizePolicy_PerTaskNumbaCUDA;
+		optimizePolicy = new rayTraceOptimizePolicy_NumbaCUDA;
 	}
 }
 

@@ -54,6 +54,10 @@
 
 int main()
 {
+	str workPath = "C:\\Users\\hasee\\source\\repos\\ParticleToy";
+	str pyWorkPath = "C:\\Users\\hasee\\source\\repos\\ParticleToy\\PythonWorkSpace";
+	rayTraceGod.optimizeWorkPath = pyWorkPath + "\\CalculationCacheSpace";
+
 	bool pbrMode = true;
 	rayTraceWorld* world = new rayTraceWorld;
 	if (pbrMode)
@@ -64,10 +68,10 @@ int main()
 		TraceRayI_SDFSphereMonteCarlo::sampleMode = rayTraceSampleMode_ImportanceSampling;
 		TraceRayI_SDFSphereMonteCarlo::spp = 10;
 		//world->SetOptimizeMode(rayTraceOptimizeMode_PerTask);
-		world->SetOptimizeMode(rayTraceOptimizeMode_PerTaskNumbaCUDA);
+		world->SetOptimizeMode(rayTraceOptimizeMode_NumbaCUDA);
 		//auto opt = Cast<rayTraceOptimizePolicy_PerTask*>(world->optimizePolicy);
-		auto opt = Cast<rayTraceOptimizePolicy_PerTaskNumbaCUDA*>(world->optimizePolicy);
-		opt->rayPerTask = 540;
+		//opt->rayPerTask = 540;
+		auto opt = Cast<rayTraceOptimizePolicy_NumbaCUDA*>(world->optimizePolicy);
 	}
 	else
 	{
@@ -193,10 +197,8 @@ int main()
 	//op->PutLight(light);
 
 	op->Evolve();
-	str workPath = "C:\\Users\\hasee\\source\\repos\\ParticleToy";
-	op->SaveScreenBufferFrame(screen,"color", workPath+"\\PythonWorkSpace\\z.txt");
-	str s = workPath + "\\PythonWorkSpace";
-	_chdir(s.data.c_str());
+	op->SaveScreenBufferFrame(screen,"color", pyWorkPath+"\\z.txt");
+	_chdir(pyWorkPath.data.c_str());
 	//system("dir");
 	system("ZZZRUN_TransToImg.bat");
 	//op->SayI();

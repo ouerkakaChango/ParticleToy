@@ -1,6 +1,11 @@
 #include "Container.h"
 
 //### str
+str::str(int n)
+{
+	data = std::to_string(n);
+}
+
 str str::operator+(const char* s) const
 {
 	str re = *this;

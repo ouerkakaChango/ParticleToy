@@ -1,6 +1,7 @@
 #pragma once
 #include "FastMath.h"
 
+#define NUMBACUDA
 #define RAYTRACE_OpenMP
 #ifdef RAYTRACE_OpenMP
 #include <omp.h>
@@ -31,7 +32,7 @@ enum rayTraceOptimizeMode
 {
 	rayTraceOptimizeMode_None,
 	rayTraceOptimizeMode_PerTask,	//不一下子生成w*h个ray，而是每n个ray bounce到结束，写入结果；然后下一组
-	rayTraceOptimizeMode_PerTaskNumbaCUDA,
+	rayTraceOptimizeMode_NumbaCUDA,
 };
 
 class TraceInfo
@@ -47,12 +48,13 @@ public:
 	P color;
 };
 
-#ifdef RAYTRACE_OpenMP
 class ClassRayTraceGod
 {
 public:
 	static ClassRayTraceGod& GetInstance();
+#ifdef RAYTRACE_OpenMP
 	std::mutex mtx;
+#endif
+	str optimizeWorkPath;
 };
 #define rayTraceGod ClassRayTraceGod::GetInstance()
-#endif

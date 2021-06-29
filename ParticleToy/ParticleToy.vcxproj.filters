@@ -91,6 +91,12 @@
     <Filter Include="源文件\Base\Tools">
       <UniqueIdentifier>{fda4a71f-8c7e-4ca6-a8cb-66484bd17702}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Base\rayTraceRender\Optimize">
+      <UniqueIdentifier>{640d364a-dcc1-4732-a685-540fe65ee6bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Base\rayTraceRender\Optimize">
+      <UniqueIdentifier>{5b12b2bc-1d93-4edd-8f85-de91fba13943}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -203,6 +209,9 @@
     </ClInclude>
     <ClInclude Include="..\include\Base\Tools\Timer.h">
       <Filter>头文件\Base\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Base\rayTraceRender\Optimize\RTTraceRequest.h">
+      <Filter>头文件\Base\rayTraceRender\Optimize</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -328,6 +337,9 @@
     </ClCompile>
     <ClCompile Include="..\include\Base\Tools\Timer.cpp">
       <Filter>源文件\Base\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\rayTraceRender\Optimize\RTTraceRequest.cpp">
+      <Filter>源文件\Base\rayTraceRender\Optimize</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

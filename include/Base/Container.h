@@ -90,7 +90,7 @@ template <class T>
 class arr2
 {
 public:
-
+	inline bool empty() { return x == 0 && y == 0; }
 	void resize(int x_, int y_)
 	{
 		x = x_;
@@ -113,7 +113,7 @@ public:
 	}
 
 	arr<arr<T>> data_;
-	int x, y;
+	int x=0, y=0;
 };
 
 template<class T>
@@ -146,6 +146,7 @@ class str
 public:
 	str() :data(string("")) {}
 	str(const char* s):data(string(s)) {}
+	str(int n);
 	str operator+(const char* s) const;
 	void operator+=(const str& other);
 	void operator+=(double other);

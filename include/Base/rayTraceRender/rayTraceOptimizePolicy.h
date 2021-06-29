@@ -1,5 +1,6 @@
 #pragma once
 #include "Tools/Timer.h"
+#include "Optimize/RTTraceRequest.h"
 
 class rayTraceScreen;
 class rayTraceWorld;
@@ -22,8 +23,12 @@ public:
 	Timer timer;
 };
 
-class rayTraceOptimizePolicy_PerTaskNumbaCUDA : public rayTraceOptimizePolicy_PerTask
+class rayTraceOptimizePolicy_NumbaCUDA : public rayTraceOptimizePolicyBase
 {
 public:
+	void InitRequest(rayTraceWorld* world, rayTraceScreen* screen);
+	void Trace(rayTraceWorld* world, rayTraceScreen* screen);
 
+	RTTraceRequest traceReq;
+	Timer timer;
 };
