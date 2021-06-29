@@ -63,7 +63,7 @@ int main()
 	if (pbrMode)
 	{
 		//world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_reflect, rayTraceMaterialMode_PBR);
-		world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
+		world->SetTraceSettings(1, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
 
 		TraceRayI_SDFSphereMonteCarlo::sampleMode = rayTraceSampleMode_ImportanceSampling;
 		TraceRayI_SDFSphereMonteCarlo::spp = 10;
@@ -197,10 +197,10 @@ int main()
 	//op->PutLight(light);
 
 	op->Evolve();
-	op->SaveScreenBufferFrame(screen,"color", pyWorkPath+"\\z.txt");
-	_chdir(pyWorkPath.data.c_str());
-	//system("dir");
-	system("ZZZRUN_TransToImg.bat");
+
+	//op->SaveScreenBufferFrame(screen,"color", pyWorkPath+"\\z.txt");
+	//_chdir(pyWorkPath.data.c_str());
+	//system("ZZZRUN_TransToImg.bat");
 	//op->SayI();
 	return 0;
 }

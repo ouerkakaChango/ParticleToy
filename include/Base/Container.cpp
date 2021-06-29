@@ -13,6 +13,13 @@ str str::operator+(const char* s) const
 	return re;
 }
 
+str str::operator+(const str& other) const
+{
+	str re = *this;
+	re += other;
+	return re;
+}
+
 
 void str::operator+=(const str& other)
 {

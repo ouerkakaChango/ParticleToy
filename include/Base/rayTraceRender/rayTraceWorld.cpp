@@ -253,6 +253,7 @@ void rayTraceWorldR::SaveScreenBufferFrame(rayTraceScreen* screen, const str& bu
 			f << R << " " << G << " " << B << endl;
 		}
 	}
+	f.close();
 	std::cout << "ATTENTION: CPU Writing FrameBuffer done\n";
 }
 //### rayTraceWorldR

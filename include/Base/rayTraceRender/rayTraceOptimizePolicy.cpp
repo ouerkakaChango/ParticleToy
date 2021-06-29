@@ -92,7 +92,7 @@ void rayTraceOptimizePolicy_PerTask::Clear(rayTraceScreen* screen)
 //### rayTraceOptimizePolicy_NumbaCUDA
 void rayTraceOptimizePolicy_NumbaCUDA::InitRequest(rayTraceWorld* world, rayTraceScreen* screen)
 {
-	traceReq.InitData(world, screen);
+	traceReq.InitData(world, screen, rayTraceGod.optimizeWorkPath);
 }
 
 void rayTraceOptimizePolicy_NumbaCUDA::Trace(rayTraceWorld* world, rayTraceScreen* screen)
@@ -111,24 +111,28 @@ void rayTraceOptimizePolicy_NumbaCUDA::Trace(rayTraceWorld* world, rayTraceScree
 
 	cout << info << endl;
 
-	for (int j = 0; j < screen->h; j++)
-	{
-		for (int i = 0; i < screen->w; i++)
-		{
-			auto& ray = screen->rays[i][j];
+	traceReq.SetRequest(screen);
 
-			if (!ray.bStopTrace)
-			{
-				//往Request数据里添加
-				//对于SDFSphere{出射点，出射方向}
-				traceReq.SetRequest(i, j, ray);
-			}
-		}
-	}
+	//deprecated
+	//for (int j = 0; j < screen->h; j++)
+	//{
+	//	for (int i = 0; i < screen->w; i++)
+	//	{
+	//		auto& ray = screen->rays[i][j];
+	//
+	//		if (!ray.bStopTrace)
+	//		{
+	//			//往Request数据里添加
+	//			//对于SDFSphere{出射点，出射方向}
+	//			traceReq.SetRequest(i, j, ray);
+	//		}
+	//	}
+	//}
 
 	int aa = 1;
-	//traceReq.SendAndWaitGetResult();
-	//
+
+	traceReq.SendAndWaitGetResult();
+	
 	//for (int j = 0; j < screen->h; j++)
 	//{
 	//	for (int i = 0; i < screen->w; i++)
@@ -137,9 +141,11 @@ void rayTraceOptimizePolicy_NumbaCUDA::Trace(rayTraceWorld* world, rayTraceScree
 	//		if (!ray.bStopTrace)
 	//		{
 	//			traceReq.bounceRay(i,j, ray);
+	//			ray.Shade();
 	//		}
 	//	}
 	//}
+
 	if (world->nowBounce != world->bounceNum)
 	{
 		traceReq.PrepareForNext();

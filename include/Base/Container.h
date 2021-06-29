@@ -148,6 +148,7 @@ public:
 	str(const char* s):data(string(s)) {}
 	str(int n);
 	str operator+(const char* s) const;
+	str operator+(const str& other) const;
 	void operator+=(const str& other);
 	void operator+=(double other);
 	void operator+=(int other);
