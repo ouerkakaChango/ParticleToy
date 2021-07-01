@@ -157,8 +157,15 @@ public:
 	bool operator!=(const char* s) const;
 	bool operator!=(const str& str) const;
 	friend ostream & operator <<(ostream & os, const str & s);
+
 	void AddDouble(double other, int precision);
 	bool Has(str s) const;
+
+	inline const char* c_str()
+	{
+		return data.c_str();
+	}
+
 	string data;
 };
 ostream& operator <<(ostream & os, const str & s);

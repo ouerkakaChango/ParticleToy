@@ -57,6 +57,7 @@ int main()
 	str workPath = "C:\\Users\\hasee\\source\\repos\\ParticleToy";
 	str pyWorkPath = "C:\\Users\\hasee\\source\\repos\\ParticleToy\\PythonWorkSpace";
 	rayTraceGod.optimizeWorkPath = pyWorkPath + "\\CalculationCacheSpace";
+	rayTraceGod.pythonWorkPath = pyWorkPath;
 
 	bool pbrMode = true;
 	rayTraceWorld* world = new rayTraceWorld;
@@ -65,7 +66,7 @@ int main()
 		//world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_reflect, rayTraceMaterialMode_PBR);
 		world->SetTraceSettings(1, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
 
-		TraceRayI_SDFSphereMonteCarlo::sampleMode = rayTraceSampleMode_ImportanceSampling;
+		//TraceRayI_SDFSphereMonteCarlo::sampleMode = rayTraceSampleMode_ImportanceSampling;
 		TraceRayI_SDFSphereMonteCarlo::spp = 10;
 		//world->SetOptimizeMode(rayTraceOptimizeMode_PerTask);
 		world->SetOptimizeMode(rayTraceOptimizeMode_NumbaCUDA);
@@ -156,8 +157,9 @@ int main()
 	//###
 
 	//auto screen = new rayTraceScreen(1080,720);
-	auto screen = new rayTraceScreen(540, 360);
-	//auto screen = new rayTraceScreen(270, 180);
+	//auto screen = new rayTraceScreen(540, 360);
+	auto screen = new rayTraceScreen(270, 180);
+	//auto screen = new rayTraceScreen(2, 2);
 	//screen->Translate(P(0.0, 0.0, -2.5));
 	op->PutScreen(screen);
 	//放完screen后，才给所有物体的材质加上了extra
@@ -198,9 +200,9 @@ int main()
 
 	op->Evolve();
 
-	//op->SaveScreenBufferFrame(screen,"color", pyWorkPath+"\\z.txt");
-	//_chdir(pyWorkPath.data.c_str());
-	//system("ZZZRUN_TransToImg.bat");
+	op->SaveScreenBufferFrame(screen,"color", pyWorkPath+"\\z.txt");
+	_chdir(pyWorkPath.data.c_str());
+	system("ZZZRUN_TransToImg.bat");
 	//op->SayI();
 	return 0;
 }

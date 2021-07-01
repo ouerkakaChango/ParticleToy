@@ -102,4 +102,56 @@ void TraceRayI_SDFSphereMonteCarlo::Trace(rayTraceWorld* world)
 		o->FinalHitGather();
 	}
 }
+
+void TraceRayI_SDFSphereMonteCarlo::ShadeAfterHit(rayTraceWorld* world, TraceInfo info)
+{
+	auto o = Cast<TraceRayO*>(y->o[0]);
+	if (world->nowBounce == 1)
+	{
+		//TraceInfo info = world->SDF(y->Ray(y->startLen));
+		//info.dir = y->dir;
+		//while (info.dis > y->traceThre)
+		//{
+		//	info = world->SDF(y->Ray(info.dis));
+		//	if (info.dis >= world->maxSDF)
+		//	{
+		//		y->bStopTrace = true;
+		//		return;
+		//	}
+		//}
+		//TraceInfo info;
+		//info.bHit = true;
+		//info.dir = y->dir;
+		//info.hitPos = y->ori;
+		info.hitN = info.obj->shape->SDFNormal(info.hitPos);
+
+		int count = 1;
+		while (zero(info.hitN))
+		{
+			//有可能发生，获取SDF Normal失败
+			//那就获取上一个位置的SDF Normal
+			info.hitN = info.obj->shape->SDFNormal(info.hitPos - info.dir*0.00001*count);
+			count++;
+		}
+
+		arr<LightInfo> lightsInfo = world->GetLightsInfo(info.hitPos);
+		o->matPolicy->BlendColor(world, *y, info);
+
+		if (world->bounceNum > 1)
+		{
+			CreateSubRays(world, info);
+		}
+	}
+	else
+	{
+		for (auto& subRay : subRays)
+		{
+			subRay.Trace(world);
+		}
+	}
+	if (world->nowBounce == world->bounceNum)
+	{
+		//o->FinalHitGather();
+	}
+}
 //### TraceRayI_SDFSphereMonteCarlo

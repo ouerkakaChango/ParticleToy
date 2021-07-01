@@ -16,15 +16,17 @@ enum RequestMode
 class RTTraceRequest
 {
 THISY(RTTraceRequest)
-	void InitData(rayTraceWorld* world, rayTraceScreen* screen, const str& outPath,RequestMode mode_= RequestMode_txt);
+	void InitData(rayTraceWorld* world_, rayTraceScreen* screen, const str& outPath,RequestMode mode_= RequestMode_txt);
 	void SetRequest(rayTraceScreen* screen_);
 	void PrepareForNext();
 	void SendAndWaitGetResult();
 
 	RequestMode mode= RequestMode_txt;
 	rayTraceScreen* screen=nullptr;
+	rayTraceWorld* world = nullptr;
 	int requestNum = 0;
 	int taskNum = 4;
+	int sendInx = 0;
 };
 
 class RTTraceRequestO : public ClassO

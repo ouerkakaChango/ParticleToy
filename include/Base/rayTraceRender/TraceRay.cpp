@@ -84,6 +84,12 @@ void TraceRay::Trace(rayTraceWorld* world)
 	tracei->Trace(world);
 }
 
+void TraceRay::ShadeAfterHit(rayTraceWorld* world, TraceInfo info)
+{
+	auto tracei = Cast<TraceRayI*>(i[0]);
+	tracei->ShadeAfterHit(world, info);
+}
+
 P TraceRay::Ray(double len)
 {
 	ori = ori + dir * len;

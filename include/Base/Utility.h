@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#define MAX_PATH 100
 
 template <class T>
 inline T Cast(void* ptr)

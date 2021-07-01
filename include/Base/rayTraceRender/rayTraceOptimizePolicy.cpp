@@ -113,38 +113,25 @@ void rayTraceOptimizePolicy_NumbaCUDA::Trace(rayTraceWorld* world, rayTraceScree
 
 	traceReq.SetRequest(screen);
 
-	//deprecated
-	//for (int j = 0; j < screen->h; j++)
-	//{
-	//	for (int i = 0; i < screen->w; i++)
-	//	{
-	//		auto& ray = screen->rays[i][j];
-	//
-	//		if (!ray.bStopTrace)
-	//		{
-	//			//往Request数据里添加
-	//			//对于SDFSphere{出射点，出射方向}
-	//			traceReq.SetRequest(i, j, ray);
-	//		}
-	//	}
-	//}
-
-	int aa = 1;
+	if (world->nowBounce == 2)
+	{
+		int aa = 1;
+	}
+	
+	for (int j = 0; j < screen->h; j++)
+	{
+		for (int i = 0; i < screen->w; i++)
+		{
+			auto& ray = screen->rays[i][j];
+			if (!ray.bStopTrace)
+			{
+				//TraceInfo info = traceReq.GetResultAndSet(i,j);
+				//ray.ShadeAfterHit(world, info);
+			}
+		}
+	}
 
 	traceReq.SendAndWaitGetResult();
-	
-	//for (int j = 0; j < screen->h; j++)
-	//{
-	//	for (int i = 0; i < screen->w; i++)
-	//	{
-	//		auto& ray = screen->rays[i][j];
-	//		if (!ray.bStopTrace)
-	//		{
-	//			traceReq.bounceRay(i,j, ray);
-	//			ray.Shade();
-	//		}
-	//	}
-	//}
 
 	if (world->nowBounce != world->bounceNum)
 	{

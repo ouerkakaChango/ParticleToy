@@ -7,7 +7,8 @@ public:
 	TraceRayI_SDFSphereMonteCarlo(TraceRay* y_);
 	~TraceRayI_SDFSphereMonteCarlo();
 
-	virtual void Trace(rayTraceWorld* world) override;
+	void Trace(rayTraceWorld* world) override;
+	void ShadeAfterHit(rayTraceWorld* world , TraceInfo info) override;
 	void CreateSubRays(rayTraceWorld* world, const TraceInfo& traceInfo);
 	P RandSampleDir(const TraceInfo& traceInfo);
 

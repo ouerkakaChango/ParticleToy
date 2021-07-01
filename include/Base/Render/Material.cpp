@@ -218,7 +218,8 @@ P PBRO::ImportanceRandSampleDir(MaterialI* matParam, const P& n, const P& v)
 		};
 		//solve l when know h,v
 		double k = 0;
-		bool bSolved = BisecitonSolve(func, dot(h,v), 5, k,0.0001);
+		//@@@ 性能大头BisecitonSolve
+		bool bSolved = BisecitonSolve(func, dot(h,v), 5, k,0.01);
 		if (!bSolved)
 		{
 			abort();

@@ -56,5 +56,6 @@ public:
 	std::mutex mtx;
 #endif
 	str optimizeWorkPath;
+	str pythonWorkPath;
 };
 #define rayTraceGod ClassRayTraceGod::GetInstance()
