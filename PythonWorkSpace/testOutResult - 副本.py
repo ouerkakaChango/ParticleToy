@@ -8,7 +8,6 @@ from math import *
 
 MAXDIS=100
 TRACETHRE=0.01
-OBJNUM=3
 w=540
 h=360
 
@@ -41,27 +40,15 @@ def cudakernel1(re,rb,sdf,objSDF,traceDis,traceObj,tInt,tVec):
         objSDF[i,j,1] += pow(tVec[i,j,2],2)
         objSDF[i,j,1] = sqrt(objSDF[i,j,1])
         objSDF[i,j,1] += min(max(tVec[i,j,0], max(tVec[i,j,1], tVec[i,j,2])), 0.0);
-        
-        #sdf lightBox center:(0.0, 3.9, -5.0),bound:(0.8,0.08,0.8)
-        objSDF[i,j,2] = 0
-        tVec[i,j,0] = abs(rb[i,j,0]-0.0)-0.8
-        tVec[i,j,1] = abs(rb[i,j,1]-3.9)-0.08
-        tVec[i,j,2] = abs(rb[i,j,2]+5.0)-0.8
-        for k in range(3):
-            tVec[i,j,k] = max(tVec[i,j,k], 0.0)
-        objSDF[i,j,2] += pow(tVec[i,j,0],2)
-        objSDF[i,j,2] += pow(tVec[i,j,1],2)
-        objSDF[i,j,2] += pow(tVec[i,j,2],2)
-        objSDF[i,j,2] = sqrt(objSDF[i,j,2])
-        objSDF[i,j,2] += min(max(tVec[i,j,0], max(tVec[i,j,1], tVec[i,j,2])), 0.0);
-        
         #choose minSDF
         sdf[i,j,0] = objSDF[i,j,0]
         tInt[i,j,0] = 0
-        for objInx in range(OBJNUM):
+        for objInx in range(2):
             if objSDF[i,j,objInx] < sdf[i,j,0]:
                 sdf[i,j,0] = objSDF[i,j,objInx]
                 tInt[i,j,0] = objInx
+                #print(objInx,objSDF[i,j,objInx])
+        #sdf[i,j,0] = min(objSDF[i,j,0],objSDF[i,j,1])
 
         if sdf[i,j,0]>MAXDIS:
             break;
@@ -103,7 +90,8 @@ with open("CalculationCacheSpace\\"+str(sys.argv[1]),"r") as f:
         #print(x,y)
         count+=1
         
-    objSDF = np.full((w,h,OBJNUM), -1.0)
+    #!!!
+    objSDF = np.full((w,h,2), -1.0)
     
     sdf = np.full((w,h,1), -1.0)
     traceDis = np.full((w,h,1), -1.0)

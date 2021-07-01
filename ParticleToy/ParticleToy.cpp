@@ -120,7 +120,7 @@ int main()
 	}
 	//###
 	//灯Box
-	auto lightBox = op->PutShape(new Box(P(0.0, 3.9, -5.0), P(1.0, 0.1, 1.0)*0.8), "Box2");
+	auto lightBox = op->PutShape(new Box(P(0.0, 3.9, -5.0), P(1.0, 0.1, 1.0)*0.8), "lightBox");
 	if (pbrMode)
 	{
 		auto param = Cast<PBRI*>(lightBox->material->i[0]);
@@ -128,7 +128,7 @@ int main()
 		param->emissive = P(1,1,1)*10.0;
 	}
 
-	if(true)
+	if(false)
 	{
 		double xDis = 2.0;
 		//上

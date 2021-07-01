@@ -20,6 +20,7 @@ THISY(RTTraceRequest)
 	void SetRequest(rayTraceScreen* screen_);
 	void PrepareForNext();
 	void SendAndWaitGetResult();
+	TraceInfo GetResultAndSet(int x, int y);
 
 	RequestMode mode= RequestMode_txt;
 	rayTraceScreen* screen=nullptr;
@@ -48,6 +49,7 @@ public:
 	virtual void SendSingleRequest(int reqInx) = 0;
 	virtual void WaitForResult(int reqInx)=0;
 	virtual void CallCalculation()=0;
+	virtual void GetResultAndSet(TraceInfo& info, int x, int y, const TraceRay& ray)=0;
 	RTTraceRequestO* o;
 };
 
@@ -65,6 +67,12 @@ public:
 	int w, h;
 };
 
+struct RTTraceResult
+{
+	double traceDis=-1.0;
+	int traceObj=-1;
+};
+
 class RTTraceRequestI_txt : public RTTraceRequestI
 {
 public:
@@ -72,5 +80,8 @@ public:
 	void SendSingleRequest(int reqInx) override;
 	void WaitForResult(int reqInx) override;
 	void CallCalculation() override;
+	void GetResultAndSet(TraceInfo& info, int x, int y, const TraceRay& ray) override;
+
 	str outPath;
+	arr<arr2<RTTraceResult>> results;
 };

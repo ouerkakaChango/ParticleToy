@@ -32,6 +32,7 @@ void RTTraceRequest::InitData(rayTraceWorld* world_, rayTraceScreen* screen, con
 	{
 		auto ti = new RTTraceRequestI_txt;
 		ti->outPath = outPath;
+		ti->results.resize(1);
 		ti->o = Cast<RTTraceRequestO*>(o[0]);
 		i += ti;
 	}
@@ -67,10 +68,32 @@ void RTTraceRequest::SendAndWaitGetResult()
 		{
 			ti->SendSingleRequest(sendInx);
 			sendInx += 1;
-			//ti->CallCalculation();
-			//ti->WaitForResult(sendInx);
+			//???
+			ti->CallCalculation();
+			ti->WaitForResult(sendInx);
 		}
 	}
+}
+
+TraceInfo RTTraceRequest::GetResultAndSet(int x, int y)
+{
+	TraceInfo re;
+
+	auto ti = Cast<RTTraceRequestI*>(i[0]);
+
+	auto& ray = screen->rays[x][y];
+
+	auto rayi = Cast<TraceRayI*>(ray.i[0]);
+
+	if (typeStr(*rayi) == "class TraceRayI_SDFSphereMonteCarlo")
+	{
+		if (world->nowBounce == 1)
+		{
+			ti->GetResultAndSet(re, x, y, ray);
+		}
+	}
+
+	return re;
 }
 //### RTTraceRequest
 
@@ -170,6 +193,9 @@ void RTTraceRequestI_txt::SendSingleRequest(int reqInx)
 
 void RTTraceRequestI_txt::CallCalculation()
 {
+	//???
+	//将objs的信息元编程到.py代码，并运行calculation
+
 	//wchar_t   buffer[MAX_PATH];
 	//_wgetcwd(buffer, MAX_PATH);
 	//std::wcout.imbue(std::locale("chs"));
@@ -185,5 +211,44 @@ void RTTraceRequestI_txt::CallCalculation()
 void RTTraceRequestI_txt::WaitForResult(int reqInx)
 {
 	//wait check result file is exist
+
+	//read into results
+	//???
+	for (auto& page : results)
+	{
+		str tFilePath = rayTraceGod.optimizeWorkPath + "\\TraceResult";
+		tFilePath += "\\traceRes0.txt";
+		std::ifstream f(tFilePath.data);
+		int w, h;
+		double tDis=-1.0, tObj=-1;
+		f >> w; f >> h;
+		page.resize(w, h);
+		//x = int(count%w);
+		//y = int((count - x) / w);
+		for (int j = 0; j < h; j++)
+		{
+			for (int i = 0; i < w; i++)
+			{
+				f >> page[i][j].traceDis >> page[i][j].traceObj;
+			}
+		}
+	}
+}
+
+void RTTraceRequestI_txt::GetResultAndSet(TraceInfo& info, int x, int y, const TraceRay& ray)
+{
+	auto world = o->y->world;
+	if (world->nowBounce == 1)
+	{
+		auto& page = results[0];
+		info.dis = page[x][y].traceDis;
+		if (info.dis > 0)
+		{
+			info.bHit = true;
+			info.dir = ray.dir;
+			info.hitPos = ray.ori + info.dis * info.dir;
+			info.obj = world->objs[page[x][y].traceObj];
+		}
+	}
 }
 //### RTTraceRequestI_txt

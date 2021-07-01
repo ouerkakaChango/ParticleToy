@@ -123,6 +123,11 @@ void TraceRayI_SDFSphereMonteCarlo::ShadeAfterHit(rayTraceWorld* world, TraceInf
 		//info.bHit = true;
 		//info.dir = y->dir;
 		//info.hitPos = y->ori;
+		if (!info.bHit)
+		{
+			y->bStopTrace = true;
+			return;
+		}
 		info.hitN = info.obj->shape->SDFNormal(info.hitPos);
 
 		int count = 1;
@@ -151,7 +156,12 @@ void TraceRayI_SDFSphereMonteCarlo::ShadeAfterHit(rayTraceWorld* world, TraceInf
 	}
 	if (world->nowBounce == world->bounceNum)
 	{
-		//o->FinalHitGather();
+		//???
+		if (info.obj->name == "lightBox")
+		{
+			int aa = 1;
+		}
+		o->FinalHitGather();
 	}
 }
 //### TraceRayI_SDFSphereMonteCarlo
