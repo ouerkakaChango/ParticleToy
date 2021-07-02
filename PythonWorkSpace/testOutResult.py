@@ -13,7 +13,7 @@ w=540
 h=360
 
 @cuda.jit
-def cudakernel1(re,rb,sdf,objSDF,traceDis,traceObj,tInt,tVec):
+def cudakernel1(orirb,re,rb,sdf,objSDF,traceDis,traceObj,tInt,tVec):
     i,j = cuda.grid(2)
     #print(i,j)
    
@@ -67,7 +67,13 @@ def cudakernel1(re,rb,sdf,objSDF,traceDis,traceObj,tInt,tVec):
             break;
         elif sdf[i,j,0] <= TRACETHRE and sdf[i,j,0]>=0:
             #trace hit !!!
-            traceDis[i,j,0] = sdf[i,j,0]
+            #traceDis[i,j,0] = sdf[i,j,0]
+            traceDis[i,j,0] = 0
+            traceDis[i,j,0] += pow(rb[i,j,0]-orirb[i,j,0],2)
+            traceDis[i,j,0] += pow(rb[i,j,1]-orirb[i,j,1],2)
+            traceDis[i,j,0] += pow(rb[i,j,2]-orirb[i,j,2],2)
+            traceDis[i,j,0] = sqrt(traceDis[i,j,0])
+            
             traceObj[i,j,0] = tInt[i,j,0]
             break;
             
@@ -77,7 +83,7 @@ def cudakernel1(re,rb,sdf,objSDF,traceDis,traceObj,tInt,tVec):
         #print(sdf[i,j,0],rb[i,j,0],rb[i,j,1],rb[i,j,2])
                
 
-print(str(sys.argv[1]))
+#print(str(sys.argv[1]))
 with open("CalculationCacheSpace\\"+str(sys.argv[1]),"r") as f:
     imInfo = f.readline().split(" ")
     w = int(imInfo[0])
@@ -85,6 +91,7 @@ with open("CalculationCacheSpace\\"+str(sys.argv[1]),"r") as f:
     print(w,h)
     re = np.zeros((w,h,3), np.float32)
     rb = np.zeros((w,h,3), np.float32)
+    orirb = np.zeros((w,h,3), np.float32)
     # read rb,r3 from req.txt
     count=0
     for line in f.readlines():
@@ -94,6 +101,9 @@ with open("CalculationCacheSpace\\"+str(sys.argv[1]),"r") as f:
         rb[x,y,0] = float(pixelInfo[0])
         rb[x,y,1] = float(pixelInfo[1])
         rb[x,y,2] = float(pixelInfo[2])
+        orirb[x,y,0] = rb[x,y,0]
+        orirb[x,y,1] = rb[x,y,1]
+        orirb[x,y,2] = rb[x,y,2]
         re[x,y,0] = float(pixelInfo[3])
         re[x,y,1] = float(pixelInfo[4])
         re[x,y,2] = float(pixelInfo[5])
@@ -114,11 +124,12 @@ with open("CalculationCacheSpace\\"+str(sys.argv[1]),"r") as f:
     
     tVec = np.full((w,h,3), 0.0)
     print('Kernel launch...')
-    cudakernel1[(w,h,1), 1](re,rb,sdf,objSDF,traceDis,traceObj,tInt,tVec)
+    cudakernel1[(w,h,1), 1](orirb,re,rb,sdf,objSDF,traceDis,traceObj,tInt,tVec)
     #print('Updated array:', traceDis)
     
 
-    with open('testResult.txt', 'w') as f:
+    #with open('testResult.txt', 'w') as f:
+    with open("CalculationCacheSpace\\"+str(sys.argv[2]), 'w') as f:
         f.write(str(w)+' '+str(h)+"\n")
         for j in range(h):
             for i in range(w):
@@ -127,5 +138,5 @@ with open("CalculationCacheSpace\\"+str(sys.argv[1]),"r") as f:
                 if resTraceDis < 0 :
                     f.write(str(-1)+' '+str(-1)+"\n")
                 else:
-                     f.write(str(resTraceDis)+' '+str(resTraceObj)+"\n")
+                     f.write(str(round(resTraceDis,6))+' '+str(resTraceObj)+"\n")
         f.close()

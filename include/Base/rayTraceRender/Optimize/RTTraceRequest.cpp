@@ -223,8 +223,6 @@ void RTTraceRequestI_txt::WaitForResult(int reqInx)
 		double tDis=-1.0, tObj=-1;
 		f >> w; f >> h;
 		page.resize(w, h);
-		//x = int(count%w);
-		//y = int((count - x) / w);
 		for (int j = 0; j < h; j++)
 		{
 			for (int i = 0; i < w; i++)
