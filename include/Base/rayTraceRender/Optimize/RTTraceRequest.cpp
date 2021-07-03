@@ -45,13 +45,12 @@ void RTTraceRequest::SetRequest(rayTraceScreen* screen_)
 
 void RTTraceRequest::PrepareForNext()
 {
-	auto data = Cast<RTTraceRequestO*>(o[0]);
-	data->PrepareForNext();
+	auto ti = Cast<RTTraceRequestI*>(i[0]);
+	ti->PrepareForNext();
 }
 
 void RTTraceRequest::SendAndWaitGetResult()
 {
-	//???
 	auto ti = Cast<RTTraceRequestI*>(i[0]);
 
 	auto& ray = screen->rays[0][0];
@@ -64,36 +63,22 @@ void RTTraceRequest::SendAndWaitGetResult()
 		{
 			nowReqNum = TraceRayI_SDFSphereMonteCarlo::spp;
 		}
+
 		for (int inx = 0; inx < nowReqNum;inx++ )
 		{
 			ti->SendSingleRequest(sendInx);
-			sendInx += 1;
-			//???
-			ti->CallCalculation();
+			ti->CallCalculation(sendInx);
 			ti->WaitForResult(sendInx);
+			sendInx += 1;
 		}
 	}
 }
 
-TraceInfo RTTraceRequest::GetResultAndSet(int x, int y)
+void RTTraceRequest::GetResult(arr<TraceInfo>& infos, int x, int y)
 {
-	TraceInfo re;
-
 	auto ti = Cast<RTTraceRequestI*>(i[0]);
-
 	auto& ray = screen->rays[x][y];
-
-	auto rayi = Cast<TraceRayI*>(ray.i[0]);
-
-	if (typeStr(*rayi) == "class TraceRayI_SDFSphereMonteCarlo")
-	{
-		if (world->nowBounce == 1)
-		{
-			ti->GetResultAndSet(re, x, y, ray);
-		}
-	}
-
-	return re;
+	ti->GetResult(infos, x, y, ray);
 }
 //### RTTraceRequest
 
@@ -129,11 +114,6 @@ void RTTraceRequestO_SDFSphere::InitData(rayTraceWorld* world_, rayTraceScreen* 
 	}
 }
 
-void RTTraceRequestO_SDFSphere::PrepareForNext()
-{
-
-}
-
 //### RTTraceRequestO_SDFSphere
 
 //### RTTraceRequestI_txt
@@ -157,31 +137,48 @@ void RTTraceRequestI_txt::SendSingleRequest(int reqInx)
 		str tFilePath = outPath + "\\traceReq" + str(reqInx)+".txt";
 		std::ofstream f(tFilePath.data, std::ios::out);
 		f << to->w << " " << to->h << " " << endl;
-		if (reqInx == 0)
+		//!!!
+		auto& ray = o->y->screen->rays[0][0];
+		auto rayi = Cast<TraceRayI*>(ray.i[0]);
+		if (typeStr(*rayi) == "class TraceRayI_SDFSphereMonteCarlo")
 		{
-			cout << "Writing req0 ..." << endl;
-			for (int j = 0; j < to->h; j++)
+			if (reqInx == 0)
 			{
-				for (int i = 0; i < to->w; i++)
+				cout << "Writing req0 ..." << endl;
+				for (int j = 0; j < to->h; j++)
 				{
-					auto& ray = o->y->screen->rays[i][j];
-					f << ray.ori.ToStr() << " " << ray.dir.ToStr() << endl;
+					for (int i = 0; i < to->w; i++)
+					{
+						auto& ray = o->y->screen->rays[i][j];
+						f << ray.ori.ToStr() << " " << ray.dir.ToStr() << endl;
+					}
+				}
+			}
+			else
+			{
+				int subRayInx = (reqInx - 1) % TraceRayI_SDFSphereMonteCarlo::spp;
+				cout << "Writing req" << reqInx << " subRay" << subRayInx << "..." << endl;
+				for (int j = 0; j < to->h; j++)
+				{
+					for (int i = 0; i < to->w; i++)
+					{
+						auto& ray = o->y->screen->rays[i][j];
+						if (!ray.bStopTrace)
+						{
+							auto subRay = Cast<TraceRayI_SDFSphereMonteCarlo*>(ray.i[0])->subRays[subRayInx];
+							f << subRay.ori.ToStr() << " " << subRay.dir.ToStr() << endl;
+						}
+						else
+						{
+							f << endl;
+						}
+					}
 				}
 			}
 		}
 		else
 		{
-			int subRayInx = (reqInx-1) % TraceRayI_SDFSphereMonteCarlo::spp;
-			cout << "Writing req" << reqInx << " subRay" << subRayInx << "..." << endl;
-			for (int j = 0; j < to->h; j++)
-			{
-				for (int i = 0; i < to->w; i++)
-				{
-					auto& ray = o->y->screen->rays[i][j];
-					auto subRay = Cast<TraceRayI_SDFSphereMonteCarlo*>(ray.i[0])->subRays[subRayInx];
-					f << subRay.ori.ToStr() << " " << subRay.dir.ToStr() << endl;
-				}
-			}
+			abort();
 		}
 		f.close();
 	}
@@ -191,7 +188,7 @@ void RTTraceRequestI_txt::SendSingleRequest(int reqInx)
 	}
 }
 
-void RTTraceRequestI_txt::CallCalculation()
+void RTTraceRequestI_txt::CallCalculation(int reqInx)
 {
 	//???
 	//将objs的信息元编程到.py代码，并运行calculation
@@ -204,7 +201,11 @@ void RTTraceRequestI_txt::CallCalculation()
 	char cwd[MAX_PATH];
 	_getcwd(cwd, MAX_PATH);
 	_chdir(rayTraceGod.pythonWorkPath.c_str());
-	system("RUN_testReq.bat");
+	//system("RUN_testReq.bat");
+	str cmdStr = "python testOutResult.py ";
+	cmdStr += "traceReq" + str(reqInx) + ".txt ";
+	cmdStr += "TraceResult/traceRes" + str(reqInx) + ".txt";
+	system(cmdStr.c_str());
 	_chdir(cwd);
 }
 
@@ -214,31 +215,34 @@ void RTTraceRequestI_txt::WaitForResult(int reqInx)
 
 	//read into results
 	//???
-	for (auto& page : results)
+	auto& page = results[reqInx];
+	str tFilePath = rayTraceGod.optimizeWorkPath + "\\TraceResult";
+	tFilePath += "\\traceRes"+str(reqInx)+".txt";
+	std::ifstream f(tFilePath.data);
+	while (!f.is_open())
 	{
-		str tFilePath = rayTraceGod.optimizeWorkPath + "\\TraceResult";
-		tFilePath += "\\traceRes0.txt";
-		std::ifstream f(tFilePath.data);
-		int w, h;
-		double tDis=-1.0, tObj=-1;
-		f >> w; f >> h;
-		page.resize(w, h);
-		for (int j = 0; j < h; j++)
+		f.open(tFilePath.data);
+	}
+	int w, h;
+	double tDis=-1.0, tObj=-1;
+	f >> w; f >> h;
+	page.resize(w, h);
+	for (int j = 0; j < h; j++)
+	{
+		for (int i = 0; i < w; i++)
 		{
-			for (int i = 0; i < w; i++)
-			{
-				f >> page[i][j].traceDis >> page[i][j].traceObj;
-			}
+			f >> page[i][j].traceDis >> page[i][j].traceObj;
 		}
 	}
 }
 
-void RTTraceRequestI_txt::GetResultAndSet(TraceInfo& info, int x, int y, const TraceRay& ray)
+void RTTraceRequestI_txt::GetResult(arr<TraceInfo>& infos, int x, int y, const TraceRay& ray)
 {
 	auto world = o->y->world;
-	if (world->nowBounce == 1)
+	auto rayi = Cast<TraceRayI*>(ray.i[0]);
+
+	auto loadInfo = [&](TraceInfo& info,const arr2<RTTraceResult>& page)
 	{
-		auto& page = results[0];
 		info.dis = page[x][y].traceDis;
 		if (info.dis > 0)
 		{
@@ -247,6 +251,48 @@ void RTTraceRequestI_txt::GetResultAndSet(TraceInfo& info, int x, int y, const T
 			info.hitPos = ray.ori + info.dis * info.dir;
 			info.obj = world->objs[page[x][y].traceObj];
 		}
+	};
+
+	if (typeStr(*rayi) == "class TraceRayI_SDFSphere")
+	{
+		infos.resize(1);
+		loadInfo(infos[0],results[0]);
 	}
+	else if (typeStr(*rayi) == "class TraceRayI_SDFSphereMonteCarlo")
+	{
+		if (world->nowBounce == 1)
+		{
+			infos.resize(1);
+			loadInfo(infos[0], results[0]);
+		}
+		else
+		{
+			infos.resize(TraceRayI_SDFSphereMonteCarlo::spp);
+			for (int inx = 0; inx < TraceRayI_SDFSphereMonteCarlo::spp; inx++)
+			{
+				loadInfo(infos[inx], results[lastStamp+inx]);
+			}
+		}
+	}
+}
+
+void RTTraceRequestI_txt::PrepareForNext()
+{
+	auto world = o->y->world;
+	auto& ray = o->y->screen->rays[0][0];
+	auto rayi = Cast<TraceRayI*>(ray.i[0]);
+	if (typeStr(*rayi) == "class TraceRayI_SDFSphereMonteCarlo")
+	{
+		results.addEmptyElems(TraceRayI_SDFSphereMonteCarlo::spp);
+		if (world->nowBounce == 1)
+		{
+			lastStamp = 1;
+		}
+		else
+		{
+			lastStamp += TraceRayI_SDFSphereMonteCarlo::spp;
+		}
+	}
+	
 }
 //### RTTraceRequestI_txt

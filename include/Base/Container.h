@@ -11,25 +11,25 @@ template <class T>
 class arr
 {
 public:
-	vector<T> data_;
+	vector<T> data;
 	using iter = typename vector<T>::iterator;
 	iter begin()
 	{
-		return data_.begin();
+		return data.begin();
 	}
 	iter end()
 	{
-		return data_.end();
+		return data.end();
 	}
 
 	void operator+=(T newData_)
 	{
-		data_.push_back(newData_);
+		data.push_back(newData_);
 	}
 
 	void operator+=(const arr<T>& other)
 	{
-		for (auto& t : other.data_)
+		for (auto& t : other.data)
 		{
 			*this += t;
 		}
@@ -37,32 +37,32 @@ public:
 
 	inline T& operator[](int inx)
 	{
-		return data_[inx];
+		return data[inx];
 	}
 
 	inline const T& operator[](int inx) const
 	{
-		return data_[inx];
+		return data[inx];
 	}
 
 	unsigned int size() const
 	{
-		return data_.size();
+		return data.size();
 	}
 
 	void resize(int newLen)
 	{
-		data_.resize(newLen);
+		data.resize(newLen);
 	}
 
 	void clear()
 	{
-		data_.clear();
+		data.clear();
 	}
 
 	void allset(T t)
 	{
-		for (auto& iter : data_)
+		for (auto& iter : data)
 		{
 			iter = t;
 		}
@@ -70,7 +70,7 @@ public:
 
 	bool Has(T t)
 	{
-		for (auto& iter : data_)
+		for (auto& iter : data)
 		{
 			if (iter == t)
 			{
@@ -82,7 +82,16 @@ public:
 
 	void delAt(int inx)
 	{
-		data_.erase(data_.begin()+inx);
+		data.erase(data.begin()+inx);
+	}
+
+	void addEmptyElems(int num)
+	{
+		for (int i = 0; i < num; i++)
+		{
+			T t;
+			data.push_back(t);
+		}
 	}
 };
 
@@ -95,24 +104,24 @@ public:
 	{
 		x = x_;
 		y = y_;
-		data_.resize(x);
+		data.resize(x);
 		for (int i = 0; i < x; i++)
 		{
-			data_[i].resize(y);
+			data[i].resize(y);
 		}
 	}
 
 	arr<T>& operator[](int inx)
 	{
-		return data_[inx];
+		return data[inx];
 	}
 
 	const arr<T>& operator[](int inx) const
 	{
-		return data_[inx];
+		return data[inx];
 	}
 
-	arr<arr<T>> data_;
+	arr<arr<T>> data;
 	int x=0, y=0;
 };
 
@@ -125,19 +134,19 @@ public:
 		x = x_;
 		y = y_;
 		z = z_;
-		data_.resize(z);
+		data.resize(z);
 		for (int k = 0; k < z; k++)
 		{
-			data_[k].resize(x,y);
+			data[k].resize(x,y);
 		}
 	}
 
 	arr2<T>& operator[](int inx)
 	{
-		return data_[inx];
+		return data[inx];
 	}
 
-	arr<arr2<T>> data_;
+	arr<arr2<T>> data;
 	int x, y, z;
 };
 

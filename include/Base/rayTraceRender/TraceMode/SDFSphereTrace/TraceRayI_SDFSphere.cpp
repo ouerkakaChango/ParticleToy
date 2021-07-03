@@ -53,29 +53,14 @@ void TraceRayI_SDFSphere::Trace(rayTraceWorld* world)
 	return;
 }
 
-void TraceRayI_SDFSphere::ShadeAfterHit(rayTraceWorld* world, TraceInfo info)
+void TraceRayI_SDFSphere::ShadeAfterHit(rayTraceWorld* world, arr<TraceInfo>& infos)
 {
-	auto o = Cast<TraceRayO*>(y->o[0]);
-	//TraceInfo info = world->SDF(y->Ray(y->startLen));
-	//info.dir = y->dir;
-	//while (info.dis > y->traceThre)
-	//{
-	//	info = world->SDF(y->Ray(info.dis));
-	//	if (info.dis >= world->maxSDF)
-	//	{
-	//		//没有这个>1的判断也可以，不过省的(0,0,0)和(0,0,0)lerp了。
-	//		if (world->nowBounce > 1)
-	//		{
-	//			o->FinalUnhitGather();
-	//		}
-	//		y->bStopTrace = true;
-	//		return;
-	//	}
-	//}
-	//TraceInfo info;
-	//info.bHit = true;
-	//info.dir = y->dir;
-	//info.hitPos = y->ori;
+	auto& info = infos[0];
+	if (!info.bHit)
+	{
+		y->bStopTrace = true;
+		return;
+	}
 	info.hitN = info.obj->shape->SDFNormal(y->ori);
 
 	int count = 1;
@@ -88,6 +73,7 @@ void TraceRayI_SDFSphere::ShadeAfterHit(rayTraceWorld* world, TraceInfo info)
 	}
 
 	arr<LightInfo> lightsInfo = world->GetLightsInfo(info.hitPos);
+	auto o = Cast<TraceRayO*>(y->o[0]);
 	o->matPolicy->BlendColor(world, *y, info);
 
 	if (world->nowBounce == world->bounceNum)

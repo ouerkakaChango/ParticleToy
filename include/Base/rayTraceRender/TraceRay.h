@@ -16,7 +16,7 @@ class TraceRay
 	void Clear(bool keepColor=false);
 	void SetMode(rayTraceMode traceMode, rayTraceBounceMode bounceMode);
 	void Trace(rayTraceWorld* world);
-	void ShadeAfterHit(rayTraceWorld* world, TraceInfo info);
+	void ShadeAfterHit(rayTraceWorld* world, arr<TraceInfo>& infos);
 	P Ray(double len);
 	void Bounce(const TraceInfo& info);
 
@@ -33,7 +33,7 @@ public:
 	TraceRayI(TraceRay* y_);
 	virtual ~TraceRayI();
 	virtual void Trace(rayTraceWorld* world) = 0;
-	virtual void ShadeAfterHit(rayTraceWorld* world, TraceInfo info) = 0;
+	virtual void ShadeAfterHit(rayTraceWorld* world, arr<TraceInfo>& infos) = 0;
 
 	TraceRay* y = nullptr;
 };

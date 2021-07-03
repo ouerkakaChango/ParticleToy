@@ -20,14 +20,14 @@ THISY(RTTraceRequest)
 	void SetRequest(rayTraceScreen* screen_);
 	void PrepareForNext();
 	void SendAndWaitGetResult();
-	TraceInfo GetResultAndSet(int x, int y);
+	void GetResult(arr<TraceInfo>& infos, int x, int y);
 
 	RequestMode mode= RequestMode_txt;
 	rayTraceScreen* screen=nullptr;
 	rayTraceWorld* world = nullptr;
 	int requestNum = 0;
-	int taskNum = 4;
 	int sendInx = 0;
+	bool bSaveCache = true;
 };
 
 class RTTraceRequestO : public ClassO
@@ -35,8 +35,6 @@ class RTTraceRequestO : public ClassO
 public:
 	RTTraceRequestO(RTTraceRequest* y_);
 	virtual ~RTTraceRequestO() {};
-	//virtual void InitData(rayTraceWorld* world) = 0;
-	virtual void PrepareForNext()=0;
 
 	RTTraceRequest* y = nullptr;
 };
@@ -48,8 +46,9 @@ public:
 	virtual void SendRequest() = 0;
 	virtual void SendSingleRequest(int reqInx) = 0;
 	virtual void WaitForResult(int reqInx)=0;
-	virtual void CallCalculation()=0;
-	virtual void GetResultAndSet(TraceInfo& info, int x, int y, const TraceRay& ray)=0;
+	virtual void CallCalculation(int reqInx)=0;
+	virtual void GetResult(arr<TraceInfo>& infos, int x, int y, const TraceRay& ray)=0;
+	virtual void PrepareForNext()=0;
 	RTTraceRequestO* o;
 };
 
@@ -61,7 +60,6 @@ class RTTraceRequestO_SDFSphere : public RTTraceRequestO
 public:
 	RTTraceRequestO_SDFSphere(RTTraceRequest* y_);
 	void InitData(rayTraceWorld* world_, rayTraceScreen* screen);
-	void PrepareForNext() override;
 
 	rayTraceWorld* world;
 	int w, h;
@@ -79,9 +77,11 @@ public:
 	void SendRequest() override;
 	void SendSingleRequest(int reqInx) override;
 	void WaitForResult(int reqInx) override;
-	void CallCalculation() override;
-	void GetResultAndSet(TraceInfo& info, int x, int y, const TraceRay& ray) override;
+	void CallCalculation(int reqInx) override;
+	void GetResult(arr<TraceInfo>& infos, int x, int y, const TraceRay& ray) override;
+	void PrepareForNext() override;
 
 	str outPath;
 	arr<arr2<RTTraceResult>> results;
+	int lastStamp = -1;
 };

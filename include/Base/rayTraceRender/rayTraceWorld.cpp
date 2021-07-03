@@ -223,7 +223,7 @@ void rayTraceWorldR::Evolve()
 
 void rayTraceWorldR::SaveScreenBufferFrame(rayTraceScreen* screen, const str& bufferName, const str& filePath)
 {
-	std::cout << "ATTENTION: CPU Writing FrameBuffer...\n";
+	//std::cout << "ATTENTION: CPU Writing FrameBuffer...\n";
 	std::ofstream f(filePath.data, std::ios::out);
 	f << screen->w << " " << screen->h << endl;
 	for (int j = 0; j < screen->h; j++)
@@ -254,6 +254,6 @@ void rayTraceWorldR::SaveScreenBufferFrame(rayTraceScreen* screen, const str& bu
 		}
 	}
 	f.close();
-	std::cout << "ATTENTION: CPU Writing FrameBuffer done\n";
+	//std::cout << "ATTENTION: CPU Writing FrameBuffer done\n";
 }
 //### rayTraceWorldR

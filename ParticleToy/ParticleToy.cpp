@@ -64,15 +64,23 @@ int main()
 	if (pbrMode)
 	{
 		//world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_reflect, rayTraceMaterialMode_PBR);
-		world->SetTraceSettings(1, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
+		world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
 
 		//TraceRayI_SDFSphereMonteCarlo::sampleMode = rayTraceSampleMode_ImportanceSampling;
 		TraceRayI_SDFSphereMonteCarlo::spp = 10;
-		//world->SetOptimizeMode(rayTraceOptimizeMode_PerTask);
-		world->SetOptimizeMode(rayTraceOptimizeMode_NumbaCUDA);
-		//auto opt = Cast<rayTraceOptimizePolicy_PerTask*>(world->optimizePolicy);
-		//opt->rayPerTask = 540;
-		auto opt = Cast<rayTraceOptimizePolicy_NumbaCUDA*>(world->optimizePolicy);
+
+		bool bCUDA = true;
+		if (bCUDA)
+		{
+			world->SetOptimizeMode(rayTraceOptimizeMode_NumbaCUDA);
+			auto opt = Cast<rayTraceOptimizePolicy_NumbaCUDA*>(world->optimizePolicy);
+		}
+		else
+		{
+			world->SetOptimizeMode(rayTraceOptimizeMode_PerTask);
+			auto opt = Cast<rayTraceOptimizePolicy_PerTask*>(world->optimizePolicy);
+			opt->rayPerTask = 540;
+		}
 	}
 	else
 	{

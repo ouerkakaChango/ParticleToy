@@ -113,6 +113,7 @@ void rayTraceOptimizePolicy_NumbaCUDA::Trace(rayTraceWorld* world, rayTraceScree
 
 	traceReq.SetRequest(screen);
 
+	//???
 	if (world->nowBounce == 2)
 	{
 		int aa = 1;
@@ -127,8 +128,9 @@ void rayTraceOptimizePolicy_NumbaCUDA::Trace(rayTraceWorld* world, rayTraceScree
 			auto& ray = screen->rays[i][j];
 			if (!ray.bStopTrace)
 			{
-				TraceInfo info = traceReq.GetResultAndSet(i,j);
-				ray.ShadeAfterHit(world, info);
+				arr<TraceInfo> infos;
+				traceReq.GetResult(infos,i,j);
+				ray.ShadeAfterHit(world, infos);
 			}
 		}
 	}

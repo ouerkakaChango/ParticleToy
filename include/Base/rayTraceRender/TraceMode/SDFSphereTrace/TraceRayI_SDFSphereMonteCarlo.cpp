@@ -103,26 +103,12 @@ void TraceRayI_SDFSphereMonteCarlo::Trace(rayTraceWorld* world)
 	}
 }
 
-void TraceRayI_SDFSphereMonteCarlo::ShadeAfterHit(rayTraceWorld* world, TraceInfo info)
+void TraceRayI_SDFSphereMonteCarlo::ShadeAfterHit(rayTraceWorld* world, arr<TraceInfo>& infos)
 {
 	auto o = Cast<TraceRayO*>(y->o[0]);
 	if (world->nowBounce == 1)
 	{
-		//TraceInfo info = world->SDF(y->Ray(y->startLen));
-		//info.dir = y->dir;
-		//while (info.dis > y->traceThre)
-		//{
-		//	info = world->SDF(y->Ray(info.dis));
-		//	if (info.dis >= world->maxSDF)
-		//	{
-		//		y->bStopTrace = true;
-		//		return;
-		//	}
-		//}
-		//TraceInfo info;
-		//info.bHit = true;
-		//info.dir = y->dir;
-		//info.hitPos = y->ori;
+		auto& info = infos[0];
 		if (!info.bHit)
 		{
 			y->bStopTrace = true;
@@ -149,18 +135,15 @@ void TraceRayI_SDFSphereMonteCarlo::ShadeAfterHit(rayTraceWorld* world, TraceInf
 	}
 	else
 	{
-		for (auto& subRay : subRays)
+		for (int inx = 0; inx < subRays.size(); inx++)
 		{
-			subRay.Trace(world);
+			arr<TraceInfo> tInfos;
+			tInfos += infos[inx];
+			subRays[inx].ShadeAfterHit(world, tInfos);
 		}
 	}
 	if (world->nowBounce == world->bounceNum)
 	{
-		//???
-		if (info.obj->name == "lightBox")
-		{
-			int aa = 1;
-		}
 		o->FinalHitGather();
 	}
 }
