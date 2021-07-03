@@ -64,12 +64,15 @@ int main()
 	if (pbrMode)
 	{
 		//world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_reflect, rayTraceMaterialMode_PBR);
-		world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
+		world->SetTraceSettings(4, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
 
 		//TraceRayI_SDFSphereMonteCarlo::sampleMode = rayTraceSampleMode_ImportanceSampling;
-		TraceRayI_SDFSphereMonteCarlo::spp = 1;
+		TraceRayI_SDFSphereMonteCarlo::spp = 128;
 
-		bool bCUDA = true;
+		//CUDA加速框架尝试了一下，放弃了。
+		//如果说空间换时间，硬盘空间不够，中间文件太jb大了
+		//如果说算法转移，那基本上整个光追算法都要移过去了，c++没事情做了，离谱。而且numba写cuda简直折磨，太原始了。
+		bool bCUDA = false;
 		if (bCUDA)
 		{
 			world->SetOptimizeMode(rayTraceOptimizeMode_NumbaCUDA);
@@ -136,7 +139,7 @@ int main()
 		param->emissive = P(1,1,1)*10.0;
 	}
 
-	if(false)
+	if(true)
 	{
 		double xDis = 2.0;
 		//上
@@ -165,8 +168,8 @@ int main()
 	//###
 
 	//auto screen = new rayTraceScreen(1080,720);
-	//auto screen = new rayTraceScreen(540, 360);
-	auto screen = new rayTraceScreen(270, 180);
+	auto screen = new rayTraceScreen(540, 360);
+	//auto screen = new rayTraceScreen(270, 180);
 	//auto screen = new rayTraceScreen(2, 2);
 	//screen->Translate(P(0.0, 0.0, -2.5));
 	op->PutScreen(screen);
