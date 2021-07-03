@@ -67,7 +67,7 @@ int main()
 		world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
 
 		//TraceRayI_SDFSphereMonteCarlo::sampleMode = rayTraceSampleMode_ImportanceSampling;
-		TraceRayI_SDFSphereMonteCarlo::spp = 10;
+		TraceRayI_SDFSphereMonteCarlo::spp = 1;
 
 		bool bCUDA = true;
 		if (bCUDA)

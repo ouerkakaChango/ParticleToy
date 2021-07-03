@@ -113,7 +113,7 @@ void rayTraceOptimizePolicy_NumbaCUDA::Trace(rayTraceWorld* world, rayTraceScree
 
 	traceReq.SetRequest(screen);
 
-	//???
+	//??? debug
 	if (world->nowBounce == 2)
 	{
 		int aa = 1;

@@ -55,9 +55,14 @@ void TraceRayI_SDFSphere::Trace(rayTraceWorld* world)
 
 void TraceRayI_SDFSphere::ShadeAfterHit(rayTraceWorld* world, arr<TraceInfo>& infos)
 {
+	auto o = Cast<TraceRayO*>(y->o[0]);
 	auto& info = infos[0];
 	if (!info.bHit)
 	{
+		if (world->nowBounce > 1)
+		{
+			o->FinalUnhitGather();
+		}
 		y->bStopTrace = true;
 		return;
 	}
@@ -73,7 +78,7 @@ void TraceRayI_SDFSphere::ShadeAfterHit(rayTraceWorld* world, arr<TraceInfo>& in
 	}
 
 	arr<LightInfo> lightsInfo = world->GetLightsInfo(info.hitPos);
-	auto o = Cast<TraceRayO*>(y->o[0]);
+	
 	o->matPolicy->BlendColor(world, *y, info);
 
 	if (world->nowBounce == world->bounceNum)

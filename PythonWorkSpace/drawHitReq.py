@@ -145,8 +145,14 @@ with open("CalculationCacheSpace\\"+str(sys.argv[1]),"r") as f:
         for j in range(h):
             for i in range(w):
                 tt = traceDis[i,j,0]
+                tobj = traceObj[i,j,0]
                 if tt < 0 :
                     f.write(str(i)+' '+str(j)+" 0 0 0\n")
                 else:
-                    f.write(str(i)+' '+str(j)+" 255 0 0\n")
+                    if tobj<0:
+                        print("ATTENTION: error")
+                    elif tobj == 2:
+                        f.write(str(i)+' '+str(j)+" 255 255 255\n")
+                    else :
+                        f.write(str(i)+' '+str(j)+" 255 0 0\n")
         f.close()

@@ -77,8 +77,7 @@ void RTTraceRequest::SendAndWaitGetResult()
 void RTTraceRequest::GetResult(arr<TraceInfo>& infos, int x, int y)
 {
 	auto ti = Cast<RTTraceRequestI*>(i[0]);
-	auto& ray = screen->rays[x][y];
-	ti->GetResult(infos, x, y, ray);
+	ti->GetResult(infos, x, y);
 }
 //### RTTraceRequest
 
@@ -212,9 +211,7 @@ void RTTraceRequestI_txt::CallCalculation(int reqInx)
 void RTTraceRequestI_txt::WaitForResult(int reqInx)
 {
 	//wait check result file is exist
-
 	//read into results
-	//???
 	auto& page = results[reqInx];
 	str tFilePath = rayTraceGod.optimizeWorkPath + "\\TraceResult";
 	tFilePath += "\\traceRes"+str(reqInx)+".txt";
@@ -236,12 +233,13 @@ void RTTraceRequestI_txt::WaitForResult(int reqInx)
 	}
 }
 
-void RTTraceRequestI_txt::GetResult(arr<TraceInfo>& infos, int x, int y, const TraceRay& ray)
+void RTTraceRequestI_txt::GetResult(arr<TraceInfo>& infos, int x, int y)
 {
 	auto world = o->y->world;
-	auto rayi = Cast<TraceRayI*>(ray.i[0]);
+	auto& mainRay = o->y->screen->rays[x][y];
+	auto rayi = Cast<TraceRayI*>(mainRay.i[0]);
 
-	auto loadInfo = [&](TraceInfo& info,const arr2<RTTraceResult>& page)
+	auto loadInfo = [&](TraceRay& ray, TraceInfo& info,const arr2<RTTraceResult>& page)
 	{
 		info.dis = page[x][y].traceDis;
 		if (info.dis > 0)
@@ -256,21 +254,23 @@ void RTTraceRequestI_txt::GetResult(arr<TraceInfo>& infos, int x, int y, const T
 	if (typeStr(*rayi) == "class TraceRayI_SDFSphere")
 	{
 		infos.resize(1);
-		loadInfo(infos[0],results[0]);
+		loadInfo(mainRay,infos[0],results[0]);
 	}
 	else if (typeStr(*rayi) == "class TraceRayI_SDFSphereMonteCarlo")
 	{
 		if (world->nowBounce == 1)
 		{
 			infos.resize(1);
-			loadInfo(infos[0], results[0]);
+			loadInfo(mainRay,infos[0], results[0]);
 		}
 		else
 		{
 			infos.resize(TraceRayI_SDFSphereMonteCarlo::spp);
+			
 			for (int inx = 0; inx < TraceRayI_SDFSphereMonteCarlo::spp; inx++)
 			{
-				loadInfo(infos[inx], results[lastStamp+inx]);
+				auto& ray = Cast<TraceRayI_SDFSphereMonteCarlo*>(rayi)->subRays[inx];
+				loadInfo(ray, infos[inx], results[lastStamp+inx]);
 			}
 		}
 	}

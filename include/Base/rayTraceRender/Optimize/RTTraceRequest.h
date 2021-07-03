@@ -47,7 +47,7 @@ public:
 	virtual void SendSingleRequest(int reqInx) = 0;
 	virtual void WaitForResult(int reqInx)=0;
 	virtual void CallCalculation(int reqInx)=0;
-	virtual void GetResult(arr<TraceInfo>& infos, int x, int y, const TraceRay& ray)=0;
+	virtual void GetResult(arr<TraceInfo>& infos, int x, int y)=0;
 	virtual void PrepareForNext()=0;
 	RTTraceRequestO* o;
 };
@@ -78,7 +78,7 @@ public:
 	void SendSingleRequest(int reqInx) override;
 	void WaitForResult(int reqInx) override;
 	void CallCalculation(int reqInx) override;
-	void GetResult(arr<TraceInfo>& infos, int x, int y, const TraceRay& ray) override;
+	void GetResult(arr<TraceInfo>& infos, int x, int y) override;
 	void PrepareForNext() override;
 
 	str outPath;
