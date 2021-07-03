@@ -64,10 +64,10 @@ int main()
 	if (pbrMode)
 	{
 		//world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_reflect, rayTraceMaterialMode_PBR);
-		world->SetTraceSettings(4, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
+		world->SetTraceSettings(2, rayTraceMode_SDFSphere, rayTraceBounceMode_MonteCarlo, rayTraceMaterialMode_PBR);
 
 		//TraceRayI_SDFSphereMonteCarlo::sampleMode = rayTraceSampleMode_ImportanceSampling;
-		TraceRayI_SDFSphereMonteCarlo::spp = 128;
+		TraceRayI_SDFSphereMonteCarlo::spp = 10;
 
 		//CUDA加速框架尝试了一下，放弃了。
 		//如果说空间换时间，硬盘空间不够，中间文件太jb大了
@@ -83,6 +83,7 @@ int main()
 			world->SetOptimizeMode(rayTraceOptimizeMode_PerTask);
 			auto opt = Cast<rayTraceOptimizePolicy_PerTask*>(world->optimizePolicy);
 			opt->rayPerTask = 540;
+			//opt->rayPerTask = 270*180/2;
 		}
 	}
 	else
@@ -132,6 +133,7 @@ int main()
 	//###
 	//灯Box
 	auto lightBox = op->PutShape(new Box(P(0.0, 3.9, -5.0), P(1.0, 0.1, 1.0)*0.8), "lightBox");
+	//auto lightBox = op->PutShape(new Box(P(0.0, -1.2, -5.0), P(1.0, 0.1, 1.0)*0.8), "lightBox");
 	if (pbrMode)
 	{
 		auto param = Cast<PBRI*>(lightBox->material->i[0]);
@@ -168,8 +170,8 @@ int main()
 	//###
 
 	//auto screen = new rayTraceScreen(1080,720);
-	auto screen = new rayTraceScreen(540, 360);
-	//auto screen = new rayTraceScreen(270, 180);
+	//auto screen = new rayTraceScreen(540, 360);
+	auto screen = new rayTraceScreen(270, 180);
 	//auto screen = new rayTraceScreen(2, 2);
 	//screen->Translate(P(0.0, 0.0, -2.5));
 	op->PutScreen(screen);

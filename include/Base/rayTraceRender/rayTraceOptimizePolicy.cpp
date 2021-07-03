@@ -24,10 +24,21 @@ void rayTraceOptimizePolicy_PerTask::InitTaskRays(rayTraceWorld* world, rayTrace
 		auto j = inx / screen->w;
 		auto i = inx - j * screen->w;
 		P endPos = startPos + P(i*dx, j*dx, 0.0);
+		auto& ray = screen->optRays[rayInx];
+		if (loopInx == 0)
 		{
-			screen->optRays[rayInx] = TraceRay(screen->pos + P(0, 0, 1), screen->pos + endPos);
-			screen->optRays[rayInx].SetMode(world->traceMode, world->bounceMode);
+			ray = TraceRay(screen->pos + P(0, 0, 1), screen->pos + endPos);
+			ray.SetMode(world->traceMode, world->bounceMode);
 			Cast<TraceRayO*>(screen->optRays[rayInx].o[0])->InitMaterialPolicy(world->matMode);
+		}
+		else
+		{
+			screen->optRays[rayInx].ResetData();
+			static P a = screen->pos + P(0, 0, 1);
+			static P b;
+			b = screen->pos + endPos;
+			ray.ori = a;
+			ray.dir = safeNorm(b-a);
 		}
 	}
 }
@@ -82,10 +93,10 @@ void rayTraceOptimizePolicy_PerTask::FinalGather(rayTraceScreen* screen, int loo
 
 void rayTraceOptimizePolicy_PerTask::Clear(rayTraceScreen* screen)
 {
-	for (auto&ray : screen->optRays)
-	{
-		ray.Clear();
-	}
+	//for (auto&ray : screen->optRays)
+	//{
+	//	ray.Clear();
+	//}
 }
 //###rayTraceOptimizePolicy_PerTask
 
@@ -112,12 +123,6 @@ void rayTraceOptimizePolicy_NumbaCUDA::Trace(rayTraceWorld* world, rayTraceScree
 	cout << info << endl;
 
 	traceReq.SetRequest(screen);
-
-	//??? debug
-	if (world->nowBounce == 2)
-	{
-		int aa = 1;
-	}
 
 	traceReq.SendAndWaitGetResult();
 	

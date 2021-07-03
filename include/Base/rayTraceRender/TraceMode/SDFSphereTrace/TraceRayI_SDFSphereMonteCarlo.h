@@ -8,6 +8,7 @@ public:
 	~TraceRayI_SDFSphereMonteCarlo();
 
 	void Trace(rayTraceWorld* world) override;
+	void ResetData() override;
 	void ShadeAfterHit(rayTraceWorld* world , arr<TraceInfo>& infos) override;
 	void CreateSubRays(rayTraceWorld* world, const TraceInfo& traceInfo);
 	P RandSampleDir(const TraceInfo& traceInfo);

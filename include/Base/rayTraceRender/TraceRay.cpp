@@ -47,6 +47,18 @@ void TraceRay::Clear(bool keepColor)
 	ori = P(0.0);
 }
 
+void TraceRay::ResetData()
+{
+	bStopTrace = false;
+	color = P(0.0);
+
+	dir = P(0.0);
+	ori = P(0.0);
+
+	auto ti = Cast<TraceRayI*>(i[0]);
+	ti->ResetData();
+}
+
 void TraceRay::SetMode(rayTraceMode traceMode, rayTraceBounceMode bounceMode)
 {
 	//Set I
@@ -109,6 +121,11 @@ TraceRayI::TraceRayI(TraceRay* y_):y(y_)
 }
 
 TraceRayI:: ~TraceRayI()
+{
+
+}
+
+void TraceRayI::ResetData()
 {
 
 }

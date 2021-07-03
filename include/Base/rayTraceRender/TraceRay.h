@@ -14,6 +14,7 @@ class TraceRay
 	THISY(TraceRay)
 	TraceRay(P a, P b);
 	void Clear(bool keepColor=false);
+	void ResetData();
 	void SetMode(rayTraceMode traceMode, rayTraceBounceMode bounceMode);
 	void Trace(rayTraceWorld* world);
 	void ShadeAfterHit(rayTraceWorld* world, arr<TraceInfo>& infos);
@@ -34,6 +35,7 @@ public:
 	virtual ~TraceRayI();
 	virtual void Trace(rayTraceWorld* world) = 0;
 	virtual void ShadeAfterHit(rayTraceWorld* world, arr<TraceInfo>& infos) = 0;
+	virtual void ResetData();
 
 	TraceRay* y = nullptr;
 };

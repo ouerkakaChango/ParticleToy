@@ -57,7 +57,7 @@ void TraceRayO_MonteCarlo::FinalHitGather()
 	P indirColor = indirTask.Calculate() / validCount;
 	y->color = shadeTask.Calculate() + indirColor;
 
-	y->Clear(true);
+	//y->Clear(true);
 
 }
 //### TraceRayO_MonteCarlo

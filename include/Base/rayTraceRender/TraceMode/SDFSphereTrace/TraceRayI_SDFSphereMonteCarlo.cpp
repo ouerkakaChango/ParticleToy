@@ -103,6 +103,14 @@ void TraceRayI_SDFSphereMonteCarlo::Trace(rayTraceWorld* world)
 	}
 }
 
+void TraceRayI_SDFSphereMonteCarlo::ResetData()
+{
+	for (auto& subRay : subRays)
+	{
+		subRay.ResetData();
+	}
+}
+
 void TraceRayI_SDFSphereMonteCarlo::ShadeAfterHit(rayTraceWorld* world, arr<TraceInfo>& infos)
 {
 	auto o = Cast<TraceRayO*>(y->o[0]);
