@@ -57,6 +57,9 @@ void TraceRay::ResetData()
 
 	auto ti = Cast<TraceRayI*>(i[0]);
 	ti->ResetData();
+
+	auto to = Cast<TraceRayO*>(o[0]);
+	to->ResetData();
 }
 
 void TraceRay::SetMode(rayTraceMode traceMode, rayTraceBounceMode bounceMode)
@@ -162,6 +165,11 @@ void TraceRayO::FinalHitGather()
 }
 
 void TraceRayO::PrepareMaterialExtra(Material& mat)
+{
+
+}
+
+void TraceRayO::ResetData()
 {
 
 }

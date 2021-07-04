@@ -10,6 +10,7 @@ public:
 	void FinalHitGather() override;
 	void PrepareMaterialExtra(Material& mat) override;
 	void InitMaterialPolicy(rayTraceMaterialMode matMode) override;
+	void ResetData() override;
 
 	arr<double> reflectKs;
 	arr<ShadeTask> shadeTasks;

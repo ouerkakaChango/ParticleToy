@@ -67,6 +67,12 @@ void TraceRayO_ReflectBounce::InitMaterialPolicy(rayTraceMaterialMode matMode)
 	}
 }
 
+void TraceRayO_ReflectBounce::ResetData()
+{
+	reflectKs.clear();
+	shadeTasks.clear();
+	traceInfos.clear();
+}
 //### TraceRayO_ReflectBounce
 
 //### rayTraceMaterialPolicy<TraceRayO_ReflectBounce, MaterialI>

@@ -49,6 +49,7 @@ public:
 	virtual void PrepareMaterialExtra(Material& mat);
 	virtual void FinalUnhitGather();
 	virtual void FinalHitGather();
+	virtual void ResetData();
 
 	class rayTraceMaterialPolicyBase* matPolicy=nullptr;
 	TraceRay* y = nullptr;
