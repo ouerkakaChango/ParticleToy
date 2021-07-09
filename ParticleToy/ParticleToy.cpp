@@ -7,6 +7,7 @@
 #include "Render/Material.h"
 #include "rayTraceRender/rayTraceWorld.h"
 #include "rayTraceRender/rayTraceScreen.h"
+#include "Spaces/Grid.h"
 
 //### 应用
 //ParticleToy第五期应用：FFT海面
@@ -19,42 +20,25 @@ int main()
 	bool pbrMode = false;
 	rayTraceWorld* world = new rayTraceWorld;
 	world->SetTraceSettings(1, rayTraceMode_SDFSphere, rayTraceBounceMode_cheap, rayTraceMaterialMode_BlinnPhong);
-
+	{
+		//world->SetOptimizeMode(rayTraceOptimizeMode_PerTask);
+		//auto opt = Cast<rayTraceOptimizePolicy_PerTask*>(world->optimizePolicy);
+		//opt->rayPerTask = 1080*6;
+	}
 	rayTraceWorldR* op = (rayTraceWorldR*)world->r[0];
 
-	auto s1 = op->PutShape(new Sphere(P(0, 0, -5), 1.0),"Sphere1");
-	if (!pbrMode)
+	Grid oceanGrid;
+	oceanGrid.SetGridSettings<Box*>(5, 3, 0.5, nullptr);
+	auto& grid = Cast<GridI<Box*>*>(oceanGrid.i[0])->grid;
+	auto func = [&](Box*& box, P2 pos2d)
 	{
-		auto param = Cast<BlinnPhongI*>(s1->material->i[0]);
-		param->kS = 0.1;
-		param->specPower = 1.0;
-	}
-	else
-	{
-		auto param = Cast<PBRI*>(s1->material->i[0]);
-		//白/红色球
-		//param->albedo = P(1, 0, 0);
-		//param->emissive = P(0, 0, 1);
-	}
-
-	if (true)
-	{
-		auto box1 = op->PutShape(new Box(P(0.0, -1.2, -5.0), P(5.0, 0.1, 5.0)), "Box1");
-		if (!pbrMode)
-		{
-			auto param = Cast<BlinnPhongI*>(box1->material->i[0]);
-			param->kD = 0.05;
-			param->kS = 1.0;
-			param->specPower = 5.0;
-			param->specularColor = P(1.0, 242 / 255.0, 0.0);
-		}
-		else
-		{
-			auto param = Cast<PBRI*>(box1->material->i[0]);
-		}
-	}
+		box = new Box(P(pos2d.x, -1.0, pos2d.y), P(0.1, 0.3, 0.1));
+		op->PutShape(box, "oceanSpectum");
+	};
+	grid.DoByPos(func);
 	
 	auto screen = new rayTraceScreen(1080,720);
+	screen->Translate(P(0, 0, 3));
 	op->PutScreen(screen);
 	
 	auto light = new DirectionalLight(P(-1, -1, 0), P(1, 1, 1));

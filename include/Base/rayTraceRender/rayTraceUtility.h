@@ -1,7 +1,7 @@
 #pragma once
 #include "FastMath.h"
 
-//#define RAYTRACE_OpenMP
+#define RAYTRACE_OpenMP
 #ifdef RAYTRACE_OpenMP
 #include <omp.h>
 #include <thread>

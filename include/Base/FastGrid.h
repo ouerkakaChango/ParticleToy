@@ -119,6 +119,17 @@ public:
 		}
 	}
 
+	void DoByPos(std::function<void(DataClass& data, P2 pntPos)> func)
+	{
+		for (int j = 0; j < pnts.y; j++)
+		{
+			for (int i = 0; i < pnts.x; i++)
+			{
+				func(datas[i][j], pnts[i][j]);
+			}
+		}
+	}
+
 	arr2<P2> pnts;
 	arr2<DataClass> datas;
 };

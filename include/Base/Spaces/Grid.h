@@ -4,13 +4,22 @@
 class Grid : public EuclideanSpace
 {
 	THISY(Grid)
-		template<class DataClass>
+	template<class DataClass>
 	void SetGridSettings(int edgeNum, double cellLength)
 	{
 		auto ti = new GridI<DataClass>;
 		i += ti;
 		auto& grid = ti->grid;
 		grid.SetSize(edgeNum, cellLength);
+	}
+
+	template<class DataClass>
+	void SetGridSettings(int edgeX, int edgeY, double cellLength, const DataClass& defaultData)
+	{
+		auto ti = new GridI<DataClass>;
+		i += ti;
+		auto& grid = ti->grid;
+		grid.SetSize(edgeX, edgeY, cellLength, cellLength);
 	}
 
 	template<class DataClass>
