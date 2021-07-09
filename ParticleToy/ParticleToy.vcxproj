@@ -209,6 +209,7 @@
   <ItemGroup>
     <ClCompile Include="..\Backup\golf.cpp" />
     <ClCompile Include="..\Backup\molecule.cpp" />
+    <ClCompile Include="..\Backup\rayTraceTest.cpp" />
     <ClCompile Include="..\Backup\threebody.cpp" />
     <ClCompile Include="..\include\Base\Container.cpp" />
     <ClCompile Include="..\include\Base\EffectSpace.cpp" />

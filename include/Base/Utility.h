@@ -1,5 +1,6 @@
 #pragma once
 
+#include <direct.h>
 #include <cmath>
 #define MAX_PATH 100
 

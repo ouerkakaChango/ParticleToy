@@ -341,6 +341,9 @@
     <ClCompile Include="..\include\Base\rayTraceRender\Optimize\RTTraceRequest.cpp">
       <Filter>源文件\Base\rayTraceRender\Optimize</Filter>
     </ClCompile>
+    <ClCompile Include="..\Backup\rayTraceTest.cpp">
+      <Filter>资源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Backup\testStandard.txt">
