@@ -63,6 +63,12 @@ str P2::ToStr()
 }
 //### P2
 
+//### global P2
+double dot(P2 p1, P2 p2)
+{
+	return p1.x*p2.x + p1.y*p2.y;
+}
+
 //### P
 P::P()
 {

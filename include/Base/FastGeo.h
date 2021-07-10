@@ -123,9 +123,9 @@ public:
 class Box : public Shape
 {
 public:
-	Box(P center_, P bound_);
+	Box(P center_, P bound);
 	double SDF(P p) override;
-	P center, bound;
+	P center, half;
 };
 
 class ShapeHull

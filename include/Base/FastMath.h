@@ -25,6 +25,8 @@ public:
 	double x=0.0, y=0.0;
 };
 
+double dot(P2 p1, P2 p2);
+
 class P
 {
 public:

@@ -560,15 +560,15 @@ bool SphereCollide(const Sphere& s1, const Sphere& s2)
 //### Global Sphere 
 
 //### Box
-Box::Box(P center_, P bound_)
-	:center(center_),bound(bound_)
+Box::Box(P center_, P bound)
+	:center(center_), half(bound/2)
 {
 
 }
 
 double Box::SDF(P p)
 {
-	P q = abs(p-center) - bound;
+	P q = abs(p-center) - half;
 	return len(max(q, 0.0)) + min(max(q.x, max(q.y, q.z)), 0.0);
 }
 //### Box

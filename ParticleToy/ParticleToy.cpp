@@ -28,17 +28,23 @@ int main()
 	rayTraceWorldR* op = (rayTraceWorldR*)world->r[0];
 
 	Grid oceanGrid;
-	oceanGrid.SetGridSettings<Box*>(5, 3, 0.5, nullptr);
+	oceanGrid.SetGridSettings<Box*>(5, 5, 0.5, nullptr);
 	auto& grid = Cast<GridI<Box*>*>(oceanGrid.i[0])->grid;
+
+	//###
+	P2 windDir(1, 1);
+
 	auto func = [&](Box*& box, P2 pos2d)
 	{
-		box = new Box(P(pos2d.x, -1.0, pos2d.y), P(0.1, 0.3, 0.1));
+		double height = pow(dot(pos2d/2.5, windDir),2);
+		box = new Box(P(pos2d.x, -1.0, pos2d.y), P(0.2, height, 0.2));
+		box->center.y += height/2;
 		op->PutShape(box, "oceanSpectum");
 	};
 	grid.DoByPos(func);
 	
 	auto screen = new rayTraceScreen(1080,720);
-	screen->Translate(P(0, 0, 3));
+	screen->Translate(P(0, 0, 5));
 	op->PutScreen(screen);
 	
 	auto light = new DirectionalLight(P(-1, -1, 0), P(1, 1, 1));
