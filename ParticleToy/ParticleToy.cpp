@@ -12,7 +12,7 @@
 //### 应用
 //ParticleToy第五期应用：FFT海面
 
-//https://zhuanlan.zhihu.com/p/64414956
+//https://www.slideshare.net/Codemotion/an-introduction-to-realistic-ocean-rendering-through-fft-fabio-suriano-codemotion-rome-2017
 //1.可视化 Phillips spectrum
 int main()
 {
@@ -28,23 +28,29 @@ int main()
 	rayTraceWorldR* op = (rayTraceWorldR*)world->r[0];
 
 	Grid oceanGrid;
-	oceanGrid.SetGridSettings<Box*>(5, 5, 0.5, nullptr);
+	P2 edge(8, 5);
+	oceanGrid.SetGridSettings<Box*>(edge.x, edge.y, 0.5, nullptr);
 	auto& grid = Cast<GridI<Box*>*>(oceanGrid.i[0])->grid;
 
 	//###
 	P2 windDir(1, 1);
-
+	windDir = safeNorm(windDir);
+	P2 L = edge * 0.5;
+	double waveAmplitude=0.3;
 	auto func = [&](Box*& box, P2 pos2d)
 	{
-		double height = pow(dot(pos2d/2.5, windDir),2);
-		box = new Box(P(pos2d.x, -1.0, pos2d.y), P(0.2, height, 0.2));
+		P2 kvec = pos2d / L;
+		double k = len(kvec);
+		//double height = waveAmplitude * exp(-1 / pow(dot(kvec,L), 2)) / pow(k, 4) * pow(dot(kvec, windDir),2);
+		double height = waveAmplitude * exp(-1 / pow(k*len(L), 2)) / pow(k, 4) * pow(dot(kvec, windDir), 2);
+		box = new Box(P(pos2d.x, -2.5, pos2d.y), P(0.2, height, 0.2));
 		box->center.y += height/2;
 		op->PutShape(box, "oceanSpectum");
 	};
 	grid.DoByPos(func);
 	
 	auto screen = new rayTraceScreen(1080,720);
-	screen->Translate(P(0, 0, 5));
+	screen->Translate(P(0, 0, 7));
 	op->PutScreen(screen);
 	
 	auto light = new DirectionalLight(P(-1, -1, 0), P(1, 1, 1));

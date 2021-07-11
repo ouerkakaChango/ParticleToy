@@ -13,6 +13,7 @@ public:
 	P2 operator-(const P2& p) const;
 	P2 operator*(double s) const;
 	P2 operator/(double s) const;
+	P2 operator/(const P2& p) const;
 	void operator+=(const P2& p);
 	bool operator>=(const P2& p) const;
 	bool operator<(const P2& p) const;
@@ -26,6 +27,8 @@ public:
 };
 
 double dot(P2 p1, P2 p2);
+double len(const P2& p);
+P2 safeNorm(const P2& p);
 
 class P
 {

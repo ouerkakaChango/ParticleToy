@@ -32,6 +32,11 @@ P2 P2::operator/(double s) const
 	return P2(x/s, y/s);
 }
 
+P2 P2::operator/(const P2& p) const
+{
+	return P2(x / p.x, y / p.y);
+}
+
 void P2::operator+=(const P2& p)
 {
 	x += p.x;
@@ -67,6 +72,24 @@ str P2::ToStr()
 double dot(P2 p1, P2 p2)
 {
 	return p1.x*p2.x + p1.y*p2.y;
+}
+
+double len(const P2& p)
+{
+	return sqrt(p.x*p.x + p.y*p.y);
+}
+
+P2 safeNorm(const P2& p)
+{
+	double length = len(p);
+	if (abs(length) >= 0.00001)
+	{
+		return p / len(p);
+	}
+	else
+	{
+		return P2(0, 0);
+	}
 }
 
 //### P
