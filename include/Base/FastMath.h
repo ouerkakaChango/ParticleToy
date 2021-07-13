@@ -11,6 +11,7 @@ public:
 	P2(double x_, double y_);
 	P2 operator+(const P2& p) const;
 	P2 operator-(const P2& p) const;
+	P2 operator-() const;
 	P2 operator*(double s) const;
 	P2 operator/(double s) const;
 	P2 operator/(const P2& p) const;
@@ -98,11 +99,26 @@ public:
 
 Q QFrom(const P& vecFrom, const P& vecTo);
 
+class cplx
+{
+public:
+	cplx() {};
+	cplx(double real_, double img_);
+	cplx operator+(const cplx& c2);
+	cplx operator*(double n) const;
+	cplx operator*(const cplx& c2) const;
+	double real=0.0, img=0.0;
+};
+cplx operator*(double n, const cplx& c);
+cplx e_cplx(double w, double A=1.0);
+cplx conju(const cplx& c);
+
 double clamp(double x, double low, double high);
 double max(double a, double b);
 double min(double a, double b);
 double sign(double n);
 double rand01();
+double rand_norm(double mean, double standardDeviation);
 double equal(double a, double b, double tolerance = 0.00001);
 double equal(P a, P b, double tolerance = 0.00001);
 bool zero(double n);

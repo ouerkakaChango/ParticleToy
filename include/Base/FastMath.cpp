@@ -22,6 +22,11 @@ P2 P2::operator-(const P2& p) const
 	return P2(x - p.x, y - p.y);
 }
 
+P2 P2::operator-() const
+{
+	return P2(-x, -y);
+}
+
 P2 P2::operator*(double s) const
 {
 	return P2(x*s, y*s);
@@ -450,6 +455,43 @@ Q QFrom(const P& vecFrom, const P& vecTo)
 }
 //### Global Q
 
+//### cplx
+cplx::cplx(double real_, double img_):real(real_),img(img_)
+{
+
+}
+
+cplx cplx::operator+(const cplx& c2)
+{
+	return cplx(real + c2.real, img + c2.img);
+}
+
+cplx cplx::operator*(double n) const
+{
+	return cplx(real*n, img*n);
+}
+
+cplx cplx::operator*(const cplx& c2) const
+{
+	return cplx(real*c2.real - img * c2.img, real*c2.img + img * c2.real);
+}
+
+cplx operator*(double n, const cplx& c)
+{
+	return cplx(c.real*n, c.img*n);
+}
+
+cplx e_cplx(double w, double A)
+{
+	return A * cplx(cos(w), sin(w));
+}
+
+cplx conju(const cplx& c)
+{
+	return cplx(c.real, -c.real);
+}
+//### cplx
+
 //### Global Utility
 
 bool SolveQuadra(double a, double b, double c, double& x1, double& x2)
@@ -561,6 +603,15 @@ double rand01()
 	std::random_device rand_dev;
 	std::mt19937 rand_engine(rand_dev());
 	return unidis(rand_engine);
+}
+
+double rand_norm(double mean, double standardDeviation)
+{
+	P re;
+	std::normal_distribution<double> distri(mean, standardDeviation);
+	std::random_device rand_dev;
+	std::mt19937 rand_engine(rand_dev());
+	return distri(rand_engine);
 }
 
 double equal(double a, double b, double tolerance)
