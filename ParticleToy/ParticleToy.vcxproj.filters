@@ -97,6 +97,12 @@
     <Filter Include="源文件\Base\rayTraceRender\Optimize">
       <UniqueIdentifier>{5b12b2bc-1d93-4edd-8f85-de91fba13943}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Base\FileHelper">
+      <UniqueIdentifier>{66b5dfe6-8dbf-432a-8dc2-31481ceaec1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Base\FileHelper">
+      <UniqueIdentifier>{eb4f9959-7ee0-4251-a0a2-9e651ec08ef0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -212,6 +218,9 @@
     </ClInclude>
     <ClInclude Include="..\include\Base\rayTraceRender\Optimize\RTTraceRequest.h">
       <Filter>头文件\Base\rayTraceRender\Optimize</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Base\FileHelper\StaticPointWriter.h">
+      <Filter>头文件\Base\FileHelper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -343,6 +352,12 @@
     </ClCompile>
     <ClCompile Include="..\Backup\rayTraceTest.cpp">
       <Filter>资源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Backup\old_FFTocean.cpp">
+      <Filter>资源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\FileHelper\StaticPointWriter.cpp">
+      <Filter>源文件\Base\FileHelper</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

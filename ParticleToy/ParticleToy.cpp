@@ -14,32 +14,16 @@
 
 //https://www.slideshare.net/Codemotion/an-introduction-to-realistic-ocean-rendering-through-fft-fabio-suriano-codemotion-rome-2017
 //1.可视化 Phillips spectrum
-
-//extra:优化
-//1.为了优化大量静态物件的sdf过程，以可视化静态Phillips spectrum为例：
-//确定好grid的长宽后，默认Box为一个平均高度h，然后将整个BounceSpace grid化。
-//每一个grid存储的是sdf-min的ObjInx。
-//在以后每次sdf时候，如果最近的两个ObjInx是一样的，那么直接O(1)找到min-sdf，而不是O(n)for循环去找minSDF。
-//如果不一样，那么两者比较取最小。
-//如果grid分辨率合理，是能没有瑕疵的。细分太大显然会出问题。
+//(放弃使用自己的rayTraceRender。输出txt,到Houdini里去可视化。写框架将序列化代码通用化)
 
 int main()
 {
 	str pyWorkPath = "C:\\Users\\hasee\\source\\repos\\ParticleToy\\PythonWorkSpace";
-	bool pbrMode = false;
-	rayTraceWorld* world = new rayTraceWorld;
-	world->SetTraceSettings(1, rayTraceMode_SDFSphere, rayTraceBounceMode_cheap, rayTraceMaterialMode_BlinnPhong);
-	{
-		//world->SetOptimizeMode(rayTraceOptimizeMode_PerTask);
-		//auto opt = Cast<rayTraceOptimizePolicy_PerTask*>(world->optimizePolicy);
-		//opt->rayPerTask = 1080*6;
-	}
-	rayTraceWorldR* op = (rayTraceWorldR*)world->r[0];
 
 	Grid oceanGrid;
-	P2 edge(8, 5);
-	oceanGrid.SetGridSettings<Box*>(edge.x, edge.y, 0.5, nullptr);
-	auto& grid = Cast<GridI<Box*>*>(oceanGrid.i[0])->grid;
+	P2 edge(64, 64);
+	oceanGrid.SetGridSettings<double>(edge.x, edge.y, 1.0, 0.0);
+	auto& grid = Cast<GridI<double>*>(oceanGrid.i[0])->grid;
 
 	//###
 	double g = 9.8;
@@ -61,7 +45,7 @@ int main()
 		return 1 / sqrt(2) * cplx(ksi1, ksi2) * sqrt(Ph);
 	};
 
-	auto func = [&](Box*& box, P2 pos2d)
+	auto func = [&](double& pointHeight, P2 pos2d)
 	{
 		P2 kvec = pos2d / L;
 		double k = len(kvec);
@@ -76,29 +60,10 @@ int main()
 
 		double height = 1 + h_val.real;
 
-		if (height < 0)
-		{
-			std::cout << height << " ";
-		}
-
-		box = new Box(P(pos2d.x, -2.5, pos2d.y), P(0.2, height, 0.2));
-		box->center.y += height/2;
-		op->PutShape(box, "oceanSpectum");
+		pointHeight = height;
 	};
+
 	grid.DoByPos(func);
 	
-	auto screen = new rayTraceScreen(1080,720);
-	screen->Translate(P(0, 0, 7));
-	op->PutScreen(screen);
-	
-	auto light = new DirectionalLight(P(-1, -1, 0), P(1, 1, 1));
-	op->PutLight(light);
-
-	op->Evolve();
-
-	op->SaveScreenBufferFrame(screen,"color", pyWorkPath+"\\z.txt");
-	_chdir(pyWorkPath.data.c_str());
-	system("ZZZRUN_TransToImg.bat");
-	//op->SayI();
 	return 0;
 }

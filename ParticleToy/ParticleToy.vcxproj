@@ -175,6 +175,7 @@
     <ClInclude Include="..\include\Base\FastGrid.h" />
     <ClInclude Include="..\include\Base\FastMath.h" />
     <ClInclude Include="..\include\Base\FastPnt.h" />
+    <ClInclude Include="..\include\Base\FileHelper\StaticPointWriter.h" />
     <ClInclude Include="..\include\Base\Object.h" />
     <ClInclude Include="..\include\Base\photonRender\photonWorld.h" />
     <ClInclude Include="..\include\Base\rayTraceRender\BounceMode\CheapBounce\TraceRayO_CheapBounce.h" />
@@ -209,6 +210,7 @@
   <ItemGroup>
     <ClCompile Include="..\Backup\golf.cpp" />
     <ClCompile Include="..\Backup\molecule.cpp" />
+    <ClCompile Include="..\Backup\old_FFTocean.cpp" />
     <ClCompile Include="..\Backup\rayTraceTest.cpp" />
     <ClCompile Include="..\Backup\threebody.cpp" />
     <ClCompile Include="..\include\Base\Container.cpp" />
@@ -219,6 +221,7 @@
     <ClCompile Include="..\include\Base\FastGrid.cpp" />
     <ClCompile Include="..\include\Base\FastMath.cpp" />
     <ClCompile Include="..\include\Base\FastPnt.cpp" />
+    <ClCompile Include="..\include\Base\FileHelper\StaticPointWriter.cpp" />
     <ClCompile Include="..\include\Base\Object.cpp" />
     <ClCompile Include="..\include\Base\photonRender\photonWorld.cpp" />
     <ClCompile Include="..\include\Base\rayTraceRender\BounceMode\CheapBounce\TraceRayO_CheapBounce.cpp" />
