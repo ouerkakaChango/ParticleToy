@@ -4,10 +4,9 @@
 #include "pch.h"
 #include <iostream>
 
-#include "Render/Material.h"
-#include "rayTraceRender/rayTraceWorld.h"
-#include "rayTraceRender/rayTraceScreen.h"
 #include "Spaces/Grid.h"
+
+#include "FileHelper/StaticPointWriter.h"
 
 //### 应用
 //ParticleToy第五期应用：FFT海面
@@ -26,6 +25,8 @@ int main()
 	auto& grid = Cast<GridI<double>*>(oceanGrid.i[0])->grid;
 
 	//###
+	StaticPointWriter writer;
+
 	double g = 9.8;
 	P2 windDir(1, 1);
 	windDir = safeNorm(windDir);
@@ -61,9 +62,11 @@ int main()
 		double height = 1 + h_val.real;
 
 		pointHeight = height;
+
+		writer.addPoint(P(pos2d.x, pos2d.y, height));
 	};
 
 	grid.DoByPos(func);
-	
+
 	return 0;
 }

@@ -222,6 +222,9 @@
     <ClInclude Include="..\include\Base\FileHelper\StaticPointWriter.h">
       <Filter>头文件\Base\FileHelper</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\Base\FileHelper\FileWriter.h">
+      <Filter>头文件\Base\FileHelper</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -357,6 +360,9 @@
       <Filter>资源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\include\Base\FileHelper\StaticPointWriter.cpp">
+      <Filter>源文件\Base\FileHelper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\FileHelper\FileWriter.cpp">
       <Filter>源文件\Base\FileHelper</Filter>
     </ClCompile>
   </ItemGroup>

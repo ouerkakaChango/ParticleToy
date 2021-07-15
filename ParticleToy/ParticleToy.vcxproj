@@ -175,6 +175,7 @@
     <ClInclude Include="..\include\Base\FastGrid.h" />
     <ClInclude Include="..\include\Base\FastMath.h" />
     <ClInclude Include="..\include\Base\FastPnt.h" />
+    <ClInclude Include="..\include\Base\FileHelper\FileWriter.h" />
     <ClInclude Include="..\include\Base\FileHelper\StaticPointWriter.h" />
     <ClInclude Include="..\include\Base\Object.h" />
     <ClInclude Include="..\include\Base\photonRender\photonWorld.h" />
@@ -221,6 +222,7 @@
     <ClCompile Include="..\include\Base\FastGrid.cpp" />
     <ClCompile Include="..\include\Base\FastMath.cpp" />
     <ClCompile Include="..\include\Base\FastPnt.cpp" />
+    <ClCompile Include="..\include\Base\FileHelper\FileWriter.cpp" />
     <ClCompile Include="..\include\Base\FileHelper\StaticPointWriter.cpp" />
     <ClCompile Include="..\include\Base\Object.cpp" />
     <ClCompile Include="..\include\Base\photonRender\photonWorld.cpp" />
