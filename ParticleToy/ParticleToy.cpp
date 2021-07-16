@@ -12,8 +12,9 @@
 //ParticleToy第五期应用：FFT海面
 
 //https://www.slideshare.net/Codemotion/an-introduction-to-realistic-ocean-rendering-through-fft-fabio-suriano-codemotion-rome-2017
-//1.可视化 Phillips spectrum
-//(放弃使用自己的rayTraceRender。输出txt,到Houdini里去可视化。写框架将序列化代码通用化)
+//--1.可视化 Phillips spectrum
+//--(放弃使用自己的rayTraceRender。输出txt,到Houdini里去可视化。写框架将序列化代码通用化)
+//2.迭代次数改1，照理来说1次迭代本质是sin函数，查一下错误。
 
 int main()
 {
