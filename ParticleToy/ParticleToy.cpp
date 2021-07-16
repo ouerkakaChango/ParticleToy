@@ -20,8 +20,10 @@ int main()
 	str pyWorkPath = "C:\\Users\\hasee\\source\\repos\\ParticleToy\\PythonWorkSpace";
 
 	Grid oceanGrid;
-	P2 edge(64, 64);
-	oceanGrid.SetGridSettings<double>(edge.x, edge.y, 1.0, 0.0);
+	double L = 1024;
+	double N = 24;
+	P2 edge(N, N);
+	oceanGrid.SetGridSettings<double>(edge.x, edge.y, L/N, 0.0);
 	auto& grid = Cast<GridI<double>*>(oceanGrid.i[0])->grid;
 
 	//###
@@ -31,19 +33,22 @@ int main()
 	double g = 9.8;
 	P2 windDir(1, 1);
 	windDir = safeNorm(windDir);
-	P2 L = edge * 0.5;
-	double waveAmplitude=0.3;
+	double waveAmplitude= 5.0;
+	double v = 100.0;
+	double waveL = v * v / g;
 
 	auto func_Ph = [&](P2 kvec)
 	{
 		double k = len(kvec);
+		kvec = safeNorm(kvec);
 		if (zero(k))
 		{//!!! 处理PPT中未提到的除0情况
 			return 0.0;
 		}
 		else
 		{
-			return waveAmplitude * exp(-1 / pow(k*len(L), 2)) / pow(k, 4) * pow(dot(kvec, windDir), 2);
+			
+			return waveAmplitude * exp(-1 / pow(k*waveL, 2)) / pow(k, 4) * pow(dot(kvec, windDir), 2);
 		}
 	};
 
@@ -62,18 +67,27 @@ int main()
 			int aa = 1;
 		}
 
-		P2 kvec = pos2d / L;
-		double k = len(kvec);
+		double height = 0.0;
 		//???
-		double t = 0.0;
+		double t = 0.5;
+		for (int j = 0; j < grid.datas.y; j++)
+		{
+			for (int i = 0; i < grid.datas.x; i++)
+			{
+				P2 kvec = grid.pnts[i][j] / (L/2) * 2 * PI;
 
-		double wk = sqrt(g*k);
+				double wk = sqrt(g*len(kvec));
 
-		cplx h0_val = func_h0(func_Ph(kvec));
+				cplx h_val = func_h0(func_Ph(kvec)) * e_cplx(wk*t) + conju(func_h0(func_Ph(-kvec)))* e_cplx(-wk * t);
 
-		cplx h_val = h0_val * e_cplx(wk*t) + conju(func_h0(func_Ph(-kvec)))* e_cplx(-wk*t);
+				cplx final = h_val * e_cplx(dot(kvec, pos2d));
 
-		double height = 1 + h_val.real;
+				static double lam = 3.0;
+				double tH = final.real;// +lam * final.img * safeNorm(kvec).x + lam * final.img * safeNorm(kvec).y;
+
+				height += tH;
+			}
+		}
 
 		pointHeight = height;
 
