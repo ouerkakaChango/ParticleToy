@@ -59,6 +59,7 @@ public:
 	double len() const;
 
 	str ToStr();
+	str ToStr(int precision);
 };
 
 P operator-(double s, const P& p);

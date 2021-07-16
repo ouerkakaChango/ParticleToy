@@ -26,6 +26,7 @@ int main()
 
 	//###
 	StaticPointWriter writer;
+	writer.SetWriteMode(WriteMode_Houdini);
 
 	double g = 9.8;
 	P2 windDir(1, 1);
@@ -36,7 +37,14 @@ int main()
 	auto func_Ph = [&](P2 kvec)
 	{
 		double k = len(kvec);
-		return waveAmplitude * exp(-1 / pow(k*len(L), 2)) / pow(k, 4) * pow(dot(kvec, windDir), 2);
+		if (zero(k))
+		{//!!! 处理PPT中未提到的除0情况
+			return 0.0;
+		}
+		else
+		{
+			return waveAmplitude * exp(-1 / pow(k*len(L), 2)) / pow(k, 4) * pow(dot(kvec, windDir), 2);
+		}
 	};
 
 	auto func_h0 = [&](double Ph)
@@ -48,6 +56,12 @@ int main()
 
 	auto func = [&](double& pointHeight, P2 pos2d)
 	{
+		//??? debug
+		if (pos2d == P2(-1, -1))
+		{
+			int aa = 1;
+		}
+
 		P2 kvec = pos2d / L;
 		double k = len(kvec);
 		//???
@@ -67,6 +81,8 @@ int main()
 	};
 
 	grid.DoByPos(func);
+
+	writer.Write("C:/HoudiniProjects/PToyScene/FFT.txt");
 
 	return 0;
 }

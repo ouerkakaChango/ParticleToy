@@ -223,6 +223,18 @@ str P::ToStr()
 	re += z;
 	return re;
 }
+
+str P::ToStr(int precision)
+{
+	str re = "";
+	re.AddDouble(x, precision);
+	re += " ";
+	re.AddDouble(y, precision);
+	re += " ";
+	re.AddDouble(z, precision);
+
+	return re;
+}
 //### P
 
 //### Global P
