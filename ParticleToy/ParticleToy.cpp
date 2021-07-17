@@ -1,12 +1,15 @@
 ﻿// ParticleToy.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
 //
 
-#include "pch.h"
 #include <iostream>
 
-#include "Spaces/Grid.h"
+#include "FFTOcean/OceanParticleInfo.h"
 
+#include "Spaces/Grid.h"
 #include "FileHelper/StaticPointWriter.h"
+
+using std::cout;
+using std::endl;
 
 //### 应用
 //ParticleToy第五期应用：FFT海面
@@ -20,28 +23,26 @@ int main()
 {
 	str pyWorkPath = "C:\\Users\\hasee\\source\\repos\\ParticleToy\\PythonWorkSpace";
 
-	double L = 1024.0;
-	double N = 512.0;
+	double L = 8;
+	double N = 64;
 	Grid oceanGrid;
-	oceanGrid.SetGridSettings<double>(N, N, L/N, 0.0);
-	auto& grid = Cast<GridI<double>*>(oceanGrid.i[0])->grid;
+	oceanGrid.SetGridSettings<OceanParticleInfo>(N, N, L/N, 0.0);
+	auto& grid = Cast<GridI<OceanParticleInfo>*>(oceanGrid.i[0])->grid;
 
 	//###
 	StaticPointWriter writer;
 	writer.SetWriteMode(WriteMode_Houdini);
 
 	double g = 9.8;
-	P2 windDir(0.8, 0.3);
+	P2 windDir(1, 0);
 	windDir = safeNorm(windDir);
-	double waveAmplitude= 25.0; 
-	double v = 10.0;
+	double waveAmplitude= 1/250.0; 
+	double v = 4.0;
 	double waveL = v * v / g;
 
 	auto func_Ph = [&](P2 kvec)
 	{
-		//??? debug
-		return waveAmplitude;
-
+		//kvec /= 2 * PI;
 		double k = len(kvec);
 		kvec = safeNorm(kvec);
 		if (zero(k))
@@ -50,27 +51,28 @@ int main()
 		}
 		else
 		{
-			
-			return waveAmplitude * exp(-1 / pow(k*waveL, 2)) / pow(k, 4) * pow(dot(kvec, windDir), 2);
+			auto re = waveAmplitude * exp(-1 / pow(k*waveL, 2)) / pow(k, 4) * pow(dot(kvec, windDir), 2);
+			return re;
 		}
 	};
 
-	auto func_h0 = [&](double Ph)
+	auto func_h0 = [&](const cplx& ksi,double Ph)
 	{
-		//??? debug
-		//return e_cplx(0.0);
-
-		//!!! 对于同一个频率kvec，得是同一组ksi1,ksi2
-		double ksi1 = rand_norm(0, 1);
-		double ksi2 = rand_norm(0, 1);
-
-		return 1 / sqrt(2) * cplx(ksi1, ksi2) * sqrt(Ph);
+		return 1 / sqrt(2) * ksi  * sqrt(Ph);
 	};
 
-	auto func = [&](double& pointHeight, P2 pos2d)
+	auto func_InitKsi = [&](OceanParticleInfo& pntInfo, P2 pos2d)
+	{
+		pntInfo.ksi = cplx(rand_norm(0, 1), rand_norm(0, 1));
+	};
+
+	auto func = [&](OceanParticleInfo& pntInfo, P2 pos2d)
 	{
 		int count = 0;
-		int MAXCOUNT = 1;
+		//??? debug
+		int MAXCOUNT = N*N+1;
+		bool bBigWave = false;
+		bool bDebug = false;
 
 		double height = 0.0;
 		//???
@@ -79,45 +81,52 @@ int main()
 		{
 			for (int i = 0; i < grid.datas.x; i++)
 			{
+				P2 kvec = grid.pnts[i][j] / (L/2) * 2 * PI;
+
 				//??? debug
-				//P2 kvec = grid.pnts[i][j] / (L/2) * 2 * PI;
-				P2 kvec = grid.pnts[N / 2 + 1][N / 2] / (L / 2) * 2 * PI;
-				//P2 kvec = grid.pnts[0][0] / (L / 2) * 2 * PI;
+				//&&count!=0
+				if (bDebug && count == MAXCOUNT - 1 && (bBigWave ? true:count!=0))
+				{
+					kvec = grid.pnts[N / 2 + 5][N / 2] / (L / 2) * 2 * PI;
+				}
+				
+				cplx ksi = grid.datas[i][j].ksi;
+				if (bDebug &&count == MAXCOUNT - 1 && (bBigWave ? true : count != 0))
+				{
+					ksi = grid.datas[N / 2 + 5][N / 2].ksi;
+				}
 
 				double wk = sqrt(g*len(kvec));
 
-				//此时它的img已经为0
-				cplx h0 = func_h0(func_Ph(kvec));
-				cplx h_val = h0 * e_cplx(wk*t) + conju(h0)* e_cplx(-wk * t);
-
-				//??? debug
+				cplx h0 = func_h0(ksi, func_Ph(kvec));
+				double h_val = 2 * (h0 * e_cplx(wk*t)).real;
 				cplx final = h_val * e_cplx(dot(kvec, pos2d));
-				//cplx final = e_cplx(dot(P2(0.1,0.1), pos2d));
 
 				//???
-				static double lam = 0.0;
-				double tH = final.real;// +lam * final.img * safeNorm(kvec).x + lam * final.img * safeNorm(kvec).y;
+				static double lam = 0.1;
+				double tH = final.real +lam * final.img * safeNorm(kvec).x + lam * final.img * safeNorm(kvec).y;
 
 				height += tH;
-
+				
 				//??? debug
 				count++;
 				if (count == MAXCOUNT)
 				{
-					break;
+					//break;
 				}
 			}
 			if (count == MAXCOUNT)
 			{
-				break;
+				//break;
 			}
 		}
 
-		pointHeight = height + waveAmplitude;
+		pntInfo.height = height;
 
 		writer.addPoint(P(pos2d.x, pos2d.y, height));
 	};
 
+	grid.DoByPos(func_InitKsi);
 	grid.DoByPos(func);
 
 	writer.Write("C:/HoudiniProjects/PToyScene/FFT.txt");

@@ -16,6 +16,7 @@ public:
 	P2 operator/(double s) const;
 	P2 operator/(const P2& p) const;
 	void operator+=(const P2& p);
+	void operator/=(double s);
 	bool operator>=(const P2& p) const;
 	bool operator<(const P2& p) const;
 	bool operator==(const P2& p) const;

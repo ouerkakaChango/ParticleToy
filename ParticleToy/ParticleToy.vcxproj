@@ -91,7 +91,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <AdditionalIncludeDirectories>C:\Users\hasee\source\repos\ParticleToy\include\Base;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\hasee\source\repos\ParticleToy\include;C:\Users\hasee\source\repos\ParticleToy\include\Base;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -112,7 +112,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>C:\Users\hasee\source\repos\ParticleToy\include\Base;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\hasee\source\repos\ParticleToy\include;C:\Users\hasee\source\repos\ParticleToy\include\Base;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4018;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -130,7 +130,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>C:\Users\hasee\source\repos\ParticleToy\include\Base;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\hasee\source\repos\ParticleToy\include;C:\Users\hasee\source\repos\ParticleToy\include\Base;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -155,7 +155,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>C:\Users\hasee\source\repos\ParticleToy\include\Base;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\hasee\source\repos\ParticleToy\include;C:\Users\hasee\source\repos\ParticleToy\include\Base;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4018;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
@@ -178,6 +178,7 @@
     <ClInclude Include="..\include\Base\FileHelper\FileWriter.h" />
     <ClInclude Include="..\include\Base\FileHelper\StaticPointWriter.h" />
     <ClInclude Include="..\include\Base\Object.h" />
+    <ClInclude Include="..\include\Base\Optimize\PToy_OpenMP.h" />
     <ClInclude Include="..\include\Base\photonRender\photonWorld.h" />
     <ClInclude Include="..\include\Base\rayTraceRender\BounceMode\CheapBounce\TraceRayO_CheapBounce.h" />
     <ClInclude Include="..\include\Base\rayTraceRender\BounceMode\MonteCarlo\TraceRayO_MonteCarlo.h" />
@@ -206,6 +207,7 @@
     <ClInclude Include="..\include\Base\TickUtility.h" />
     <ClInclude Include="..\include\Base\Tools\Timer.h" />
     <ClInclude Include="..\include\Base\Utility.h" />
+    <ClInclude Include="..\include\FFTOcean\OceanParticleInfo.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -225,6 +227,7 @@
     <ClCompile Include="..\include\Base\FileHelper\FileWriter.cpp" />
     <ClCompile Include="..\include\Base\FileHelper\StaticPointWriter.cpp" />
     <ClCompile Include="..\include\Base\Object.cpp" />
+    <ClCompile Include="..\include\Base\Optimize\PToy_OpenMP.cpp" />
     <ClCompile Include="..\include\Base\photonRender\photonWorld.cpp" />
     <ClCompile Include="..\include\Base\rayTraceRender\BounceMode\CheapBounce\TraceRayO_CheapBounce.cpp" />
     <ClCompile Include="..\include\Base\rayTraceRender\BounceMode\MonteCarlo\TraceRayO_MonteCarlo.cpp" />
@@ -253,6 +256,7 @@
     <ClCompile Include="..\include\Base\TickUtility.cpp" />
     <ClCompile Include="..\include\Base\Tools\Timer.cpp" />
     <ClCompile Include="..\include\Base\Utility.cpp" />
+    <ClCompile Include="..\include\FFTOcean\OceanParticleInfo.cpp" />
     <ClCompile Include="ParticleToy.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

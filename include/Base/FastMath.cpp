@@ -48,6 +48,12 @@ void P2::operator+=(const P2& p)
 	y += p.y;
 }
 
+void P2::operator/=(double s)
+{
+	x /= s;
+	y /= s;
+}
+
 bool P2::operator>=(const P2& p) const
 {
 	return x >= p.x && y >= p.y;

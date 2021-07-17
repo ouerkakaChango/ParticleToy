@@ -103,6 +103,18 @@
     <Filter Include="源文件\Base\FileHelper">
       <UniqueIdentifier>{eb4f9959-7ee0-4251-a0a2-9e651ec08ef0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\FFTOcean">
+      <UniqueIdentifier>{df6a8635-952c-4c01-a460-8ecbcd2cc329}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\FFTOcean">
+      <UniqueIdentifier>{498bb0ce-d6c7-4adc-bbc2-b8bf55c24b76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Base\Optimize">
+      <UniqueIdentifier>{928a33e2-b813-489f-b01e-45e60d2f3b5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Base\Optimize">
+      <UniqueIdentifier>{98fd4c31-0fcf-44dd-9841-664afd42eee0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -224,6 +236,12 @@
     </ClInclude>
     <ClInclude Include="..\include\Base\FileHelper\FileWriter.h">
       <Filter>头文件\Base\FileHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\FFTOcean\OceanParticleInfo.h">
+      <Filter>头文件\FFTOcean</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Base\Optimize\PToy_OpenMP.h">
+      <Filter>头文件\Base\Optimize</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -364,6 +382,12 @@
     </ClCompile>
     <ClCompile Include="..\include\Base\FileHelper\FileWriter.cpp">
       <Filter>源文件\Base\FileHelper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\FFTOcean\OceanParticleInfo.cpp">
+      <Filter>源文件\FFTOcean</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\Optimize\PToy_OpenMP.cpp">
+      <Filter>源文件\Base\Optimize</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
