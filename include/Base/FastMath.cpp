@@ -500,7 +500,7 @@ cplx e_cplx(double w, double A)
 
 cplx conju(const cplx& c)
 {
-	return cplx(c.real, -c.real);
+	return cplx(c.real, -c.img);
 }
 //### cplx
 

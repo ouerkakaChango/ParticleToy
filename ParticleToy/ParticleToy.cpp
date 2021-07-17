@@ -20,11 +20,10 @@ int main()
 {
 	str pyWorkPath = "C:\\Users\\hasee\\source\\repos\\ParticleToy\\PythonWorkSpace";
 
+	double L = 1024.0;
+	double N = 512.0;
 	Grid oceanGrid;
-	double L = 1024;
-	double N = 24;
-	P2 edge(N, N);
-	oceanGrid.SetGridSettings<double>(edge.x, edge.y, L/N, 0.0);
+	oceanGrid.SetGridSettings<double>(N, N, L/N, 0.0);
 	auto& grid = Cast<GridI<double>*>(oceanGrid.i[0])->grid;
 
 	//###
@@ -32,14 +31,17 @@ int main()
 	writer.SetWriteMode(WriteMode_Houdini);
 
 	double g = 9.8;
-	P2 windDir(1, 1);
+	P2 windDir(0.8, 0.3);
 	windDir = safeNorm(windDir);
-	double waveAmplitude= 5.0;
-	double v = 100.0;
+	double waveAmplitude= 25.0; 
+	double v = 10.0;
 	double waveL = v * v / g;
 
 	auto func_Ph = [&](P2 kvec)
 	{
+		//??? debug
+		return waveAmplitude;
+
 		double k = len(kvec);
 		kvec = safeNorm(kvec);
 		if (zero(k))
@@ -55,18 +57,20 @@ int main()
 
 	auto func_h0 = [&](double Ph)
 	{
+		//??? debug
+		//return e_cplx(0.0);
+
+		//!!! 对于同一个频率kvec，得是同一组ksi1,ksi2
 		double ksi1 = rand_norm(0, 1);
 		double ksi2 = rand_norm(0, 1);
+
 		return 1 / sqrt(2) * cplx(ksi1, ksi2) * sqrt(Ph);
 	};
 
 	auto func = [&](double& pointHeight, P2 pos2d)
 	{
-		//??? debug
-		if (pos2d == P2(-1, -1))
-		{
-			int aa = 1;
-		}
+		int count = 0;
+		int MAXCOUNT = 1;
 
 		double height = 0.0;
 		//???
@@ -75,22 +79,41 @@ int main()
 		{
 			for (int i = 0; i < grid.datas.x; i++)
 			{
-				P2 kvec = grid.pnts[i][j] / (L/2) * 2 * PI;
+				//??? debug
+				//P2 kvec = grid.pnts[i][j] / (L/2) * 2 * PI;
+				P2 kvec = grid.pnts[N / 2 + 1][N / 2] / (L / 2) * 2 * PI;
+				//P2 kvec = grid.pnts[0][0] / (L / 2) * 2 * PI;
 
 				double wk = sqrt(g*len(kvec));
 
-				cplx h_val = func_h0(func_Ph(kvec)) * e_cplx(wk*t) + conju(func_h0(func_Ph(-kvec)))* e_cplx(-wk * t);
+				//此时它的img已经为0
+				cplx h0 = func_h0(func_Ph(kvec));
+				cplx h_val = h0 * e_cplx(wk*t) + conju(h0)* e_cplx(-wk * t);
 
+				//??? debug
 				cplx final = h_val * e_cplx(dot(kvec, pos2d));
+				//cplx final = e_cplx(dot(P2(0.1,0.1), pos2d));
 
-				static double lam = 3.0;
+				//???
+				static double lam = 0.0;
 				double tH = final.real;// +lam * final.img * safeNorm(kvec).x + lam * final.img * safeNorm(kvec).y;
 
 				height += tH;
+
+				//??? debug
+				count++;
+				if (count == MAXCOUNT)
+				{
+					break;
+				}
+			}
+			if (count == MAXCOUNT)
+			{
+				break;
 			}
 		}
 
-		pointHeight = height;
+		pointHeight = height + waveAmplitude;
 
 		writer.addPoint(P(pos2d.x, pos2d.y, height));
 	};
