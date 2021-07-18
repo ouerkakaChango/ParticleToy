@@ -23,7 +23,7 @@ int main()
 {
 	str pyWorkPath = "C:\\Users\\hasee\\source\\repos\\ParticleToy\\PythonWorkSpace";
 
-	double L = 8;
+	double L = 32;
 	double N = 64;
 	Grid oceanGrid;
 	oceanGrid.SetGridSettings<OceanParticleInfo>(N, N, L/N, 0.0);
@@ -36,13 +36,14 @@ int main()
 	double g = 9.8;
 	P2 windDir(1, 0);
 	windDir = safeNorm(windDir);
-	double waveAmplitude= 1/250.0; 
-	double v = 4.0;
-	double waveL = v * v / g;
+	//double waveAmplitude= 1/250.0; 
+	//double v = 4.0;
+	//double waveL = v*v/g;
+	double waveAmplitude = 1.0/N;
+	double waveL = 4.0;//1.32;//0.52;
 
 	auto func_Ph = [&](P2 kvec)
 	{
-		//kvec /= 2 * PI;
 		double k = len(kvec);
 		kvec = safeNorm(kvec);
 		if (zero(k))
@@ -58,7 +59,8 @@ int main()
 
 	auto func_h0 = [&](const cplx& ksi,double Ph)
 	{
-		return 1 / sqrt(2) * ksi  * sqrt(Ph);
+		auto re = 0.7071 * ksi  * sqrt(Ph);
+		return re;
 	};
 
 	auto func_InitKsi = [&](OceanParticleInfo& pntInfo, P2 pos2d)
@@ -70,7 +72,7 @@ int main()
 	{
 		int count = 0;
 		//??? debug
-		int MAXCOUNT = N*N+1;
+		int MAXCOUNT = 1;
 		bool bBigWave = false;
 		bool bDebug = false;
 
@@ -103,21 +105,21 @@ int main()
 				cplx final = h_val * e_cplx(dot(kvec, pos2d));
 
 				//???
-				static double lam = 0.1;
+				static double lam = 0.0;
 				double tH = final.real +lam * final.img * safeNorm(kvec).x + lam * final.img * safeNorm(kvec).y;
 
 				height += tH;
 				
 				//??? debug
 				count++;
-				if (count == MAXCOUNT)
+				if (bDebug && count == MAXCOUNT)
 				{
-					//break;
+					break;
 				}
 			}
-			if (count == MAXCOUNT)
+			if (bDebug && count == MAXCOUNT)
 			{
-				//break;
+				break;
 			}
 		}
 
