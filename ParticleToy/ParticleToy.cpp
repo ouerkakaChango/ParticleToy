@@ -17,7 +17,14 @@ using std::endl;
 //https://www.slideshare.net/Codemotion/an-introduction-to-realistic-ocean-rendering-through-fft-fabio-suriano-codemotion-rome-2017
 //--1.可视化 Phillips spectrum
 //--(放弃使用自己的rayTraceRender。输出txt,到Houdini里去可视化。写框架将序列化代码通用化)
-//2.迭代次数改1，照理来说1次迭代本质是sin函数，查一下错误。
+//--2.迭代次数改1，照理来说1次迭代本质是sin函数，查一下错误。
+
+//3.在不上FFT的情况下，算法已经慢的不可接受。
+//但希望向实时应用迈进,也希望以后的其他Particle应用可以用上这个流程。
+//所以希望尝试一个新的，基于NumbaCUDA的流程:
+//1.创建自定义脚本语言:pex(Particle Expression)，类似vex
+//2.C++端作为parser，将pex转成numba语法的python
+//3.第一阶段：grid数据类型，cuda上的norm_rand实现，initKsi逻辑实现
 
 int main()
 {
