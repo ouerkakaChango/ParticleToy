@@ -700,4 +700,18 @@ bool BisecitonSolve(std::function<double(double)> func, double tmin, double tmax
 	}
 	return true;
 }
+
+int ToDecimal(const int* arr, int n)
+{
+	int re=0;
+	for (int i = 0; i < n; i++)
+	{
+		if (arr[n - i - 1])
+		{
+			re += (int)pow(2, i);
+		}
+	}
+
+	return re;
+}
 //### Global Utility

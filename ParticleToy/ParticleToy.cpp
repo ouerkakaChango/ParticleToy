@@ -4,7 +4,11 @@
 #include <iostream>
 
 #include "Spaces/Grid.h"
+#include "Discretization/MarchingCube/MarchingCube.h"
 
+#include"FileHelper/StaticPointWriter.h"
+
+using namespace Discretization;
 using std::cout;
 using std::endl;
 
@@ -17,16 +21,44 @@ using std::endl;
 //### 启发
 //1.FileWrite的阴阳以前写反了，改了互换，发现不影响以前的用户代码，这个阴阳结构好处就出来了。
 
+double wf_solidSphere(P pos)
+{
+	if (pos.len() <= 1)
+	{
+		return 1.0;
+	}
+	else
+	{
+		return 0.0;
+	}
+}
+
 int main()
 {
-	//auto weightFunc = wf_solidSphere;
+	StaticPointWriter pWriter;
+	pWriter.SetWriteMode(WriteMode_Houdini);
+
+	auto weightFunc = wf_solidSphere;
 	Grid* bboxGrid = new Grid;
-	bboxGrid->SetGrid3DSettings<float>(10, 10, 10, 0.4f, 0.0);
-	auto& grid3d = Cast<Grid3DI<float>*>(bboxGrid->i[0])->grid;
-	auto func = [](float& data, P pntPos, int pntInx)
+	//1000 个 cell
+	bboxGrid->SetGrid3DSettings<double>(10, 10, 10, 0.4f, 0.0);
+	auto& grid3d = Cast<Grid3DI<double>*>(bboxGrid->i[0])->grid;
+	grid3d.Centerlize();
+	GRID_PosFunc(f_initGrid, double)
 	{
-		cout << pntPos.ToStr() << endl;
+		data = weightFunc(pntPos);
+		//cout << pntPos.ToStr() <<" "<< data<< endl;
+		if (data > 0.5)
+		{
+			//pWriter.addPoint(pntPos);
+		}
 	};
-	grid3d.DoByPos(func);
+	grid3d.DoByPos(f_initGrid);
+
+	MarchingCube mcube_algo;
+	mcube_algo.SetSurface(0.5);
+	mcube_algo.March(grid3d);
+
+	//pWriter.Write("D:/HoudiniProj/PToyScene/MCube_pnts.txt");
 	return 0;
 }

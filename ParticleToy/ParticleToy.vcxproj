@@ -168,6 +168,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Base\Container.h" />
+    <ClInclude Include="..\include\Base\Discretization\MarchingCube\MarchingCube.h" />
+    <ClInclude Include="..\include\Base\Discretization\MarchingCube\MarchingCubeTable.h" />
     <ClInclude Include="..\include\Base\EffectSpace.h" />
     <ClInclude Include="..\include\Base\Evolver.h" />
     <ClInclude Include="..\include\Base\Fast3D.h" />
@@ -218,6 +220,7 @@
     <ClCompile Include="..\Backup\rayTraceTest.cpp" />
     <ClCompile Include="..\Backup\threebody.cpp" />
     <ClCompile Include="..\include\Base\Container.cpp" />
+    <ClCompile Include="..\include\Base\Discretization\MarchingCube\MarchingCube.cpp" />
     <ClCompile Include="..\include\Base\EffectSpace.cpp" />
     <ClCompile Include="..\include\Base\Evolver.cpp" />
     <ClCompile Include="..\include\Base\Fast3D.cpp" />

@@ -244,8 +244,60 @@ public:
 		}
 	}
 
+	void DoByCell(std::function<void(const arr<P>& cellPnts, const arr<DataClass*>& cellDatas)> func)
+	{
+		for (int k = 0; k < pnts.z-1; k++)
+		{
+			for (int j = 0; j < pnts.y-1; j++)
+			{
+				for (int i = 0; i < pnts.x-1; i++)
+				{
+					//gather cell vertices
+					arr<P> cellPnts;
+					cellPnts += pnts[i][j][k];
+					cellPnts += pnts[i+1][j][k];
+					cellPnts += pnts[i+1][j+1][k];
+					cellPnts += pnts[i][j+1][k];
+					cellPnts += pnts[i][j][k+1];
+					cellPnts += pnts[i+1][j][k+1];
+					cellPnts += pnts[i+1][j+1][k+1];
+					cellPnts += pnts[i][j+1][k+1];
+
+					arr<DataClass*> cellDatas;
+					cellDatas += &datas[i][j][k];
+					cellDatas += &datas[i + 1][j][k];
+					cellDatas += &datas[i + 1][j + 1][k];
+					cellDatas += &datas[i][j + 1][k];
+					cellDatas += &datas[i][j][k + 1];
+					cellDatas += &datas[i + 1][j][k + 1];
+					cellDatas += &datas[i + 1][j + 1][k + 1];
+					cellDatas += &datas[i][j + 1][k + 1];
+					func(cellPnts, cellDatas);
+				}
+			}
+		}
+	}
+
+	void Centerlize()
+	{
+		P hGridSize = (P(pnts.x, pnts.y, pnts.z) - 1.0)*cellSize*0.5;
+		for (int k = 0; k < pnts.z; k++)
+		{
+			for (int j = 0; j < pnts.y; j++)
+			{
+				for (int i = 0; i < pnts.x; i++)
+				{
+					pnts[i][j][k] -= hGridSize;
+				}
+			}
+		}
+	}
+
 	arr3<P> pnts;
 	arr3<DataClass> datas;
 
 	P cellSize;
 };
+
+#define GRID_PosFunc(func,dataType) auto func = [&](dataType& data, P pntPos, int pntInx)
+#define GRID_CellFunc(func,dataType) auto func = [&](const arr<P>& cellPnts, const arr<dataType*>& cellDatas)

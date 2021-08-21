@@ -115,6 +115,18 @@
     <Filter Include="源文件\Base\Optimize">
       <UniqueIdentifier>{98fd4c31-0fcf-44dd-9841-664afd42eee0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Base\Discretization">
+      <UniqueIdentifier>{fcb01bb1-7588-489c-b095-24f6b9d59b99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Base\Discretization\MarchingCube">
+      <UniqueIdentifier>{693b7359-004e-44e4-befc-676e3f2e0adf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Base\Discretization">
+      <UniqueIdentifier>{d5ca9c6d-66d1-4deb-a24e-2382357d6d5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Base\Discretization\MarchingCube">
+      <UniqueIdentifier>{e2d7ddf1-b8ee-456c-9d04-672af32b8c87}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -242,6 +254,12 @@
     </ClInclude>
     <ClInclude Include="..\include\Base\Optimize\PToy_OpenMP.h">
       <Filter>头文件\Base\Optimize</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Base\Discretization\MarchingCube\MarchingCube.h">
+      <Filter>头文件\Base\Discretization\MarchingCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Base\Discretization\MarchingCube\MarchingCubeTable.h">
+      <Filter>头文件\Base\Discretization\MarchingCube</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -391,6 +409,9 @@
     </ClCompile>
     <ClCompile Include="..\Backup\FFTOcean.cpp">
       <Filter>资源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\Discretization\MarchingCube\MarchingCube.cpp">
+      <Filter>源文件\Base\Discretization\MarchingCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -148,4 +148,6 @@ bool SolveQuadra(P a, P b, P c, double& x1, double& x2);
 double QuadraFiliter(double x1, double x2, double xmin, double xmax);
 bool BisecitonSolve(std::function<double(double)> func, double tmin, double tmax, double& t, double tolerance = 0.000001);
 
+int ToDecimal(const int* arr, int n);
+
 #define PI 3.1415926
