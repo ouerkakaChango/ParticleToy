@@ -1,5 +1,7 @@
 #include "StaticPointWriter.h"
 
+#include "WriterUtility.h"
+
 #include <iostream>
 #include <fstream>
 using std::cout;
@@ -42,15 +44,11 @@ void StaticPointWriterO::Write(FileWriterI* i, const str& filePath)
 		std::ofstream f(filePath.data, std::ios::out);
 		for (int inx = 0; inx < ti->pnts.size(); inx++)
 		{
-			auto& p = ti->pnts[inx];
+			auto p = ti->pnts[inx];
 
-			if (y->wMode == WriteMode_Houdini)
-			{
-				double tt = p.y;
-				p.y = p.z;
-				p.z = tt;
-			}
-			f << ti->pnts[inx].ToStr(6)<< "\n";
+			p = TransWriteFormat(p,y->wMode);
+
+			f << p.ToStr(6)<< "\n";
 		}
 		std::cout << "File write done at " << filePath << "\n";
 	}

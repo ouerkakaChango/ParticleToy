@@ -261,6 +261,12 @@
     <ClInclude Include="..\include\Base\Discretization\MarchingCube\MarchingCubeTable.h">
       <Filter>头文件\Base\Discretization\MarchingCube</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\Base\FileHelper\StaticTriWriter.h">
+      <Filter>头文件\Base\FileHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Base\FileHelper\WriterUtility.h">
+      <Filter>头文件\Base\FileHelper</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -412,6 +418,12 @@
     </ClCompile>
     <ClCompile Include="..\include\Base\Discretization\MarchingCube\MarchingCube.cpp">
       <Filter>源文件\Base\Discretization\MarchingCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\FileHelper\StaticTriWriter.cpp">
+      <Filter>源文件\Base\FileHelper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\FileHelper\WriterUtility.cpp">
+      <Filter>源文件\Base\FileHelper</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

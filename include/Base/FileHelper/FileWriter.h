@@ -14,6 +14,7 @@ class FileWriter
 
 	virtual void Write(const str& outPath) = 0; 
 	inline void SetWriteMode(WriteMode wMode_) { wMode = wMode_; };
+
 	WriteMode wMode;
 };
 

@@ -41,7 +41,7 @@ namespace Discretization
 		{
 			if (*cellWeights[i] >= surface)
 			{
-				inside[i] = 1;
+				inside[7-i] = 1;
 			}
 		}
 
@@ -55,11 +55,19 @@ namespace Discretization
 		{
 			P p1 = cellPnts[i];
 			P p2 = cellPnts[(i + 1) % 4];
+			re += (p1 + p2)*0.5;
+		}
+		for (int i = 0; i < 4; i++)
+		{
 			P p3 = cellPnts[i + 4];
 			P p4 = cellPnts[(i + 1) % 4 + 4];
-			re += (p1 + p2)*0.5;
-			re += (p1 + p3)*0.5;
 			re += (p3 + p4)*0.5;
+		}
+		for (int i = 0; i < 4; i++)
+		{
+			P p1 = cellPnts[i];
+			P p3 = cellPnts[i + 4];
+			re += (p1 + p3)*0.5;
 		}
 		return re;
 	}

@@ -6,7 +6,8 @@
 #include "Spaces/Grid.h"
 #include "Discretization/MarchingCube/MarchingCube.h"
 
-#include"FileHelper/StaticPointWriter.h"
+#include "FileHelper/StaticPointWriter.h"
+#include "FileHelper/StaticTriWriter.h"
 
 using namespace Discretization;
 using std::cout;
@@ -38,6 +39,9 @@ int main()
 	StaticPointWriter pWriter;
 	pWriter.SetWriteMode(WriteMode_Houdini);
 
+	StaticTriWriter triWriter;
+	triWriter.SetWriteMode(WriteMode_Houdini);
+
 	auto weightFunc = wf_solidSphere;
 	Grid* bboxGrid = new Grid;
 	//1000 个 cell
@@ -59,6 +63,8 @@ int main()
 	mcube_algo.SetSurface(0.5);
 	mcube_algo.March(grid3d);
 
+	triWriter.Load(&mcube_algo.triArr);
+	triWriter.Write("D:/HoudiniProj/PToyScene/MCube_tris.txt");
 	//pWriter.Write("D:/HoudiniProj/PToyScene/MCube_pnts.txt");
 	return 0;
 }
