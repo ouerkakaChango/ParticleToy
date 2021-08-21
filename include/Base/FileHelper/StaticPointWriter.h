@@ -10,14 +10,14 @@ public:
 	void Write(const str& outPath);
 };
 
-class StaticPointWriterI : public FileWriterI
+class StaticPointWriterO : public FileWriterO
 {
 public:
-	StaticPointWriterI(FileWriter* y_);
-	void Write(FileWriterO* o, const str& filePath) override;
+	StaticPointWriterO(FileWriter* y_);
+	void Write(FileWriterI* i, const str& filePath) override;
 };
 
-class StaticPointWriterO : public FileWriterO
+class StaticPointWriterI : public FileWriterI
 {
 public:
 	arr<P> pnts;

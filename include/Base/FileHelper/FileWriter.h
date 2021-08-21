@@ -17,16 +17,16 @@ class FileWriter
 	WriteMode wMode;
 };
 
-class FileWriterO;
-class FileWriterI : public ClassI
+class FileWriterI;
+class FileWriterO : public ClassO
 {
 public:
-	FileWriterI(FileWriter* y_);
-	virtual void Write(FileWriterO* o, const str& filePath) = 0;
+	FileWriterO(FileWriter* y_);
+	virtual void Write(FileWriterI* o, const str& filePath) = 0;
 	FileWriter* y = nullptr;
 };
 
-class FileWriterO : public ClassO
+class FileWriterI : public ClassI
 {
 
 };

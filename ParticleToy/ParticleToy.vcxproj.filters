@@ -389,6 +389,9 @@
     <ClCompile Include="..\include\Base\Optimize\PToy_OpenMP.cpp">
       <Filter>源文件\Base\Optimize</Filter>
     </ClCompile>
+    <ClCompile Include="..\Backup\FFTOcean.cpp">
+      <Filter>资源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Backup\testStandard.txt">

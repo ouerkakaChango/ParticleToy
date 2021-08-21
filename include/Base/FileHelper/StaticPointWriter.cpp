@@ -7,42 +7,42 @@ using std::cout;
 //### StaticPointWriter
 StaticPointWriter::StaticPointWriter()
 {
-	i += new StaticPointWriterI(this);
-	o += new StaticPointWriterO;
+	i += new StaticPointWriterI;
+	o += new StaticPointWriterO(this);
 }
 
 void StaticPointWriter::addPoint(const P& p)
 {
-	auto to = Cast<StaticPointWriterO*>(o[0]);
-	to->pnts += p;
+	auto ti = Cast<StaticPointWriterI*>(i[0]);
+	ti->pnts += p;
 }
 
 void StaticPointWriter::Write(const str& outPath)
 {
 	auto ti = Cast<StaticPointWriterI*>(i[0]);
 	auto to = Cast<StaticPointWriterO*>(o[0]);
-	ti->Write(to, outPath);
+	to->Write(ti, outPath);
 }
 //### StaticPointWriter
 
-//### StaticPointWriterI
-StaticPointWriterI::StaticPointWriterI(FileWriter* y_):FileWriterI(y_)
+//### StaticPointWriterO
+StaticPointWriterO::StaticPointWriterO(FileWriter* y_):FileWriterO(y_)
 {
 
 
 }
 
-void StaticPointWriterI::Write(FileWriterO* o, const str& filePath)
+void StaticPointWriterO::Write(FileWriterI* i, const str& filePath)
 {
-	if (typeStr(*o) == "class StaticPointWriterO")
+	if (typeStr(*i) == "class StaticPointWriterI")
 	{
-		auto to = Cast<StaticPointWriterO*>(o);
+		auto ti = Cast<StaticPointWriterI*>(i);
 
 		std::cout << "Writing File...\n";
 		std::ofstream f(filePath.data, std::ios::out);
-		for (int inx = 0; inx < to->pnts.size(); inx++)
+		for (int inx = 0; inx < ti->pnts.size(); inx++)
 		{
-			auto& p = to->pnts[inx];
+			auto& p = ti->pnts[inx];
 
 			if (y->wMode == WriteMode_Houdini)
 			{
@@ -50,7 +50,7 @@ void StaticPointWriterI::Write(FileWriterO* o, const str& filePath)
 				p.y = p.z;
 				p.z = tt;
 			}
-			f << to->pnts[inx].ToStr(6)<< "\n";
+			f << ti->pnts[inx].ToStr(6)<< "\n";
 		}
 		std::cout << "File write done at " << filePath << "\n";
 	}

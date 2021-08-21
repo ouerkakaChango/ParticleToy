@@ -211,6 +211,7 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Backup\FFTOcean.cpp" />
     <ClCompile Include="..\Backup\golf.cpp" />
     <ClCompile Include="..\Backup\molecule.cpp" />
     <ClCompile Include="..\Backup\old_FFTocean.cpp" />
