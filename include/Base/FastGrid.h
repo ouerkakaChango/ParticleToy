@@ -143,6 +143,7 @@ class FastGrid3D
 public:
 	void SetSize(int edgeX, int edgeY, int edgeZ, P cell, const DataClass& defaultData)
 	{
+		cellSize = cell;
 		pnts.resize(edgeX + 1, edgeY + 1, edgeZ + 1);
 		datas.resize(edgeX + 1, edgeY + 1, edgeZ + 1);
 
@@ -245,4 +246,6 @@ public:
 
 	arr3<P> pnts;
 	arr3<DataClass> datas;
+
+	P cellSize;
 };
