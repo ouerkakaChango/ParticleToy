@@ -181,6 +181,8 @@
     <ClInclude Include="..\include\Base\FileHelper\StaticPointWriter.h" />
     <ClInclude Include="..\include\Base\FileHelper\StaticTriWriter.h" />
     <ClInclude Include="..\include\Base\FileHelper\WriterUtility.h" />
+    <ClInclude Include="..\include\Base\Noise\Noise.h" />
+    <ClInclude Include="..\include\Base\Noise\PerlinNoise.h" />
     <ClInclude Include="..\include\Base\Object.h" />
     <ClInclude Include="..\include\Base\Optimize\PToy_OpenMP.h" />
     <ClInclude Include="..\include\Base\photonRender\photonWorld.h" />
@@ -234,6 +236,8 @@
     <ClCompile Include="..\include\Base\FileHelper\StaticPointWriter.cpp" />
     <ClCompile Include="..\include\Base\FileHelper\StaticTriWriter.cpp" />
     <ClCompile Include="..\include\Base\FileHelper\WriterUtility.cpp" />
+    <ClCompile Include="..\include\Base\Noise\Noise.cpp" />
+    <ClCompile Include="..\include\Base\Noise\PerlinNoise.cpp" />
     <ClCompile Include="..\include\Base\Object.cpp" />
     <ClCompile Include="..\include\Base\Optimize\PToy_OpenMP.cpp" />
     <ClCompile Include="..\include\Base\photonRender\photonWorld.cpp" />

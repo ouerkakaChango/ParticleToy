@@ -9,6 +9,8 @@
 #include "FileHelper/StaticPointWriter.h"
 #include "FileHelper/StaticTriWriter.h"
 
+#include "Noise/PerlinNoise.h"
+
 using namespace Discretization;
 using std::cout;
 using std::endl;
@@ -18,6 +20,7 @@ using std::endl;
 //https://www.bilibili.com/video/BV1Ta4y1E7CT?from=search&seid=16731839180621170656
 
 //1.先把一个实心球的grid3D的权重表示出来。
+//2.实现3D perlin noise （30*30*30），然后输出tri
 
 //### 启发
 //1.FileWrite的阴阳以前写反了，改了互换，发现不影响以前的用户代码，这个阴阳结构好处就出来了。
@@ -44,27 +47,33 @@ int main()
 
 	auto weightFunc = wf_solidSphere;
 	Grid* bboxGrid = new Grid;
-	//1000 个 cell
-	bboxGrid->SetGrid3DSettings<double>(10, 10, 10, 0.4f, 0.0);
-	auto& grid3d = Cast<Grid3DI<double>*>(bboxGrid->i[0])->grid;
-	grid3d.Centerlize();
-	GRID_PosFunc(f_initGrid, double)
+	if (false)
 	{
-		data = weightFunc(pntPos);
-		//cout << pntPos.ToStr() <<" "<< data<< endl;
-		if (data > 0.5)
+		//1000 个 cell
+		bboxGrid->SetGrid3DSettings<double>(10, 10, 10, 0.4f, 0.0);
+		auto& grid3d = Cast<Grid3DI<double>*>(bboxGrid->i[0])->grid;
+		grid3d.Centerlize();
+		GRID_PosFunc(f_initGrid, double)
 		{
-			//pWriter.addPoint(pntPos);
-		}
-	};
-	grid3d.DoByPos(f_initGrid);
+			data = weightFunc(pntPos);
+			//cout << pntPos.ToStr() <<" "<< data<< endl;
+			if (data > 0.5)
+			{
+				//pWriter.addPoint(pntPos);
+			}
+		};
+		grid3d.DoByPos(f_initGrid);
 
-	MarchingCube mcube_algo;
-	mcube_algo.SetSurface(0.5);
-	mcube_algo.March(grid3d);
+		MarchingCube mcube_algo;
+		mcube_algo.SetSurface(0.5);
+		mcube_algo.March(grid3d);
 
-	triWriter.Load(&mcube_algo.triArr);
-	triWriter.Write("D:/HoudiniProj/PToyScene/MCube_tris.txt");
-	//pWriter.Write("D:/HoudiniProj/PToyScene/MCube_pnts.txt");
+		triWriter.Load(&mcube_algo.triArr);
+		triWriter.Write("D:/HoudiniProj/PToyScene/MCube_tris.txt");
+		//pWriter.Write("D:/HoudiniProj/PToyScene/MCube_pnts.txt");
+	}
+
+	bboxGrid->SetGrid3DSettings<double>(30, 30, 30, 1.0, 0.0);
+	PerlinNoise pNoise(bboxGrid);
 	return 0;
 }
