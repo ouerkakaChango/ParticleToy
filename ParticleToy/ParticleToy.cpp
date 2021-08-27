@@ -39,41 +39,43 @@ double wf_solidSphere(P pos)
 
 int main()
 {
-	StaticPointWriter pWriter;
-	pWriter.SetWriteMode(WriteMode_Houdini);
+	//StaticPointWriter pWriter;
+	//pWriter.SetWriteMode(WriteMode_Houdini);
+	//
+	//StaticTriWriter triWriter;
+	//triWriter.SetWriteMode(WriteMode_Houdini);
+	//
+	//auto weightFunc = wf_solidSphere;
+	//Grid* bboxGrid = new Grid;
+	//{
+	//	//1000 个 cell
+	//	bboxGrid->SetGrid3DSettings<double>(10, 10, 10, 0.4f, 0.0);
+	//	auto& grid3d = Cast<Grid3DI<double>*>(bboxGrid->i[0])->grid;
+	//	grid3d.Centerlize();
+	//	GRID_PosFunc(f_initGrid, double)
+	//	{
+	//		data = weightFunc(pntPos);
+	//		//cout << pntPos.ToStr() <<" "<< data<< endl;
+	//		if (data > 0.5)
+	//		{
+	//			//pWriter.addPoint(pntPos);
+	//		}
+	//	};
+	//	grid3d.DoByPos(f_initGrid);
+	//
+	//	MarchingCube mcube_algo;
+	//	mcube_algo.SetSurface(0.5);
+	//	mcube_algo.March(grid3d);
+	//
+	//	triWriter.Load(&mcube_algo.triArr);
+	//	triWriter.Write("D:/HoudiniProj/PToyScene/MCube_tris.txt");
+	//	//pWriter.Write("D:/HoudiniProj/PToyScene/MCube_pnts.txt");
+	//}
 
-	StaticTriWriter triWriter;
-	triWriter.SetWriteMode(WriteMode_Houdini);
-
-	auto weightFunc = wf_solidSphere;
+	//#######################################
 	Grid* bboxGrid = new Grid;
-	if (false)
-	{
-		//1000 个 cell
-		bboxGrid->SetGrid3DSettings<double>(10, 10, 10, 0.4f, 0.0);
-		auto& grid3d = Cast<Grid3DI<double>*>(bboxGrid->i[0])->grid;
-		grid3d.Centerlize();
-		GRID_PosFunc(f_initGrid, double)
-		{
-			data = weightFunc(pntPos);
-			//cout << pntPos.ToStr() <<" "<< data<< endl;
-			if (data > 0.5)
-			{
-				//pWriter.addPoint(pntPos);
-			}
-		};
-		grid3d.DoByPos(f_initGrid);
-
-		MarchingCube mcube_algo;
-		mcube_algo.SetSurface(0.5);
-		mcube_algo.March(grid3d);
-
-		triWriter.Load(&mcube_algo.triArr);
-		triWriter.Write("D:/HoudiniProj/PToyScene/MCube_tris.txt");
-		//pWriter.Write("D:/HoudiniProj/PToyScene/MCube_pnts.txt");
-	}
-
-	bboxGrid->SetGrid3DSettings<double>(30, 30, 30, 1.0, 0.0);
-	PerlinNoise pNoise(bboxGrid);
+	bboxGrid->SetGrid3DSettings<double>(40, 40, 40, 1.0, 0.0);
+	auto& grid = Cast<Grid3DI<double>*>(bboxGrid->i[0])->grid;
+	PerlinNoise pNoise(&grid); //default resolution
 	return 0;
 }

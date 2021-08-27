@@ -1,18 +1,26 @@
 #pragma once
 #include "Noise.h"
-#include "Spaces/Grid.h"
+
+#include "FastGrid.h"
+#include "Tools/RandomStream.h"
+//²Î¿¼https://blog.csdn.net/u010669231/article/details/97051705
 
 class PerlinNoise : public Noise
 {
 public:
-	PerlinNoise(Grid* grid_);
+	PerlinNoise(FastGrid3D<double>* grid,P resolution_=P(25,25,25));			//auto noise resolution
 
+
+	RandomStream rs_grad;
+	P resolution;
+protected:
+	void CreateGradGrid(FastGrid3D<double>* dataGrid);
 };
 
 class PerlinNoiseI : public NoiseI
 {
 public:
-	Grid* grid = nullptr;
+
 };
 
 template<class T>

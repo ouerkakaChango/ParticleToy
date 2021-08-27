@@ -3,14 +3,26 @@
 #include <string>
 #include <sstream>
 #include <iomanip>
+#include <initializer_list>
 using std::vector;
 using std::string;
 using std::ostream;
+using std::initializer_list;
 
 template <class T>
 class arr
 {
 public:
+	arr() {}
+	arr(initializer_list<T> list)
+	{
+		for (auto& i : list)
+		{
+			data.push_back(i);
+		}
+	}
+
+
 	vector<T> data;
 	using iter = typename vector<T>::iterator;
 	iter begin()
@@ -134,10 +146,10 @@ public:
 		x = x_;
 		y = y_;
 		z = z_;
-		data.resize(z);
-		for (int k = 0; k < z; k++)
+		data.resize(x);
+		for (int i = 0; i < x; i++)
 		{
-			data[k].resize(x,y);
+			data[i].resize(y,z);
 		}
 	}
 

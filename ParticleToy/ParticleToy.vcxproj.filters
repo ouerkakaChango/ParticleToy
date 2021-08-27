@@ -279,6 +279,12 @@
     <ClInclude Include="..\include\Base\Noise\Noise.h">
       <Filter>头文件\Base\Noise</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\Base\Noise\NoiseUtility.h">
+      <Filter>头文件\Base\Noise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Base\Tools\RandomStream.h">
+      <Filter>头文件\Base\Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -442,6 +448,12 @@
     </ClCompile>
     <ClCompile Include="..\include\Base\Noise\PerlinNoise.cpp">
       <Filter>源文件\Base\Noise</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\Noise\NoiseUtility.cpp">
+      <Filter>源文件\Base\Noise</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\Tools\RandomStream.cpp">
+      <Filter>源文件\Base\Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -144,6 +144,7 @@ public:
 	void SetSize(int edgeX, int edgeY, int edgeZ, P cell, const DataClass& defaultData)
 	{
 		cellSize = cell;
+		subDivide = P(edgeX, edgeY, edgeZ);
 		pnts.resize(edgeX + 1, edgeY + 1, edgeZ + 1);
 		datas.resize(edgeX + 1, edgeY + 1, edgeZ + 1);
 
@@ -297,6 +298,7 @@ public:
 	arr3<DataClass> datas;
 
 	P cellSize;
+	P subDivide;
 };
 
 #define GRID_PosFunc(func,dataType) auto func = [&](dataType& data, P pntPos, int pntInx)
