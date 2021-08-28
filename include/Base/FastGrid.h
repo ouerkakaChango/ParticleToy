@@ -370,3 +370,38 @@ public:
 
 #define GRID_PosFunc(func,dataType) auto func = [&](dataType& data, P pntPos, int pntInx)
 #define GRID_CellFunc(func,dataType) auto func = [&](const arr<P>& cellPnts, const arr<dataType*>& cellDatas)
+
+template<class T>
+class UnitCell3D
+{
+public:
+	UnitCell3D(const arr<P>& datas_)
+	{
+		pnts = {
+			P(0,0,0),
+			P(1,0,0),
+			P(1,1,0),
+			P(0,1,0),
+			P(0,0,1),
+			P(1,0,1),
+			P(1,1,1),
+			P(0,1,1)
+		};
+		datas = datas_;
+	}
+
+	void DoByPos(std::function<void(T& data, P pntPos, int pntInx)> func)
+	{
+		for (int i = 0; i < 8; i++)
+		{
+			func(datas[i],pnts[i],i);
+		}
+	}
+
+	arr<T> datas;
+protected:
+	arr<P> pnts;
+};
+
+//### global grid Utility
+P uvInCell(P pos, const arr<P>& cellPos);

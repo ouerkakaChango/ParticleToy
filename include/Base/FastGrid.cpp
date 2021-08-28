@@ -26,3 +26,12 @@ void FastGridToTri(const FastGrid<double>& grid, arr<Tri>& triArr)
 	}
 }
 //### Global FastGrid
+
+//### global grid Utility
+P uvInCell(P pos, const arr<P>& cellPos)
+{
+	//按照FastGrid3D里的返回，第1个是小点，第7个是大点
+	P cellSize = cellPos[6] - cellPos[0];
+	return (pos - cellPos[0]) / cellSize;
+}
+//### global grid Utility

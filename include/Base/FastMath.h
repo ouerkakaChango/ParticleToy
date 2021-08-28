@@ -144,6 +144,8 @@ T lerpRate(T a, T b, T2 re,T tolerance=0.000001)
 	return (re - a) / (b - a);
 }
 
+double lerp3D(arr<double> nums, P uvw);
+
 bool SolveQuadra(double a, double b, double c, double& x1, double& x2);
 bool SolveQuadra(P a, P b, P c, double& x1, double& x2);
 double QuadraFiliter(double x1, double x2, double xmin, double xmax);
@@ -153,5 +155,8 @@ int ToDecimal(const int* arr, int n);
 
 int ModInx(double x, double cellLength);
 P ModInx(P p, P cellLength);
+
+double smooth5(double t);
+P smooth5(P t);
 
 #define PI 3.1415926

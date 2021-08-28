@@ -512,6 +512,21 @@ cplx conju(const cplx& c)
 
 //### Global Utility
 
+double lerp3D(arr<double> nums, P uvw)
+{
+	double lerpx1 = lerp(nums[0], nums[1], uvw.x);
+	double lerpx2 = lerp(nums[3], nums[2], uvw.x);
+	double lerpy1 = lerp(lerpx1, lerpx2, uvw.y);
+
+	double lerpx3 = lerp(nums[4], nums[5], uvw.x);
+	double lerpx4 = lerp(nums[7], nums[6], uvw.x);
+	double lerpy2 = lerp(lerpx3, lerpx4, uvw.y);
+
+	double lerpz = lerp(lerpy1, lerpy2, uvw.z);
+
+	return lerpz;
+}
+
 bool SolveQuadra(double a, double b, double c, double& x1, double& x2)
 {
 	if (abs(a) < 0.00001)
@@ -729,5 +744,17 @@ P ModInx(P p, P cellLength)
 	return P(ModInx(p.x, cellLength.x),
 		ModInx(p.y, cellLength.y),
 		ModInx(p.z, cellLength.z));
+}
+
+double smooth5(double t)
+{
+	return t * t * t * (t * (t * 6 - 15) + 10);
+}
+
+P smooth5(P t)
+{
+	return P(smooth5(t.x),
+		smooth5(t.y),
+		smooth5(t.z));
 }
 //### Global Utility

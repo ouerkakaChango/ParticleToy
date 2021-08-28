@@ -47,14 +47,26 @@ void PerlinNoiseI3D<double>::CreateGradGrid()
 template<>
 void PerlinNoiseI3D<double>::SetDataByGrad()
 {
-	GRID_PosFunc(func, double)
+	GRID_PosFunc(func_setNoise, double)
 	{
 		//1.by pos, GetCellData from grad
 		arr<P> cellPnts;
 		arr<P> cellDatas;
 		grad.getCellDataByPos(pntPos, cellPnts, cellDatas);
-		int aa = 1;
+		P uvw = uvInCell(pntPos, cellPnts);
+		arr<double> nums;
+		UnitCell3D<P> cell(cellDatas);
+		GRID_PosFunc(func_calcuInCell, P)
+		{
+			//2.将结果保存在x分量中
+			nums += dot(data,uvw - pntPos);
+		};
+		cell.DoByPos(func_calcuInCell);
+		uvw = smooth5(uvw);
+		//3.见2，所以Interp X分量
+		data = lerp3D(nums, uvw);
+
 	};
-	data->DoByPos(func);
+	data->DoByPos(func_setNoise);
 }
 //### PerlinNoiseI3D
