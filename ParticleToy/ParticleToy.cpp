@@ -74,8 +74,8 @@ int main()
 
 	//#######################################
 	Grid* bboxGrid = new Grid;
-	bboxGrid->SetGrid3DSettings<double>(40, 40, 40, 1.0, 0.0);
+	bboxGrid->SetGrid3DSettings<double>(20, 20, 20, 1.0, 0.0);
 	auto& grid = Cast<Grid3DI<double>*>(bboxGrid->i[0])->grid;
-	PerlinNoise pNoise(&grid); //default resolution
+	PerlinNoise pNoise(&grid,P(10,10,10)); 
 	return 0;
 }

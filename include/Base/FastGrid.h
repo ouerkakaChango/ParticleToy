@@ -1,7 +1,7 @@
 #pragma once
 #include "FastMath.h"
 
-template<class DataClass>
+template<class T>
 class FastGrid
 {
 public:
@@ -27,7 +27,7 @@ public:
 		}
 	}
 
-	void Mix(int x, int y, const DataClass& data)
+	void Mix(int x, int y, const T& data)
 	{
 		auto ori = datas[x][y];
 		if (zero(ori))
@@ -40,7 +40,7 @@ public:
 		}
 	}
 
-	void Set(const P2& inx, const DataClass& data)
+	void Set(const P2& inx, const T& data)
 	{
 		if (inx.x < 0 || inx.y < 0 || inx.x >= datas.x || inx.y >= datas.y)
 		{
@@ -78,9 +78,9 @@ public:
 		}
 	}
 
-	DataClass Get(const P2& inx)
+	T Get(const P2& inx)
 	{
-		DataClass re;
+		T re;
 		if (inx.x < 0 || inx.y < 0 || inx.x >= datas.x || inx.y >= datas.y)
 		{
 			abort();
@@ -119,7 +119,7 @@ public:
 		}
 	}
 
-	void DoByPos(std::function<void(DataClass& data, P2 pntPos)> func)
+	void DoByPos(std::function<void(T& data, P2 pntPos)> func)
 	{
 		for (int j = 0; j < pnts.y; j++)
 		{
@@ -131,17 +131,17 @@ public:
 	}
 
 	arr2<P2> pnts;
-	arr2<DataClass> datas;
+	arr2<T> datas;
 };
 
 class Tri;
 void FastGridToTri(const FastGrid<double>& grid, arr<Tri>& triArr);
 
-template<class DataClass>
+template<class T>
 class FastGrid3D
 {
 public:
-	void SetSize(int edgeX, int edgeY, int edgeZ, P cell, const DataClass& defaultData)
+	void SetSize(int edgeX, int edgeY, int edgeZ, P cell, const T& defaultData)
 	{
 		cellSize = cell;
 		subDivide = P(edgeX, edgeY, edgeZ);
@@ -165,12 +165,12 @@ public:
 		}
 	}
 
-	void SetSize(int edgeX, int edgeY, int edgeZ, double cellLength, const DataClass& defaultData)
+	void SetSize(int edgeX, int edgeY, int edgeZ, double cellLength, const T& defaultData)
 	{
 		SetSize(edgeX, edgeY, edgeZ, P(cellLength, cellLength, cellLength), defaultData);
 	}
 
-	void SetSize(P edgeNum, P cell, const DataClass& defaultData)
+	void SetSize(P edgeNum, P cell, const T& defaultData)
 	{
 		SetSize(edgeNum.x, edgeNum.y, edgeNum.z, cell, defaultData);
 	}
@@ -180,7 +180,7 @@ public:
 		return i  + j * pnts.y + k * pnts.x * pnts.y;
 	}
 
-	void DoByPos(std::function<void(DataClass& data, P pntPos, int pntInx)> func)
+	void DoByPos(std::function<void(T& data, P pntPos, int pntInx)> func)
 	{
 		for (int k = 0; k < pnts.z; k++)
 		{
@@ -194,7 +194,7 @@ public:
 		}
 	}
 
-	void DoByInx(std::function<void(DataClass& data)> func)
+	void DoByInx(std::function<void(T& data)> func)
 	{
 		for (int k = 0; k < pnts.z; k++)
 		{
@@ -209,7 +209,7 @@ public:
 		}
 	}
 
-	void DoByNearest(std::function<void(DataClass& data, P dir, int otherInx)> func)
+	void DoByNearest(std::function<void(T& data, P dir, int otherInx)> func)
 	{
 		for (int k = 0; k < pnts.z; k++)
 		{
@@ -217,7 +217,7 @@ public:
 			{
 				for (int i = 0; i < pnts.x; i++)
 				{
-					DataClass& data = datas[i][j][k];
+					T& data = datas[i][j][k];
 					//x dir
 					if (i - 1 >= 0)
 					{
@@ -250,7 +250,7 @@ public:
 		}
 	}
 
-	void DoByCell(std::function<void(const arr<P>& cellPnts, const arr<DataClass*>& cellDatas)> func)
+	void DoByCell(std::function<void(const arr<P>& cellPnts, const arr<T*>& cellDatas)> func)
 	{
 		for (int k = 0; k < pnts.z-1; k++)
 		{
@@ -260,16 +260,9 @@ public:
 				{
 					//gather cell vertices
 					arr<P> cellPnts;
-					cellPnts += pnts[i][j][k];
-					cellPnts += pnts[i+1][j][k];
-					cellPnts += pnts[i+1][j+1][k];
-					cellPnts += pnts[i][j+1][k];
-					cellPnts += pnts[i][j][k+1];
-					cellPnts += pnts[i+1][j][k+1];
-					cellPnts += pnts[i+1][j+1][k+1];
-					cellPnts += pnts[i][j+1][k+1];
+					GetCellPos(i, j, k, cellPnts);
 
-					arr<DataClass*> cellDatas;
+					arr<T*> cellDatas;
 					cellDatas += &datas[i][j][k];
 					cellDatas += &datas[i + 1][j][k];
 					cellDatas += &datas[i + 1][j + 1][k];
@@ -282,6 +275,75 @@ public:
 				}
 			}
 		}
+	}
+
+	void getCellDataByPos(P pntPos, arr<P>& cellPnts, arr<T>& cellDatas)
+	{
+		
+		P inx = GetCellInx(pntPos);
+
+		cellPnts.clear();
+		cellDatas.clear();
+
+		GetCellPos(inx, cellPnts);
+		GetCellData(inx, cellDatas);
+	}
+
+	P GetCellInx(P pntPos)
+	{
+		P startPos = pnts[0][0][0];
+		P local = pntPos - startPos;
+		P inx = ModInx(local, cellSize);
+		
+		//在计算pntPos的cellInx的时候，计算的是cell内的左下方点，
+		//但是当p正好在右上方的时候，用Mod已经越过了这个cell，正好在(+1,+1,+1)的左下方点，需要-1处理
+		if (equal(inx.x,subDivide.x))
+		{
+			inx.x -= 1;
+		}
+		if (equal(inx.y, subDivide.y))
+		{
+			inx.y -= 1;
+		}
+		if (equal(inx.z, subDivide.z))
+		{
+			inx.z -= 1;
+		}
+		return inx;
+	}
+
+	void GetCellPos(int i, int j, int k, arr<P>& cellPnts)
+	{
+		cellPnts += pnts[i][j][k];
+		cellPnts += pnts[i + 1][j][k];
+		cellPnts += pnts[i + 1][j + 1][k];
+		cellPnts += pnts[i][j + 1][k];
+		cellPnts += pnts[i][j][k + 1];
+		cellPnts += pnts[i + 1][j][k + 1];
+		cellPnts += pnts[i + 1][j + 1][k + 1];
+		cellPnts += pnts[i][j + 1][k + 1];
+	}
+
+	void GetCellPos(P inx, arr<P>& cellPnts)
+	{
+		GetCellPos(inx.x, inx.y, inx.z, cellPnts);
+	}
+
+	void GetCellData(int i, int j, int k, arr<T>& cellDatas)
+	{
+		cellDatas += datas[i][j][k];
+		cellDatas += datas[i + 1][j][k];
+		cellDatas += datas[i + 1][j + 1][k];
+		cellDatas += datas[i][j + 1][k];
+		cellDatas += datas[i][j][k + 1];
+		cellDatas += datas[i + 1][j][k + 1];
+		cellDatas += datas[i + 1][j + 1][k + 1];
+		cellDatas += datas[i][j + 1][k + 1];
+	}
+
+	void GetCellData(P inx, arr<T>& cellDatas)
+	{
+		GetCellData(inx.x, inx.y, inx.z, cellDatas);
 	}
 
 	void Centerlize()
@@ -300,7 +362,7 @@ public:
 	}
 
 	arr3<P> pnts;
-	arr3<DataClass> datas;
+	arr3<T> datas;
 
 	P cellSize;
 	P subDivide;

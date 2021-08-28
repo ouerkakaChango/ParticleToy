@@ -122,8 +122,8 @@ double sign(double n);
 double rand01();
 int randInt(int b);
 double rand_norm(double mean, double standardDeviation);
-double equal(double a, double b, double tolerance = 0.00001);
-double equal(P a, P b, double tolerance = 0.00001);
+bool equal(double a, double b, double tolerance = 0.00001);
+bool equal(P a, P b, double tolerance = 0.00001);
 bool zero(double n);
 bool zero(const P2& p);
 bool zero(const P& p);
@@ -150,5 +150,8 @@ double QuadraFiliter(double x1, double x2, double xmin, double xmax);
 bool BisecitonSolve(std::function<double(double)> func, double tmin, double tmax, double& t, double tolerance = 0.000001);
 
 int ToDecimal(const int* arr, int n);
+
+int ModInx(double x, double cellLength);
+P ModInx(P p, P cellLength);
 
 #define PI 3.1415926

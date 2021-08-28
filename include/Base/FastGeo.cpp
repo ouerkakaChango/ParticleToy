@@ -467,6 +467,7 @@ IntersectInfo Tri::Collide(const Sphere& s) const
 
 	re.hitP = project(s.center, *this);
 	re.d = dis(s.center,re.hitP);
+	//!!! 以前side写的有问题，这边好像也没出错？逻辑问题一直没管
 	re.hitR = side(s.r, re.d);
 	//1.保证投影竖直方向上相交
 	if (s.r <= re.d)

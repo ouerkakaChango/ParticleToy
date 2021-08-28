@@ -26,6 +26,8 @@ void PerlinNoiseI3D<double>::Init(P resolution_)
 	rs_grad.Init(&PerlinGrad3D_12);
 
 	CreateGradGrid();
+
+	SetDataByGrad();
 }
 
 template<>
@@ -40,6 +42,19 @@ void PerlinNoiseI3D<double>::CreateGradGrid()
 		data = rs_grad.Get();
 	};
 	grad.DoByPos(func);
-	int aa = 1;
+}
+
+template<>
+void PerlinNoiseI3D<double>::SetDataByGrad()
+{
+	GRID_PosFunc(func, double)
+	{
+		//1.by pos, GetCellData from grad
+		arr<P> cellPnts;
+		arr<P> cellDatas;
+		grad.getCellDataByPos(pntPos, cellPnts, cellDatas);
+		int aa = 1;
+	};
+	data->DoByPos(func);
 }
 //### PerlinNoiseI3D

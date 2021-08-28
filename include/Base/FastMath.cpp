@@ -632,12 +632,12 @@ double rand_norm(double mean, double standardDeviation)
 	return distri(rand_engine);
 }
 
-double equal(double a, double b, double tolerance)
+bool equal(double a, double b, double tolerance)
 {
 	return std::abs(a - b) < tolerance;
 }
 
-double equal(P a, P b, double tolerance)
+bool equal(P a, P b, double tolerance)
 {
 	return equal(a.x, b.x, tolerance) &&
 		equal(a.y, b.y, tolerance) &&
@@ -661,7 +661,7 @@ bool zero(const P& p)
 
 double side(double hypotenuse, double side1)
 {
-	return hypotenuse * hypotenuse - side1 * side1;
+	return sqrt(hypotenuse * hypotenuse - side1 * side1);
 }
 
 bool BisecitonSolve(std::function<double(double)> func, double tmin, double tmax, double& t, double tolerance)
@@ -713,5 +713,21 @@ int ToDecimal(const int* arr, int n)
 	}
 
 	return re;
+}
+
+int ModInx(double x, double cellLength)
+{
+	if (x < 0 || cellLength <= 0)
+	{
+		abort();
+	}
+	return static_cast<int>((x - fmod(x, cellLength)) / cellLength);
+}
+
+P ModInx(P p, P cellLength)
+{
+	return P(ModInx(p.x, cellLength.x),
+		ModInx(p.y, cellLength.y),
+		ModInx(p.z, cellLength.z));
 }
 //### Global Utility
