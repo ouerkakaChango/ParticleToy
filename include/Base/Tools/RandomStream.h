@@ -1,26 +1,27 @@
 #pragma once
-#include "Taiji.h"
-
-class RandomStream
-{
-THISY(RandomStream)
-
-	template<class T>
-	void Init(arr<T>* pool)
-	{
-		i += new RandomStreamIArray<T>(pool);
-	}
-
-};
+#include "Container.h"
+#include "FastMath.h"
 
 template <class T>
-class RandomStreamIArray : public ClassI
+T randElem(const arr<T> pool)
+{
+	return pool[randInt(pool.size())];
+}
+
+template<class T>
+class RandomStream
 {
 public:
-	RandomStreamIArray(arr<T>* pool_)
+
+	void Init(arr<T>* pool_)
 	{
 		pool = pool_;
 	}
 
-	arr<T>* pool;
+	T Get()
+	{
+		return randElem(*pool);
+	}
+
+	arr<T>* pool=nullptr;
 };

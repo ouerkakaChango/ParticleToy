@@ -610,17 +610,17 @@ double sign(double n)
 
 double rand01()
 {
-	//static std::default_random_engine e;        // 生成无符号随机整数
-	//// 0 到 1 （包含）的均匀分布
-	//static std::uniform_real_distribution<double>u(0, 1);
-	//return u(e);
-
 	//!!! 为了和randP 统一，随机种子也改成mt19937
 	P re;
 	std::uniform_real_distribution<double> unidis(0, 1);
 	std::random_device rand_dev;
 	std::mt19937 rand_engine(rand_dev());
 	return unidis(rand_engine);
+}
+
+int randInt(int b)
+{
+	return static_cast<int>(b * rand01());
 }
 
 double rand_norm(double mean, double standardDeviation)

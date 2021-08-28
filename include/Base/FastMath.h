@@ -120,6 +120,7 @@ double max(double a, double b);
 double min(double a, double b);
 double sign(double n);
 double rand01();
+int randInt(int b);
 double rand_norm(double mean, double standardDeviation);
 double equal(double a, double b, double tolerance = 0.00001);
 double equal(P a, P b, double tolerance = 0.00001);

@@ -170,6 +170,11 @@ public:
 		SetSize(edgeX, edgeY, edgeZ, P(cellLength, cellLength, cellLength), defaultData);
 	}
 
+	void SetSize(P edgeNum, P cell, const DataClass& defaultData)
+	{
+		SetSize(edgeNum.x, edgeNum.y, edgeNum.z, cell, defaultData);
+	}
+
 	inline int Inx(int i, int j, int k)
 	{
 		return i  + j * pnts.y + k * pnts.x * pnts.y;

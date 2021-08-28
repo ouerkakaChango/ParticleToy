@@ -7,22 +7,39 @@ using std::cout;
 using std::endl;
 
 //### PerlinNoise
-PerlinNoise::PerlinNoise(FastGrid3D<double>* grid, P resolution_)
-	:resolution(resolution_)
+PerlinNoise::PerlinNoise(FastGrid3D<double>* grid, P resolution)
 {
 	auto ti = new PerlinNoiseI3D<double>;
-	ti->grid = grid;
+	ti->data = grid;
+	ti->Init(resolution);
 	i += ti;
+}
+//### PerlinNoise
+
+
+//### PerlinNoiseI3D
+template<>
+void PerlinNoiseI3D<double>::Init(P resolution_)
+{
+	resolution = resolution_;
 
 	rs_grad.Init(&PerlinGrad3D_12);
 
-	CreateGradGrid(grid);
+	CreateGradGrid();
 }
 
-void PerlinNoise::CreateGradGrid(FastGrid3D<double>* dataGrid)
+template<>
+void PerlinNoiseI3D<double>::CreateGradGrid()
 {
-	P size = dataGrid->cellSize * dataGrid->subDivide;
-	cout << "Create gradGrid size:"+size.ToStr()+" ,resolution:"+resolution.ToStr();
+	P size = data->cellSize * data->subDivide;
+	cout << "Create gradGrid size:" + size.ToStr() + " ,resolution:" + resolution.ToStr();
+	P gCellSize = size / resolution;
+	grad.SetSize(resolution, gCellSize, P(0, 0, 0));
+	GRID_PosFunc(func, P)
+	{
+		data = rs_grad.Get();
+	};
+	grad.DoByPos(func);
+	int aa = 1;
 }
-
-//### PerlinNoise
+//### PerlinNoiseI3D

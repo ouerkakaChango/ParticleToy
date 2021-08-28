@@ -8,13 +8,7 @@
 class PerlinNoise : public Noise
 {
 public:
-	PerlinNoise(FastGrid3D<double>* grid,P resolution_=P(25,25,25));			//auto noise resolution
-
-
-	RandomStream rs_grad;
-	P resolution;
-protected:
-	void CreateGradGrid(FastGrid3D<double>* dataGrid);
+	PerlinNoise(FastGrid3D<double>* grid,P resolution=P(25,25,25));			//auto noise resolution
 };
 
 class PerlinNoiseI : public NoiseI
@@ -27,5 +21,11 @@ template<class T>
 class PerlinNoiseI3D : public PerlinNoiseI
 {
 public:
-	FastGrid3D<T>* grid = nullptr;
+	void Init(P resolution_);
+	void CreateGradGrid();
+
+	P resolution;
+	RandomStream<P> rs_grad;
+	FastGrid3D<T>* data = nullptr;
+	FastGrid3D<P> grad;
 };
