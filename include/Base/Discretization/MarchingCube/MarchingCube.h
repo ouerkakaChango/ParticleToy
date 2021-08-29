@@ -2,8 +2,8 @@
 #include "FastGrid.h"
 #include "FastGeo.h"
 
-//最原始的MarchingCube算法，有时会出现破洞（大部分情况下破洞占比很少或没有）
-//google 搜Marching Cube ambiguity
+//houdini可视化后有时会出现破洞（大部分情况下破洞占比很少或没有）
+//查了很久也不知道为啥，不知道是原始算法的原因还是我哪里有诡异的bug（按理应该没有），还是houdini显示有bug
 
 namespace Discretization
 {
