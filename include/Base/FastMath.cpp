@@ -317,6 +317,11 @@ double dis2(const P& p1, const P& p2)
 	return dot(d, d);
 }
 
+double saturate(double n)
+{
+	return clamp(n, 0, 1);
+}
+
 P saturate(const P& p)
 {
 	return P(
@@ -721,7 +726,7 @@ int ToDecimal(const int* arr, int n)
 	int re=0;
 	for (int i = 0; i < n; i++)
 	{
-		if (arr[n - i - 1])
+		if (arr[n - i - 1] == 1)
 		{
 			re += (int)pow(2, i);
 		}

@@ -48,8 +48,9 @@ int main()
 	//auto weightFunc = wf_solidSphere;
 	//Grid* bboxGrid = new Grid;
 	//{
-	//	//1000 个 cell
-	//	bboxGrid->SetGrid3DSettings<double>(10, 10, 10, 0.4f, 0.0);
+	//	double divide = 40;
+	//	double edgelen = 4.0 / divide;
+	//	bboxGrid->SetGrid3DSettings<double>(divide, divide, divide, edgelen, 0.0);
 	//	auto& grid3d = Cast<Grid3DI<double>*>(bboxGrid->i[0])->grid;
 	//	grid3d.Centerlize();
 	//	GRID_PosFunc(f_initGrid, double)
@@ -58,7 +59,7 @@ int main()
 	//		//cout << pntPos.ToStr() <<" "<< data<< endl;
 	//		if (data > 0.5)
 	//		{
-	//			//pWriter.addPoint(pntPos);
+	//			pWriter.addPoint(pntPos);
 	//		}
 	//	};
 	//	grid3d.DoByPos(f_initGrid);
@@ -69,13 +70,46 @@ int main()
 	//
 	//	triWriter.Load(&mcube_algo.triArr);
 	//	triWriter.Write("D:/HoudiniProj/PToyScene/MCube_tris.txt");
-	//	//pWriter.Write("D:/HoudiniProj/PToyScene/MCube_pnts.txt");
+	//	pWriter.Write("D:/HoudiniProj/PToyScene/MCube_pnts.txt");
 	//}
 
 	//#######################################
 	Grid* bboxGrid = new Grid;
 	bboxGrid->SetGrid3DSettings<double>(20, 20, 20, 1.0, 0.0);
 	auto& grid = Cast<Grid3DI<double>*>(bboxGrid->i[0])->grid;
-	PerlinNoise pNoise(&grid,P(10,10,10)); 
+	PerlinNoise pNoise(&grid,P(5,5,5)); 
+	
+	MarchingCube mcube_algo;
+	mcube_algo.SetSurface(0.5);
+	mcube_algo.March(grid);
+	
+	StaticTriWriter triWriter;
+	triWriter.SetWriteMode(WriteMode_Houdini);
+	triWriter.Load(&mcube_algo.triArr);
+	triWriter.Write("D:/HoudiniProj/PToyScene/MCube_pnoise.txt");
+	
+	StaticPointWriter pWriter;
+	pWriter.SetWriteMode(WriteMode_Houdini);
+	GRID_PosFunc(f_writePoints, double)
+	{
+		if (data >= 0.5)
+		{
+			pWriter.addPoint(pntPos);
+		}
+	};
+	grid.DoByPos(f_writePoints);
+	pWriter.Write("D:/HoudiniProj/PToyScene/MCube_pnoisePnts.txt");
+
+	//####################################### 
+	
+	//MarchingCube mcube_algo;
+	//mcube_algo.SetSurface(0.5);
+	//mcube_algo.TestAll();
+	//
+	//StaticTriWriter triWriter;
+	//triWriter.SetWriteMode(WriteMode_Houdini);
+	//triWriter.Load(&mcube_algo.triArr);
+	//triWriter.Write("D:/HoudiniProj/PToyScene/MCube_test.txt");
+
 	return 0;
 }

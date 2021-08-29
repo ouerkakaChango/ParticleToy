@@ -375,7 +375,7 @@ template<class T>
 class UnitCell3D
 {
 public:
-	UnitCell3D(const arr<P>& datas_)
+	UnitCell3D(const arr<T>& datas_)
 	{
 		pnts = {
 			P(0,0,0),
@@ -399,7 +399,6 @@ public:
 	}
 
 	arr<T> datas;
-protected:
 	arr<P> pnts;
 };
 

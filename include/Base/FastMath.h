@@ -73,6 +73,7 @@ P safeNorm(const P& p);
 P reflect(const P& i, const P& n);
 double dis(const P& p1, const P& p2);
 double dis2(const P& p1, const P& p2);
+double saturate(double n);
 P saturate(const P& p);
 P abs(const P& p);
 P max(const P& p, double n);
