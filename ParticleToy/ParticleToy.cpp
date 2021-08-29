@@ -74,13 +74,14 @@ int main()
 	//}
 
 	//#######################################
+	double surface = 0.2;
 	Grid* bboxGrid = new Grid;
-	bboxGrid->SetGrid3DSettings<double>(20, 20, 20, 1.0, 0.0);
+	bboxGrid->SetGrid3DSettings<double>(20,20,20, 1.0, 0.0);
 	auto& grid = Cast<Grid3DI<double>*>(bboxGrid->i[0])->grid;
-	PerlinNoise pNoise(&grid,P(5,5,5)); 
+	PerlinNoise pNoise(&grid,P(4,4,4)); 
 	
 	MarchingCube mcube_algo;
-	mcube_algo.SetSurface(0.5);
+	mcube_algo.SetSurface(surface);
 	mcube_algo.March(grid);
 	
 	StaticTriWriter triWriter;
@@ -92,7 +93,7 @@ int main()
 	pWriter.SetWriteMode(WriteMode_Houdini);
 	GRID_PosFunc(f_writePoints, double)
 	{
-		if (data >= 0.5)
+		if (data >= surface)
 		{
 			pWriter.addPoint(pntPos);
 		}
