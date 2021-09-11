@@ -766,12 +766,24 @@ P ModInx(P p, P cellLength)
 		ModInx(p.z, cellLength.z));
 }
 
+double smooth3(double t)
+{
+	return t * t * (3.0 - 2.0 * t);
+}
+
+P smooth3(const P& t)
+{
+	return P(smooth3(t.x),
+		smooth3(t.y),
+		smooth3(t.z));
+}
+
 double smooth5(double t)
 {
 	return t * t * t * (t * (t * 6 - 15) + 10);
 }
 
-P smooth5(P t)
+P smooth5(const P& t)
 {
 	return P(smooth5(t.x),
 		smooth5(t.y),

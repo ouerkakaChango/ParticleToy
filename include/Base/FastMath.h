@@ -160,7 +160,10 @@ int ToDecimal(const int* arr, int n);
 int ModInx(double x, double cellLength);
 P ModInx(P p, P cellLength);
 
+double smooth3(double t);
+P smooth3(const P& t);
+
 double smooth5(double t);
-P smooth5(P t);
+P smooth5(const P& t);
 
 #define PI 3.1415926

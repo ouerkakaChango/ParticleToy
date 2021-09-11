@@ -285,6 +285,15 @@
     <ClInclude Include="..\include\Base\Tools\RandomStream.h">
       <Filter>头文件\Base\Tools</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\Base\Noise\FracNoise.h">
+      <Filter>头文件\Base\Noise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Base\Noise\CellNoise.h">
+      <Filter>头文件\Base\Noise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Base\Noise\FBM.h">
+      <Filter>头文件\Base\Noise</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -454,6 +463,15 @@
     </ClCompile>
     <ClCompile Include="..\include\Base\Tools\RandomStream.cpp">
       <Filter>源文件\Base\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\Noise\FracNoise.cpp">
+      <Filter>源文件\Base\Noise</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\Noise\CellNoise.cpp">
+      <Filter>源文件\Base\Noise</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\Noise\FBM.cpp">
+      <Filter>源文件\Base\Noise</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -181,6 +181,9 @@
     <ClInclude Include="..\include\Base\FileHelper\StaticPointWriter.h" />
     <ClInclude Include="..\include\Base\FileHelper\StaticTriWriter.h" />
     <ClInclude Include="..\include\Base\FileHelper\WriterUtility.h" />
+    <ClInclude Include="..\include\Base\Noise\CellNoise.h" />
+    <ClInclude Include="..\include\Base\Noise\FBM.h" />
+    <ClInclude Include="..\include\Base\Noise\FracNoise.h" />
     <ClInclude Include="..\include\Base\Noise\Noise.h" />
     <ClInclude Include="..\include\Base\Noise\NoiseUtility.h" />
     <ClInclude Include="..\include\Base\Noise\PerlinNoise.h" />
@@ -238,6 +241,9 @@
     <ClCompile Include="..\include\Base\FileHelper\StaticPointWriter.cpp" />
     <ClCompile Include="..\include\Base\FileHelper\StaticTriWriter.cpp" />
     <ClCompile Include="..\include\Base\FileHelper\WriterUtility.cpp" />
+    <ClCompile Include="..\include\Base\Noise\CellNoise.cpp" />
+    <ClCompile Include="..\include\Base\Noise\FBM.cpp" />
+    <ClCompile Include="..\include\Base\Noise\FracNoise.cpp" />
     <ClCompile Include="..\include\Base\Noise\Noise.cpp" />
     <ClCompile Include="..\include\Base\Noise\NoiseUtility.cpp" />
     <ClCompile Include="..\include\Base\Noise\PerlinNoise.cpp" />
