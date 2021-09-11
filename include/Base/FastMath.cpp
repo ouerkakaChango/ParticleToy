@@ -602,6 +602,21 @@ double QuadraFiliter(double x1, double x2, double xmin, double xmax)
 	return 0.0;
 }
 
+P floor(P p)
+{
+	return P(floor(p.x), floor(p.y), floor(p.z));
+}
+
+double frac(double x)
+{
+	return x - floor(x);
+}
+
+P frac(P p)
+{
+	return P(frac(p.x), frac(p.y), frac(p.z));
+}
+
 double clamp(double x, double low, double high)
 {
 	if (high < low)

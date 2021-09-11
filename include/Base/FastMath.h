@@ -116,6 +116,9 @@ cplx operator*(double n, const cplx& c);
 cplx e_cplx(double w, double A=1.0);
 cplx conju(const cplx& c);
 
+P floor(P p);
+double frac(double x);
+P frac(P p);
 double clamp(double x, double low, double high);
 double max(double a, double b);
 double min(double a, double b);

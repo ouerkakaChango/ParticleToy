@@ -30,6 +30,15 @@ class Grid : public EuclideanSpace
 		auto& grid = ti->grid;
 		grid.SetSize(edgeX, edgeY, edgeZ, cellLength, defaultData);
 	}
+
+	template<class DataClass>
+	void SetGrid3DSettings(int edgeX, int edgeY, int edgeZ, P cell, const DataClass& defaultData)
+	{
+		auto ti = new Grid3DI<DataClass>;
+		i += ti;
+		auto& grid = ti->grid;
+		grid.SetSize(edgeX, edgeY, edgeZ, cell, defaultData);
+	}
 };
 
 template <class DataClass>

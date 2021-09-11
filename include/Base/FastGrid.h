@@ -194,6 +194,20 @@ public:
 		}
 	}
 
+	void DoByIDPos(std::function<void(T& data, int i,int j,int k, P pntPos, int pntInx)> func)
+	{
+		for (int k = 0; k < pnts.z; k++)
+		{
+			for (int j = 0; j < pnts.y; j++)
+			{
+				for (int i = 0; i < pnts.x; i++)
+				{
+					func(datas[i][j][k], i,j,k, pnts[i][j][k], Inx(i, j, k));
+				}
+			}
+		}
+	}
+
 	void DoByInx(std::function<void(T& data)> func)
 	{
 		for (int k = 0; k < pnts.z; k++)
@@ -369,6 +383,7 @@ public:
 };
 
 #define GRID_PosFunc(func,dataType) auto func = [&](dataType& data, P pntPos, int pntInx)
+#define GRID_IDPosFunc(func,dataType) auto func = [&](dataType& data, int i,int j,int k, P pntPos, int pntInx)
 #define GRID_CellFunc(func,dataType) auto func = [&](const arr<P>& cellPnts, const arr<dataType*>& cellDatas)
 
 template<class T>
