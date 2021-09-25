@@ -133,6 +133,18 @@
     <Filter Include="头文件\Base\Noise">
       <UniqueIdentifier>{3f2cf468-a033-43fa-8d60-751abca12634}</UniqueIdentifier>
     </Filter>
+    <Filter Include="资源文件\Backup">
+      <UniqueIdentifier>{0ffb0a06-96f4-430a-bb4b-fc9d15d1175d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="资源文件\pex">
+      <UniqueIdentifier>{79b98968-a0d2-47e2-be9f-b08568ec6e39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Interpreter">
+      <UniqueIdentifier>{c75be376-c10f-4dd2-8248-23fc9aa78a63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Interpreter">
+      <UniqueIdentifier>{fad45af7-257f-4e6d-8f03-7cd128057e7a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -294,6 +306,12 @@
     <ClInclude Include="..\include\Base\Noise\FBM.h">
       <Filter>头文件\Base\Noise</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\Interpreter\Interpreter.h">
+      <Filter>头文件\Interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Interpreter\InterpUtility.h">
+      <Filter>头文件\Interpreter</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -332,12 +350,6 @@
     <ClCompile Include="..\include\Base\FastGrid.cpp">
       <Filter>源文件\Base</Filter>
     </ClCompile>
-    <ClCompile Include="..\Backup\golf.cpp">
-      <Filter>资源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Backup\threebody.cpp">
-      <Filter>资源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\include\Base\Solvers\SolverUtility.cpp">
       <Filter>源文件\Base\Solvers</Filter>
     </ClCompile>
@@ -355,9 +367,6 @@
     </ClCompile>
     <ClCompile Include="..\include\Base\TickUtility.cpp">
       <Filter>源文件\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Backup\molecule.cpp">
-      <Filter>资源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\include\Base\Spaces\Spaces.cpp">
       <Filter>源文件\Base\Spaces</Filter>
@@ -422,12 +431,6 @@
     <ClCompile Include="..\include\Base\rayTraceRender\Optimize\RTTraceRequest.cpp">
       <Filter>源文件\Base\rayTraceRender\Optimize</Filter>
     </ClCompile>
-    <ClCompile Include="..\Backup\rayTraceTest.cpp">
-      <Filter>资源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Backup\old_FFTocean.cpp">
-      <Filter>资源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\include\Base\FileHelper\StaticPointWriter.cpp">
       <Filter>源文件\Base\FileHelper</Filter>
     </ClCompile>
@@ -439,9 +442,6 @@
     </ClCompile>
     <ClCompile Include="..\include\Base\Optimize\PToy_OpenMP.cpp">
       <Filter>源文件\Base\Optimize</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Backup\FFTOcean.cpp">
-      <Filter>资源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\include\Base\Discretization\MarchingCube\MarchingCube.cpp">
       <Filter>源文件\Base\Discretization\MarchingCube</Filter>
@@ -474,12 +474,38 @@
       <Filter>源文件\Base\Noise</Filter>
     </ClCompile>
     <ClCompile Include="..\Backup\app_marchingCube.cpp">
-      <Filter>资源文件</Filter>
+      <Filter>资源文件\Backup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Backup\FFTOcean.cpp">
+      <Filter>资源文件\Backup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Backup\golf.cpp">
+      <Filter>资源文件\Backup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Backup\molecule.cpp">
+      <Filter>资源文件\Backup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Backup\old_FFTocean.cpp">
+      <Filter>资源文件\Backup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Backup\rayTraceTest.cpp">
+      <Filter>资源文件\Backup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Backup\threebody.cpp">
+      <Filter>资源文件\Backup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Interpreter\Interpreter.cpp">
+      <Filter>源文件\Interpreter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Backup\testStandard.txt">
-      <Filter>资源文件</Filter>
+      <Filter>资源文件\Backup</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\PythonWorkSpace\pex\testRT.pex">
+      <Filter>资源文件\pex</Filter>
+    </None>
   </ItemGroup>
 </Project>

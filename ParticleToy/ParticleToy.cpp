@@ -2,12 +2,13 @@
 //
 
 #include <iostream>
-
+#include "Interpreter/Interpreter.h"
 using std::cout;
 using std::endl;
 
+using namespace Interp;
 int main()
 {
-
+	Interpreter interp(PEX, PYTHON);
 	return 0;
 }
