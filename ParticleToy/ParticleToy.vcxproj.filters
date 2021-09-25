@@ -473,6 +473,9 @@
     <ClCompile Include="..\include\Base\Noise\FBM.cpp">
       <Filter>源文件\Base\Noise</Filter>
     </ClCompile>
+    <ClCompile Include="..\Backup\app_marchingCube.cpp">
+      <Filter>资源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Backup\testStandard.txt">
