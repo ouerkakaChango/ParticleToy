@@ -497,6 +497,9 @@
     <ClCompile Include="..\include\Interpreter\Interpreter.cpp">
       <Filter>源文件\Interpreter</Filter>
     </ClCompile>
+    <ClCompile Include="..\include\Interpreter\InterpUtility.cpp">
+      <Filter>源文件\Interpreter</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Backup\testStandard.txt">

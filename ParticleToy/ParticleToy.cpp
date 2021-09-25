@@ -9,6 +9,9 @@ using std::endl;
 using namespace Interp;
 int main()
 {
+	str pyWorkPath = "C:\\Users\\hasee\\source\\repos\\ParticleToy\\PythonWorkSpace";
+
 	Interpreter interp(PEX, PYTHON);
+	interp.LoadSrc(pyWorkPath + "/pex/testRT.pex");
 	return 0;
 }

@@ -166,6 +166,7 @@ class str
 {
 public:
 	str() :data(string("")) {}
+	str(const string& data_) :data(data_) {}
 	str(const char* s):data(string(s)) {}
 	str(int n);
 	str operator+(const char* s) const;
@@ -185,6 +186,12 @@ public:
 	inline const char* c_str()
 	{
 		return data.c_str();
+	}
+
+	str clipBack(int start,int size) const
+	{
+		int len = data.size();
+		return data.substr(len-1- start - size, size);
 	}
 
 	string data;

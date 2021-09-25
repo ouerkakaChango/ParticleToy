@@ -13,4 +13,12 @@ namespace Interp
 
 	}
 
+	void Interpreter::LoadSrc(const str& srcPath)
+	{
+		if (!CheckType(srcPath, srcType))
+		{
+			return;
+		}
+	}
+
 }

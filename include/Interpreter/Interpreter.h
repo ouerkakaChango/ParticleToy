@@ -10,6 +10,8 @@ namespace Interp
 		THISY(Interpreter)
 		Interpreter(LanguageType srcType_, LanguageType dstType_);
 
+		void LoadSrc(const str& srcPath);
+
 		LanguageType srcType, dstType;
 	};
 }
