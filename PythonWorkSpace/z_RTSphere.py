@@ -23,9 +23,12 @@ def kernel_initRays(rayPos,rayDir):
     rayPos[i,j,2] = screenPos[2] + screenLeftDownPos[2]
     
     #rayDir
+    rayDir[i,j,0] = rayPos[i,j,0] - screenPos[0]
+    rayDir[i,j,1] = rayPos[i,j,1] - screenPos[1]
+    rayDir[i,j,2] = rayPos[i,j,2] - screenPos[2] - 1
 
 @cuda.jit
-def cudakernel1(rayDir,rayPos,sdf,objSDF,traceDis,tDis,tVec):
+def kernel_SphereSDFTrace(rayPos,rayDir,objSDF,sdf,traceDis,tDis,tVec):
     i,j = cuda.grid(2)
     #print(i,j)
    
@@ -103,25 +106,26 @@ rayPos = np.zeros((w,h,3), np.float32)
 print('Init Kernel launch...')
 kernel_initRays[(w,h,1), 1](rayPos,rayDir)
     
-    #objSDF = np.full((w,h,2), -1.0)
-    #sdf = np.full((w,h,1), -1.0)
-    #traceDis = np.full((w,h,1), -1.0)
-    #tDis = np.full((w,h,1), 0.0)
-    #tVec = np.full((w,h,3), 0.0)
-    #print('Kernel launch...')
-    #cudakernel1[(w,h,1), 1](rayDir,rayPos,sdf,objSDF,traceDis,tDis,tVec)
-    ##print('Updated array:', traceDis)
+worlNorm = np.zeros((w,h,3), np.float32)
+objSDF = np.full((w,h,2), -1.0)
+sdf = np.full((w,h,1), -1.0)
+traceDis = np.full((w,h,1), -1.0)
+tDis = np.full((w,h,1), 0.0)
+tVec = np.full((w,h,3), 0.0)
+print('SphereSDFTrace Kernel launch...')
+kernel_SphereSDFTrace[(w,h,1), 1](rayPos,rayDir,objSDF,sdf,traceDis,tDis,tVec)
+#print('Updated array:', traceDis)
     #
     ##for i in range(w):
     ##    for j in range(h):
     ##        print(i,j,traceDis[i,j,0])
-    #with open('z.txt', 'w') as f:
-    #    f.write(str(w)+' '+str(h)+"\n")
-    #    for j in range(h):
-    #        for i in range(w):
-    #            tt = traceDis[i,j,0]
-    #            if tt < 0 :
-    #                f.write(str(i)+' '+str(j)+" 0 0 0\n")
-    #            else:
-    #                f.write(str(i)+' '+str(j)+" 255 0 0\n")
-    #    f.close()
+with open('z.txt', 'w') as f:
+    f.write(str(w)+' '+str(h)+"\n")
+    for j in range(h):
+        for i in range(w):
+            tt = traceDis[i,j,0]
+            if tt < 0 :
+                f.write(str(i)+' '+str(j)+" 0 0 0\n")
+            else:
+                f.write(str(i)+' '+str(j)+" 255 0 0\n")
+    f.close()
