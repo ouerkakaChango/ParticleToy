@@ -6,11 +6,27 @@ namespace Interp
 	{
 		if (type == LanguageType_pex)
 		{
-			return path.clipBack(0, 4) == ".pex";
+			return path.endWith(".pex");
+		}
+		else if (type == LanguageType_python)
+		{
+			return path.endWith(".py");
 		}
 		else
 		{
 			return false;
+		}
+	}
+
+	LanguageType GetLanguageType(const str& path)
+	{
+		if (path.endWith(".pex"))
+		{
+			return LanguageType_pex;
+		}
+		else if (path.endWith(".py"))
+		{
+			return LanguageType_python;
 		}
 	}
 }

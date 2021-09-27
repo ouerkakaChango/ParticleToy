@@ -9,9 +9,13 @@ namespace Interp
 	{
 		THISY(Interpreter)
 		Interpreter(LanguageType srcType_, LanguageType dstType_);
+		Interpreter(const str& srcPath_, const str& dstPath_);
 
-		void LoadSrc(const str& srcPath);
+		bool LoadSrc();
+		void Interp();
+		bool CheckTypeValid();
 
 		LanguageType srcType, dstType;
+		str srcPath, dstPath;
 	};
 }

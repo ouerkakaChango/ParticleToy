@@ -11,7 +11,10 @@ int main()
 {
 	str pyWorkPath = "C:\\Users\\hasee\\source\\repos\\ParticleToy\\PythonWorkSpace";
 
-	Interpreter interp(PEX, PYTHON);
-	interp.LoadSrc(pyWorkPath + "/pex/testRT.pex");
+	//Interpreter interp(PEX, PYTHON);
+	//interp.LoadSrc(pyWorkPath + "/pex/testRT.pex");
+
+	Interpreter interp(pyWorkPath + "/pex/testRT.pex", pyWorkPath + "/pex/testRT_INTERP.py");
+	interp.Interp();
 	return 0;
 }

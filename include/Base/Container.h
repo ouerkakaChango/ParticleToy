@@ -191,7 +191,17 @@ public:
 	str clipBack(int start,int size) const
 	{
 		int len = data.size();
-		return data.substr(len-1- start - size, size);
+		return data.substr(len- start - size, size);
+	}
+
+	bool endWith(const str& last) const
+	{
+		return clipBack(0, last.size()) == last;
+	}
+
+	int size() const
+	{
+		return data.size();
 	}
 
 	string data;
