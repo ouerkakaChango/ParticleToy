@@ -1,5 +1,6 @@
 #include "Interpreter.h"
 
+#include "InterpLanguageHeader.h"
 #include <iostream>
 
 using std::cout;
@@ -28,6 +29,8 @@ namespace Interp
 	bool Interpreter::LoadSrc()
 	{
 		//???
+		auto to = Cast<InterpreterO*>(o[0]);
+		to->Load(srcPath);
 		return true;
 	}
 
@@ -37,7 +40,8 @@ namespace Interp
 		{
 			abort();
 		}
-		cout << "Interping...";
+		cout << "Interping..."<<endl;
+		Init();
 		if (!LoadSrc())
 		{
 			return;
@@ -48,6 +52,20 @@ namespace Interp
 	{
 		return srcType != LanguageType_unknown && dstType != LanguageType_unknown &&
 			CheckType(srcPath, srcType) && CheckType(dstPath, dstType);
+	}
+
+	void Interpreter::Init()
+	{
+		if (srcType == PEX)
+		{
+			auto to = new InterpreterO_pex;
+			o += to;
+		}
+		if (dstType == PYTHON)
+		{
+			auto ti = new InterpreterI_python;
+			i += ti;
+		}
 	}
 
 }

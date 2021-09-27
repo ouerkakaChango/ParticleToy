@@ -219,6 +219,9 @@
     <ClInclude Include="..\include\Base\Tools\Timer.h" />
     <ClInclude Include="..\include\Base\Utility.h" />
     <ClInclude Include="..\include\FFTOcean\OceanParticleInfo.h" />
+    <ClInclude Include="..\include\Interpreter\InterpLanguageHeader.h" />
+    <ClInclude Include="..\include\Interpreter\InterpLanguages\Interp_pex.h" />
+    <ClInclude Include="..\include\Interpreter\InterpLanguages\Interp_python.h" />
     <ClInclude Include="..\include\Interpreter\Interpreter.h" />
     <ClInclude Include="..\include\Interpreter\InterpUtility.h" />
     <ClInclude Include="pch.h" />
@@ -282,6 +285,8 @@
     <ClCompile Include="..\include\Base\Tools\Timer.cpp" />
     <ClCompile Include="..\include\Base\Utility.cpp" />
     <ClCompile Include="..\include\FFTOcean\OceanParticleInfo.cpp" />
+    <ClCompile Include="..\include\Interpreter\InterpLanguages\Interp_pex.cpp" />
+    <ClCompile Include="..\include\Interpreter\InterpLanguages\Interp_python.cpp" />
     <ClCompile Include="..\include\Interpreter\Interpreter.cpp" />
     <ClCompile Include="..\include\Interpreter\InterpUtility.cpp" />
     <ClCompile Include="ParticleToy.cpp" />

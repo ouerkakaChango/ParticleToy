@@ -11,11 +11,28 @@ namespace Interp
 		Interpreter(LanguageType srcType_, LanguageType dstType_);
 		Interpreter(const str& srcPath_, const str& dstPath_);
 
-		bool LoadSrc();
 		void Interp();
+
+	protected:
+		void Init();
+		bool LoadSrc();
 		bool CheckTypeValid();
 
 		LanguageType srcType, dstType;
 		str srcPath, dstPath;
+	};
+
+	//无幻不起真，虚为启
+	//InterpreterO 处理srcLanguage
+	class InterpreterO : public ClassO
+	{
+		public:
+			virtual void Load(const str& path) {};
+	};
+
+	class InterpreterI : public ClassI
+	{
+	public:
+		
 	};
 }

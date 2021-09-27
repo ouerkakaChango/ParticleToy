@@ -145,6 +145,12 @@
     <Filter Include="源文件\Interpreter">
       <UniqueIdentifier>{fad45af7-257f-4e6d-8f03-7cd128057e7a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Interpreter\InterpLanguages">
+      <UniqueIdentifier>{e3e00288-344a-429f-aa83-24ddbcfd6345}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Interpreter\InterpLanguages">
+      <UniqueIdentifier>{277eb2f5-59dd-49ce-9983-002dfd178a7b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -311,6 +317,15 @@
     </ClInclude>
     <ClInclude Include="..\include\Interpreter\InterpUtility.h">
       <Filter>头文件\Interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Interpreter\InterpLanguageHeader.h">
+      <Filter>头文件\Interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Interpreter\InterpLanguages\Interp_pex.h">
+      <Filter>头文件\Interpreter\InterpLanguages</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Interpreter\InterpLanguages\Interp_python.h">
+      <Filter>头文件\Interpreter\InterpLanguages</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -499,6 +514,12 @@
     </ClCompile>
     <ClCompile Include="..\include\Interpreter\InterpUtility.cpp">
       <Filter>源文件\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Interpreter\InterpLanguages\Interp_python.cpp">
+      <Filter>源文件\Interpreter\InterpLanguages</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Interpreter\InterpLanguages\Interp_pex.cpp">
+      <Filter>源文件\Interpreter\InterpLanguages</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
