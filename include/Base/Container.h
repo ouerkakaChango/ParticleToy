@@ -194,6 +194,11 @@ public:
 		return data.substr(len- start - size, size);
 	}
 
+	bool beginWith(const str& s) const
+	{
+		return data.substr(0, s.size()) == s.data;
+	}
+
 	bool endWith(const str& last) const
 	{
 		return clipBack(0, last.size()) == last;

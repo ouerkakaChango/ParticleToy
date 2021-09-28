@@ -177,7 +177,9 @@
     <ClInclude Include="..\include\Base\FastGrid.h" />
     <ClInclude Include="..\include\Base\FastMath.h" />
     <ClInclude Include="..\include\Base\FastPnt.h" />
+    <ClInclude Include="..\include\Base\FileHelper\FileReader.h" />
     <ClInclude Include="..\include\Base\FileHelper\FileWriter.h" />
+    <ClInclude Include="..\include\Base\FileHelper\ReaderUtility.h" />
     <ClInclude Include="..\include\Base\FileHelper\StaticPointWriter.h" />
     <ClInclude Include="..\include\Base\FileHelper\StaticTriWriter.h" />
     <ClInclude Include="..\include\Base\FileHelper\WriterUtility.h" />
@@ -243,7 +245,9 @@
     <ClCompile Include="..\include\Base\FastGrid.cpp" />
     <ClCompile Include="..\include\Base\FastMath.cpp" />
     <ClCompile Include="..\include\Base\FastPnt.cpp" />
+    <ClCompile Include="..\include\Base\FileHelper\FileReader.cpp" />
     <ClCompile Include="..\include\Base\FileHelper\FileWriter.cpp" />
+    <ClCompile Include="..\include\Base\FileHelper\ReaderUtility.cpp" />
     <ClCompile Include="..\include\Base\FileHelper\StaticPointWriter.cpp" />
     <ClCompile Include="..\include\Base\FileHelper\StaticTriWriter.cpp" />
     <ClCompile Include="..\include\Base\FileHelper\WriterUtility.cpp" />

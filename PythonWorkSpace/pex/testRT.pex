@@ -1,4 +1,5 @@
 #include <RayTrace>
 Sphere s(P(0,0,-5),1);
+Box ground(P(0,-1.2,-5),P(5.0, 0.1, 5.0));
 RT_screen screen(1080,720);
 screen.Render("z_rt.png");
