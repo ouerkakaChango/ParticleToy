@@ -22,6 +22,7 @@ namespace Interp
 		for (int i=0;i<lines.size();i++)
 		{
 			str line = lines[i];
+			//### parse
 			if (IsIncludeFile(line))
 			{
 				
@@ -42,16 +43,56 @@ namespace Interp
 		}
 	}
 
-	bool InterpreterO_pex::IsIncludeFile(const str& line)
+	bool InterpreterO_pex::validEnd(const str& line)
 	{
-		//line.beginWith("#include")
+		int inx = line.lastInxOf(';');
+		for (int i = inx + 1; i < line.size(); i++)
+		{
+			if (line[i] != ' ')
+			{
+				return false;
+			}
+		}
 		return true;
 	}
 
-	bool InterpreterO_pex::IsObjDefine(const str& line)
+	bool InterpreterO_pex::IsIncludeFile(str line)
 	{
-		
-		return true;
+		line = line.NiceSpacebar();
+		if (line.beginWith("#include "))
+		{
+			str file = line.clip("#include ");
+			str contextName;
+			if (ValidFile(file, contextName))
+			{
+				contextArr += contextName;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	bool InterpreterO_pex::IsObjDefine(str line)
+	{
+		if (!validEnd(line))
+		{
+			return false;
+		}
+		line = line.NiceSpacebar();
+		line = line.clipBack(';');
+		//"type name(param1,...)"
+		//1.Check "type[spacebar]" format
+		str typeName, objName;
+		arr<str> params;
+		int inx1 = line.inxOf(' ');
+		if (inx1 != -1)
+		{
+			typeName = line.clip(0, inx1);
+			str objStr = line.clip(inx1+1);
+			//???
+			int aa = 1;
+		}
+		return false;
 	}
 
 	bool InterpreterO_pex::IsObjUse(const str& line)

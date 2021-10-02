@@ -29,4 +29,15 @@ namespace Interp
 			return LanguageType_python;
 		}
 	}
+
+	bool ValidFile(str fileStr, str& fileName)
+	{
+		int len = fileStr.size();
+		if (fileStr[0] == '<' && fileStr[len - 1] == '>')
+		{
+			fileName = fileStr.range(1, len - 2);
+			return true;
+		}
+		return false;
+	}
 }

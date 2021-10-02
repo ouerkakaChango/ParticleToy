@@ -13,6 +13,7 @@ namespace Interp
 
 	bool CheckType(const str& path, LanguageType type);
 	LanguageType GetLanguageType(const str& path);
+	bool ValidFile(str fileStr,str& fileName);
 
 #define PEX LanguageType_pex
 #define PYTHON LanguageType_python

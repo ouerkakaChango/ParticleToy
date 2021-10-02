@@ -36,6 +36,11 @@ void str::operator+=(int other)
 	data += std::to_string(other);
 }
 
+void str::operator+=(char c)
+{
+	data = data + c;
+}
+
 bool str::operator==(const char* s) const
 {
 	return data == string(s);
@@ -66,6 +71,119 @@ void str::AddDouble(double other, int precision)
 bool str::Has(str s) const
 {
 	return data.find(s.data) != std::string::npos;
+}
+
+str str::clip(int start) const
+{
+	return data.substr(start, data.size() - start);
+}
+
+str str::clip(char c) const
+{
+	if (data[0] != c)
+	{
+		abort();
+	}
+	return clip(1);
+}
+
+str str::clip(str startStr) const
+{
+	return clip(startStr.size());
+}
+
+str str::clip(int start, int size) const
+{
+	return data.substr(start, size);
+}
+
+str str::clipBack(char c) const
+{
+	if (last() != c)
+	{
+		abort();
+	}
+	return clipBack(1);
+}
+
+str str::clipBack(int start) const
+{
+	int len = data.size();
+	return data.substr(0, len - start);
+}
+
+str str::clipBack(str startStr) const
+{
+	return clipBack(startStr.size());
+}
+
+str str::clipBack(int start, int size) const
+{
+	int len = data.size();
+	return data.substr(len - start - size, size);
+}
+
+str str::range(int start, int end) const
+{
+	return data.substr(start, end - start + 1);
+}
+
+int str::inxOf(const char& c) const
+{
+	for (int i = 0; i < data.size(); i++)
+	{
+		if (data[i] == c)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
+int str::lastInxOf(const char& c) const
+{
+	int re = -1;
+	for (int i = 0; i < data.size(); i++)
+	{
+		if (data[i] == c)
+		{
+			re = i;
+		}
+	}
+	return re;
+}
+
+str str::NiceSpacebar() const
+{
+	str re;
+	int i = 0;
+	while (data[i] == ' ')
+	{
+		i += 1;
+	}
+	bool nowSpace = false;
+	for (int j = i; j < data.size(); j++)
+	{
+		char c = data[j];
+		if (!nowSpace)
+		{
+			re += c;
+		}
+		else if (c != ' ')
+		{
+			re += c;
+			nowSpace = false;
+		}
+		if (c == ' ')
+		{
+			nowSpace = true;
+		}
+	}
+	if (re[re.size() - 1] == ' ')
+	{
+		re = re.clipBack(' ');
+	}
+	return re;
 }
 //### str
 

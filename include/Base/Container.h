@@ -105,6 +105,18 @@ public:
 			data.push_back(t);
 		}
 	}
+
+	int inxOf(T val)
+	{
+		for (int i = 0; i < data.size(); i++)
+		{
+			if (data[i] == val)
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
 };
 
 template <class T>
@@ -174,6 +186,7 @@ public:
 	void operator+=(const str& other);
 	void operator+=(double other);
 	void operator+=(int other);
+	void operator+=(char c);
 	bool operator==(const char* s) const;
 	bool operator==(const str& str) const;
 	bool operator!=(const char* s) const;
@@ -188,11 +201,35 @@ public:
 		return data.c_str();
 	}
 
-	str clipBack(int start,int size) const
+	char& operator[](int inx)
 	{
-		int len = data.size();
-		return data.substr(len- start - size, size);
+		return data[inx];
 	}
+
+	char operator[](int inx) const
+	{
+		return data[inx];
+	}
+
+	char last() const
+	{
+		return data[data.size() - 1];
+	}
+
+	str clip(int start) const;
+	str clip(char c) const;
+	str clip(str startStr) const;
+	str clip(int start, int size) const;
+
+	str clipBack(char c) const;
+	str clipBack(int start) const;
+	str clipBack(str startStr) const;
+	str clipBack(int start, int size) const;
+
+	str range(int start, int end) const;
+
+	int inxOf(const char& c) const;
+	int lastInxOf(const char& c) const;
 
 	bool beginWith(const str& s) const
 	{
@@ -209,6 +246,8 @@ public:
 		return data.size();
 	}
 
+	str NiceSpacebar() const;
+
 	string data;
 };
 ostream& operator <<(ostream & os, const str & s);
@@ -223,4 +262,84 @@ public:
 	int2 operator+(const int2& t);
 	str ToStr();
 	int x=0, y=0;
+};
+
+template <class KeyType, class ValueType>
+class map
+{
+public:
+	ValueType& operator[](KeyType key)
+	{
+		int inx = inxOf(key);
+		if (inx != -1)
+		{
+			return values[inxOf(key)];
+		}
+		else
+		{
+			abort();
+		}
+	}
+
+	void add(const KeyType& key, const ValueType& val)
+	{
+		keys += key;
+		values += val;
+	}
+
+	int inxOf(KeyType key)
+	{
+		return keys.inxOf(key);
+	}
+
+	arr<KeyType> keys;
+	arr<ValueType> values;
+};
+
+template <class KeyType, class ValueType>
+class map2
+{
+public:
+	void operator+=(const KeyType& key)
+	{
+		inxMap.add(key, data.size());
+		data.addEmptyElems(1);
+	}
+
+	map<KeyType, ValueType>& operator[](const KeyType& key)
+	{
+		return data[inxMap[key]];
+	}
+
+	arr<KeyType> subKeys()
+	{
+		return inxMap.keys;
+	}
+
+	map<KeyType, int> inxMap;
+	arr<map<KeyType, ValueType>> data;
+};
+
+template <class KeyType,class ValueType>
+class map3
+{
+public:
+	void operator+=(const KeyType& key)
+	{
+		inxMap.add(key, data.size());
+		data.addEmptyElems(1);
+	}
+
+	map2<KeyType, ValueType>& operator[](const KeyType& key)
+	{
+		return data[inxMap[key]];
+	}
+
+	arr<KeyType> subKeys()
+	{
+		return inxMap.keys;
+	}
+
+	map<KeyType, int> inxMap;
+	arr<map2<KeyType, ValueType>> data;
 };
