@@ -20,7 +20,7 @@ namespace Interp
 		bool validEnd(const str& line);
 		bool IsIncludeFile(str line);
 		bool IsObjDefine(str line);
-		bool IsObjUse(const str& line);
+		bool IsObjUse(str line);
 		bool IsFunctionFormat(str s, str& funcName, arr<str>& params);
 		//___parse functions
 	};

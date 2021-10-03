@@ -282,6 +282,41 @@ str operator+(const char* s, const str other)
 	re += other;
 	return re;
 }
+
+str GetFileNameFromPath(const str& path)
+{
+	int inx1 = path.lastInxOf('.');
+	int start = -1;
+	for (int i = inx1; i >= 0; i--)
+	{
+		char c = path[i];
+		if (c == '\\' || c == '/')
+		{
+			start = i;
+			break;
+		}
+	}
+	return path.range(start+1, inx1-1);
+}
+
+void GetFileNameFromPath(const str& path, str& folder, str&fName, str&postfix)
+{
+	int inx1 = path.lastInxOf('.');
+	int start = -1;
+	for (int i = inx1; i >= 0; i--)
+	{
+		char c = path[i];
+		if (c == '\\' || c == '/')
+		{
+			start = i;
+			break;
+		}
+	}
+	fName = path.range(start + 1, inx1 - 1);
+	folder = path.range(0, start);
+	postfix = path.range(inx1, path.size() - 1);
+	int aa = 1;
+}
 //### global str
 
 //### int2

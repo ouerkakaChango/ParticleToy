@@ -261,6 +261,8 @@ public:
 ostream& operator <<(ostream & os, const str & s);
 str operator+(const char* s, const str other);
 #define typeStr(obj) str(typeid(obj).name())
+str GetFileNameFromPath(const str& path);
+void GetFileNameFromPath(const str& path, str& folder, str&fName, str&postfix);
 
 class int2
 {
@@ -341,11 +343,6 @@ public:
 	map2<KeyType, ValueType>& operator[](const KeyType& key)
 	{
 		return data[inxMap[key]];
-	}
-
-	arr<KeyType> subKeys()
-	{
-		return inxMap.keys;
 	}
 
 	map<KeyType, int> inxMap;

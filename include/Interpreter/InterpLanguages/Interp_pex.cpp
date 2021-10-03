@@ -15,6 +15,14 @@ namespace Interp
 		ReadFileToArr(path, lines);
 
 		ParseToDescribe(lines);
+
+		//通过path解析出文件名，默认输出fileName.describe
+		str folder, fName, postfix;
+		GetFileNameFromPath(path,folder,fName,postfix);
+
+		str describePath = folder + fName + "_AUTO.describe";
+		//OutputDescribe(describePath, context, toa);
+		int aa = 1;
 	}
 
 	void InterpreterO_pex::ParseToDescribe(const arr<str>& lines)
@@ -37,7 +45,7 @@ namespace Interp
 			}
 			else
 			{
-				//pex synax error
+				//pex syntax error
 				abort();
 			}
 		}
@@ -100,10 +108,39 @@ namespace Interp
 		return false;
 	}
 
-	bool InterpreterO_pex::IsObjUse(const str& line)
+	bool InterpreterO_pex::IsObjUse(str line)
 	{
+		if (!validEnd(line))
+		{
+			return false;
+		}
+		line = line.NiceSpacebar();
+		line = line.clipBack(';');
 
-		return true;
+		int inx1 = line.inxOf('.');
+		str objName = line.clip(0, inx1);
+		if (objName.isAllCharacter())
+		{
+			line = line.clip(inx1 + 1);
+			str funcName;
+			arr<str> params;
+			if (IsFunctionFormat(line, funcName, params))
+			{
+				for (int& inx : toa.inxMap.values)
+				{
+					auto& tt = toa.data[inx];
+					for (str& key2 : tt.inxMap.keys)
+					{
+						if (key2 == objName)
+						{
+							tt[objName].add(funcName, params);
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	bool InterpreterO_pex::IsFunctionFormat(str s, str& funcName, arr<str>& params)
