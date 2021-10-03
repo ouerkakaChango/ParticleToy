@@ -1,5 +1,12 @@
 #include "Container.h"
 
+//### global
+bool IsCharacter(char c)
+{
+	return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+}
+//### global
+
 //### str
 str::str(int n)
 {
@@ -140,6 +147,19 @@ int str::inxOf(const char& c) const
 	return -1;
 }
 
+arr<int> str::indicesOf(char c) const
+{
+	arr<int> re;
+	for (int i = 0; i < data.size(); i++)
+	{
+		if (data[i] == c)
+		{
+			re += i;
+		}
+	}
+	return re;
+}
+
 int str::lastInxOf(const char& c) const
 {
 	int re = -1;
@@ -182,6 +202,69 @@ str str::NiceSpacebar() const
 	if (re[re.size() - 1] == ' ')
 	{
 		re = re.clipBack(' ');
+	}
+	return re;
+}
+
+bool str::isAllCharacter() const
+{
+	for (int i = 0; i < data.size(); i++)
+	{
+		if (!IsCharacter(data[i]))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+arr<str> str::pieces(char interval) const
+{
+	arr<str> re;
+	str tt;
+	for (int i = 0; i < data.size(); i++)
+	{
+		char c = data[i];
+		if (c == interval && tt.size()>0)
+		{
+			re += tt;
+			tt = "";
+		}
+		else
+		{
+			tt += c;
+		}
+	}
+	return re;
+}
+
+arr<str> str::pieces(const arr<int> intervals) const
+{
+	arr<str> re;
+	if (intervals.size() == 0)
+	{
+		re += data;
+		return re;
+	}
+	str tt;
+	int i1 = 0;
+	for (int i = 0; i < data.size(); i++)
+	{
+		char c = data[i];
+		if (i1 < intervals.size() && i == intervals[i1])
+		{
+			re += tt;
+			i1 += 1;
+			tt = "";
+		}
+		else
+		{
+			tt += c;
+		}
+	}
+	if (tt.size() > 0)
+	{
+		re += tt;
 	}
 	return re;
 }

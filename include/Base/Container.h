@@ -174,6 +174,8 @@ public:
 	int x, y, z;
 };
 
+bool IsCharacter(char c);
+
 class str
 {
 public:
@@ -229,6 +231,7 @@ public:
 	str range(int start, int end) const;
 
 	int inxOf(const char& c) const;
+	arr<int> indicesOf(char c) const;
 	int lastInxOf(const char& c) const;
 
 	bool beginWith(const str& s) const
@@ -247,6 +250,11 @@ public:
 	}
 
 	str NiceSpacebar() const;
+
+	bool isAllCharacter() const;
+
+	arr<str> pieces(char interval) const;
+	arr<str> pieces(const arr<int> intervals) const;
 
 	string data;
 };

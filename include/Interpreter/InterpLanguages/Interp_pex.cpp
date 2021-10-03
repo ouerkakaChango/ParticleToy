@@ -89,8 +89,13 @@ namespace Interp
 		{
 			typeName = line.clip(0, inx1);
 			str objStr = line.clip(inx1+1);
-			//???
-			int aa = 1;
+			if (IsFunctionFormat(objStr, objName, params))
+			{
+				toa += typeName;
+				toa[typeName] += objName;
+				toa[typeName][objName].add("define", params);
+				return true;
+			}
 		}
 		return false;
 	}
@@ -101,4 +106,23 @@ namespace Interp
 		return true;
 	}
 
+	bool InterpreterO_pex::IsFunctionFormat(str s, str& funcName, arr<str>& params)
+	{
+		//funcName(p1,p2...)
+		int inx1 = s.inxOf('(');
+		str f = s.clip(0, inx1);
+		if (f.isAllCharacter())
+		{
+			str right = s.clip(inx1);
+			if (right.last() == ')')
+			{
+				funcName = f;
+				right = right.range(1, right.size() - 2);
+				params = GetParams(right);
+				return true;
+			}
+		}
+
+		return false;
+	}
 }
