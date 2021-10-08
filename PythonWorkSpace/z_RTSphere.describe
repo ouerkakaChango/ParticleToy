@@ -2,4 +2,4 @@ context RayTrace
 define Sphere called 's', center (0,0,-5), radius 1
 define Box called 'ground', center (0,-1.2,-5), bound (5.0, 0.1, 5.0)
 define RT_screen called 'screen', resolution (1080,720)
-use 'screen' to Render, save result to "z_rt.png"
+use 'screen' to Render, result "z_rt.png"

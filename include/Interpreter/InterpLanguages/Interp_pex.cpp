@@ -21,8 +21,7 @@ namespace Interp
 		GetFileNameFromPath(path,folder,fName,postfix);
 
 		str describePath = folder + fName + "_AUTO.describe";
-		//OutputDescribe(describePath, context, toa);
-		int aa = 1;
+		OutputDescribe(describePath, contextArr, toa);
 	}
 
 	void InterpreterO_pex::ParseToDescribe(const arr<str>& lines)

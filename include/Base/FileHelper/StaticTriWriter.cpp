@@ -49,6 +49,7 @@ void StaticTriWriterO::Write(FileWriterI* i, const str& filePath)
 			f << tri.p1.ToStr(6) <<" "<< tri.p2.ToStr(6)<< " " << tri.p3.ToStr(6) << "\n";
 			//break;
 		}
+		f.close();
 		std::cout << "File write done at " << filePath << "\n";
 	}
 }
