@@ -1,6 +1,7 @@
 #include "Interpreter.h"
 
 #include "InterpLanguageHeader.h"
+#include "FileHelper/FileUtility.h"
 #include <iostream>
 
 using std::cout;
@@ -34,7 +35,7 @@ namespace Interp
 
 		auto ti = Cast<InterpreterI*>(i[0]);
 		//???
-		ti->Parse("C:/Personal/ParticleToy/PythonWorkSpace/pex/test_RTSphere.describe");
+		ti->Parse(PathGod.pathMap["PexWorkPath"] +"/test_RTSphere.describe");
 		return true;
 	}
 
