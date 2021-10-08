@@ -33,6 +33,6 @@ namespace Interp
 	class InterpreterI : public ClassI
 	{
 	public:
-		
+		virtual void Parse(const str& path) {};
 	};
 }

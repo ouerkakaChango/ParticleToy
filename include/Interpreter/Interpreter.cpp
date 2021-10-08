@@ -31,6 +31,10 @@ namespace Interp
 		//???
 		auto to = Cast<InterpreterO*>(o[0]);
 		to->Load(srcPath);
+
+		auto ti = Cast<InterpreterI*>(i[0]);
+		//???
+		ti->Parse("C:/Personal/ParticleToy/PythonWorkSpace/pex/test_RTSphere.describe");
 		return true;
 	}
 

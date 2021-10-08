@@ -112,7 +112,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>C:\Users\hasee\source\repos\ParticleToy\include;C:\Users\hasee\source\repos\ParticleToy\include\Base;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Personal\ParticleToy\include\Base;C:\Personal\ParticleToy\include;C:\Users\hasee\source\repos\ParticleToy\include;C:\Users\hasee\source\repos\ParticleToy\include\Base;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4018;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -178,8 +178,8 @@
     <ClInclude Include="..\include\Base\FastMath.h" />
     <ClInclude Include="..\include\Base\FastPnt.h" />
     <ClInclude Include="..\include\Base\FileHelper\FileReader.h" />
+    <ClInclude Include="..\include\Base\FileHelper\FileUtility.h" />
     <ClInclude Include="..\include\Base\FileHelper\FileWriter.h" />
-    <ClInclude Include="..\include\Base\FileHelper\ReaderUtility.h" />
     <ClInclude Include="..\include\Base\FileHelper\StaticPointWriter.h" />
     <ClInclude Include="..\include\Base\FileHelper\StaticTriWriter.h" />
     <ClInclude Include="..\include\Base\FileHelper\WriterUtility.h" />
@@ -247,8 +247,8 @@
     <ClCompile Include="..\include\Base\FastMath.cpp" />
     <ClCompile Include="..\include\Base\FastPnt.cpp" />
     <ClCompile Include="..\include\Base\FileHelper\FileReader.cpp" />
+    <ClCompile Include="..\include\Base\FileHelper\FileUtility.cpp" />
     <ClCompile Include="..\include\Base\FileHelper\FileWriter.cpp" />
-    <ClCompile Include="..\include\Base\FileHelper\ReaderUtility.cpp" />
     <ClCompile Include="..\include\Base\FileHelper\StaticPointWriter.cpp" />
     <ClCompile Include="..\include\Base\FileHelper\StaticTriWriter.cpp" />
     <ClCompile Include="..\include\Base\FileHelper\WriterUtility.cpp" />

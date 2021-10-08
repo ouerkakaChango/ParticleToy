@@ -235,6 +235,10 @@ arr<str> str::pieces(char interval) const
 			tt += c;
 		}
 	}
+	if (tt.size() > 0)
+	{
+		re += tt;
+	}
 	return re;
 }
 

@@ -330,11 +330,11 @@
     <ClInclude Include="..\include\Base\FileHelper\FileReader.h">
       <Filter>头文件\Base\FileHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Base\FileHelper\ReaderUtility.h">
-      <Filter>头文件\Base\FileHelper</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\Interpreter\Describe.h">
       <Filter>头文件\Interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Base\FileHelper\FileUtility.h">
+      <Filter>头文件\Base\FileHelper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -533,11 +533,11 @@
     <ClCompile Include="..\include\Base\FileHelper\FileReader.cpp">
       <Filter>源文件\Base\FileHelper</Filter>
     </ClCompile>
-    <ClCompile Include="..\include\Base\FileHelper\ReaderUtility.cpp">
-      <Filter>源文件\Base\FileHelper</Filter>
-    </ClCompile>
     <ClCompile Include="..\include\Interpreter\Describe.cpp">
       <Filter>源文件\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\FileHelper\FileUtility.cpp">
+      <Filter>源文件\Base\FileHelper</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

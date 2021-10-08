@@ -57,6 +57,24 @@ public:
 		return data[inx];
 	}
 
+	T& last()
+	{
+		if (size() < 1)
+		{
+			abort();
+		}
+		return data[size() - 1];
+	}
+
+	const T& last() const
+	{
+		if (size() < 1)
+		{
+			abort();
+		}
+		return data[size() - 1];
+	}
+
 	unsigned int size() const
 	{
 		return data.size();
@@ -281,13 +299,14 @@ public:
 	ValueType& operator[](KeyType key)
 	{
 		int inx = inxOf(key);
-		if (inx != -1)
+		if (inx >= 0)
 		{
-			return values[inxOf(key)];
+			return values[inx];
 		}
 		else
 		{
-			abort();
+			*this += key;
+			return values.last();
 		}
 	}
 
@@ -295,6 +314,12 @@ public:
 	{
 		keys += key;
 		values += val;
+	}
+
+	void operator+=(const KeyType& key)
+	{
+		keys += key;
+		values.addEmptyElems(1);
 	}
 
 	int inxOf(KeyType key)
@@ -318,6 +343,11 @@ public:
 
 	map<KeyType, ValueType>& operator[](const KeyType& key)
 	{
+		if (inxMap.inxOf(key) < 0)
+		{
+			*this += key;
+			return data.last();
+		}
 		return data[inxMap[key]];
 	}
 
@@ -342,7 +372,27 @@ public:
 
 	map2<KeyType, ValueType>& operator[](const KeyType& key)
 	{
+		if (inxMap.inxOf(key)<0)
+		{
+			*this += key;
+			return data.last();
+		}
 		return data[inxMap[key]];
+	}
+
+	map<KeyType, ValueType>& Inx2(const KeyType& key)
+	{
+		for (int& inx : inxMap.values)
+		{
+			map2<KeyType, ValueType>& tmap2 = data[inx];
+			for (str& key2 : tmap2.inxMap.keys)
+			{
+				if (key2 == key)
+				{
+					return tmap2[key2];
+				}
+			}
+		}
 	}
 
 	map<KeyType, int> inxMap;
