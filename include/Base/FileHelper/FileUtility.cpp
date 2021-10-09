@@ -1,6 +1,9 @@
 #include "FileUtility.h"
 
 #include <fstream>
+#include "direct.h"
+#include "Utility.h"
+#include <cstring>
 
 void ReadFileToArr(const str& path, arr<str>& lines)
 {
@@ -37,5 +40,22 @@ PathGodClass& PathGodClass::GetInstance()
 {
 	static PathGodClass ins;
 	return ins;
+}
+
+str PathGodClass::GetCurrentPath()
+{
+	char cwd[MAX_PATH_LENGTH];
+	_getcwd(cwd, MAX_PATH_LENGTH);
+
+	std::string data(cwd);
+	str re(data);
+	return re;
+}
+
+void PathGodClass::AutoConfig()
+{
+	str cwd = GetCurrentPath();
+	int inx1 = cwd.tailInxOf("ParticleToy");
+	mainPath = cwd.range(0, inx1);
 }
 //### PathGodClass

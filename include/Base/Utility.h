@@ -1,8 +1,7 @@
 #pragma once
 
-#include <direct.h>
 #include <cmath>
-#define MAX_PATH 100  //max filepath,used for 3-party c-type API,such as _wgetcwd
+#define MAX_PATH_LENGTH 100  //max filepath,used for 3-party c-type API,such as _wgetcwd
 
 template <class T>
 inline T Cast(void* ptr)

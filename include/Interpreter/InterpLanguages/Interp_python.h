@@ -17,6 +17,7 @@ namespace Interp
 		void ParseUse(str line);
 		//___
 
+		
 		arr<str> lines;
 		map3<str, arr<str>> toa;//<typeName ObjName ActionName,params>
 	};

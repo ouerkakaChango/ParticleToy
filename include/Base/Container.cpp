@@ -272,6 +272,26 @@ arr<str> str::pieces(const arr<int> intervals) const
 	}
 	return re;
 }
+
+int str::tailInxOf(const str& s) const
+{
+	if (s.size() <= 1)
+	{
+		return inxOf(s[0]);
+	}
+
+	arr<int> indices = indicesOf(s[0]);
+	int size = s.size();
+	for (int i = 0; i < indices.size(); i++)
+	{
+		int inx1 = indices[i];
+		if (range(inx1, inx1 + size - 1) == s)
+		{
+			return inx1 + size - 1;
+		}
+	}
+	return -1;
+}
 //### str
 
 //### global str

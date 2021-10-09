@@ -11,7 +11,10 @@ private:
 	PathGodClass() {};
 public:
 	static PathGodClass& GetInstance();
+	str GetCurrentPath();
+	void AutoConfig();
 
+	str mainPath;
 	map<str, str> pathMap;
 };
 #define PathGod PathGodClass::GetInstance()

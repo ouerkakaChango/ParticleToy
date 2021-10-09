@@ -274,6 +274,8 @@ public:
 	arr<str> pieces(char interval) const;
 	arr<str> pieces(const arr<int> intervals) const;
 
+	int tailInxOf(const str& s) const;
+
 	string data;
 };
 ostream& operator <<(ostream & os, const str & s);

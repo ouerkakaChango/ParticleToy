@@ -192,13 +192,13 @@ void RTTraceRequestI_txt::CallCalculation(int reqInx)
 	//!!!
 	//将objs的信息元编程到.py代码，并运行calculation
 
-	//wchar_t   buffer[MAX_PATH];
-	//_wgetcwd(buffer, MAX_PATH);
+	//wchar_t   buffer[MAX_PATH_LENGTH];
+	//_wgetcwd(buffer, MAX_PATH_LENGTH);
 	//std::wcout.imbue(std::locale("chs"));
 	//wcout << buffer;
 	//!!! 现在默认路径必须英文，以后再改wchar做的Path类
-	char cwd[MAX_PATH];
-	_getcwd(cwd, MAX_PATH);
+	char cwd[MAX_PATH_LENGTH];
+	_getcwd(cwd, MAX_PATH_LENGTH);
 	_chdir(rayTraceGod.pythonWorkPath.c_str());
 	//system("RUN_testReq.bat");
 	str cmdStr = "python testOutResult.py ";
