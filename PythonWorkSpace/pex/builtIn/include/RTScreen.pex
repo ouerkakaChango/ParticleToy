@@ -1,0 +1,58 @@
+RTScreen::Init()
+{
+	def w=1080
+	def h=720
+
+	def P screenPos(0,0,0); //默认screen在原点
+	def P eyeOffset(0,0,1);
+	def dx = 2.0 / w; //NDC中x属于[-1,1]
+	ylen = dx*h;
+	def screenLeftDownPos = P(-1.0, -ylen/2, 0.0);
+	def screenLeftDownPos += 0.5*P(dx, dx, 0.0);
+	def maxTraceDis = 10;
+	def traceThre = 0.01
+}
+
+@cuda
+RTScreen::kernel_initRays(rayPos,rayDir)
+{
+    i,j = cuda.grid(2);
+	rayPos = screenPos + screenLeftDownPos + P(i*dx,j*dx,0);
+    rayDir = rayPos - screenPos - eyeOffset; //默认eyePos在屏幕后一单位，z轴向屏幕外为(0,0,1)
+}
+
+@cuda
+RTScreen::kernel_SphereSDFTrace(rayPos,rayDir,objSDF,sdf,traceDis,tVec)
+{
+	i,j = cuda.grid(2);
+
+	while 1:
+		foreach(objInx:objNum)
+		{
+			objSDF[i,j,objInx] = SDF_SCENEOBJ(objInx);
+		}
+		sdf = Min(objSDF);
+
+		if sdf>maxTraceDis:
+            break;
+        elif sdf <= traceThre:
+            traceDis = sdf;
+            break;
+                
+    	rayPos += sdf*rayDir;
+}
+
+RTScreen::Render()
+{
+	Init();
+	ScreenBuffer3D rayDir;
+	ScreenBuffer3D rayPos;
+	kernel_initRays[(w,h,1), 1](rayPos,rayDir);
+
+	ScreenBuffer3D wordNorm;
+	def objNum = WORLD.GetSceneObjNum();
+	ScreenBuffer objSDF(objNum,-1.0);
+	ScreenBuffer sdf(1,-1.0);
+	ScreenBuffer traceDis(1,-1.0);
+	kernel_SphereSDFTrace[(w,h,1), 1](rayPos,rayDir,objSDF,sdf,traceDis);
+}
