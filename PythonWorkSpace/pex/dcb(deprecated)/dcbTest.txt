@@ -1,0 +1,32 @@
+context RayTrace
+define Sphere called 's', center (0,0,-5), radius 1
+define Box called 'ground', center (0,-1.2,-5), bound (5.0, 0.1, 5.0)
+define RTScreen called 'screen', resolution (1080,720)
+use 'screen' to Render, result "z_rt.png"
+
+//###
+//RTScreen_Render.dcb
+condition with [SceneObject]
+condition has RTScreen
+define ScreenBuffer3D called 'rayDir'
+define ScreenBuffer3D called 'rayPos'
+define GPUKernel called kernel_initRays
+//进入kernel_initRays的.dcb，参数在.dcb中用condition声明
+call kernel_initRays
+define ScreenBuffer3D called 'worlNorm'
+define ScreenBuffer called 'objSDF', dimention [SceneObject.num], defaultValue -1
+define ScreenBuffer called 'sdf', defaultValue -1
+define ScreenBuffer called 'traceDis', defaultValue -1
+define GPUKernel called kernel_SphereSDFTrace
+//进入kernel_SphereSDFTrace.dcb，参数在.dcb中用condition声明
+call kernel_SphereSDFTrace
+
+//RTScreen_define.py
+w=[resolution 0]
+h=[resolution 1]
+
+screenPos = np.zeros(3)
+dx = 2.0 / w;
+ylen = dx*h;
+screenLeftDownPos = np.array([-1.0, -ylen/2, 0.0]);
+screenLeftDownPos += 0.5*np.array([dx, dx, 0.0]);
