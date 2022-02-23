@@ -151,6 +151,12 @@
     <Filter Include="源文件\Interpreter\InterpLanguages">
       <UniqueIdentifier>{277eb2f5-59dd-49ce-9983-002dfd178a7b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\AutoCS">
+      <UniqueIdentifier>{302e7410-bbf0-4611-9b33-5da40929a1b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\AutoCS">
+      <UniqueIdentifier>{8acb5e3a-6ee7-4585-92f3-b828489c9310}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -335,6 +341,15 @@
     </ClInclude>
     <ClInclude Include="..\include\Base\FileHelper\FileUtility.h">
       <Filter>头文件\Base\FileHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Base\Debug.h">
+      <Filter>头文件\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\AutoCS\AutoCSCommonDef.h">
+      <Filter>头文件\AutoCS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\AutoCS\AutoCSCfg.h">
+      <Filter>头文件\AutoCS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -538,6 +553,15 @@
     </ClCompile>
     <ClCompile Include="..\include\Base\FileHelper\FileUtility.cpp">
       <Filter>源文件\Base\FileHelper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Base\Debug.cpp">
+      <Filter>源文件\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\AutoCS\AutoCSCommonDef.cpp">
+      <Filter>源文件\AutoCS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\AutoCS\AutoCSCfg.cpp">
+      <Filter>源文件\AutoCS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

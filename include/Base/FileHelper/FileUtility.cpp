@@ -5,7 +5,7 @@
 #include "Utility.h"
 #include <cstring>
 
-void ReadFileToArr(const str& path, arr<str>& lines)
+void FileToArr(const str& path, arr<str>& lines)
 {
 	std::ifstream f(path.data);
 	if (!f)

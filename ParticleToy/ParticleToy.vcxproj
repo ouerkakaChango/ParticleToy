@@ -167,7 +167,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\AutoCS\AutoCSCfg.h" />
+    <ClInclude Include="..\include\AutoCS\AutoCSCommonDef.h" />
     <ClInclude Include="..\include\Base\Container.h" />
+    <ClInclude Include="..\include\Base\Debug.h" />
     <ClInclude Include="..\include\Base\Discretization\MarchingCube\MarchingCube.h" />
     <ClInclude Include="..\include\Base\Discretization\MarchingCube\MarchingCubeTable.h" />
     <ClInclude Include="..\include\Base\EffectSpace.h" />
@@ -237,7 +240,10 @@
     <ClCompile Include="..\Backup\old_FFTocean.cpp" />
     <ClCompile Include="..\Backup\rayTraceTest.cpp" />
     <ClCompile Include="..\Backup\threebody.cpp" />
+    <ClCompile Include="..\include\AutoCS\AutoCSCfg.cpp" />
+    <ClCompile Include="..\include\AutoCS\AutoCSCommonDef.cpp" />
     <ClCompile Include="..\include\Base\Container.cpp" />
+    <ClCompile Include="..\include\Base\Debug.cpp" />
     <ClCompile Include="..\include\Base\Discretization\MarchingCube\MarchingCube.cpp" />
     <ClCompile Include="..\include\Base\EffectSpace.cpp" />
     <ClCompile Include="..\include\Base\Evolver.cpp" />

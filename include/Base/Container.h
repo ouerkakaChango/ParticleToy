@@ -215,6 +215,7 @@ public:
 
 	void AddDouble(double other, int precision);
 	bool Has(str s) const;
+	vector<size_t> allIndices(const str& sub);
 
 	inline const char* c_str()
 	{
@@ -246,9 +247,10 @@ public:
 	str clipBack(str startStr) const;
 	str clipBack(int start, int size) const;
 
+	//close left,close right
 	str range(int start, int end) const;
 
-	int inxOf(const char& c) const;
+	int inxOf(const char& c, int begin=0) const;
 	arr<int> indicesOf(char c) const;
 	int lastInxOf(const char& c) const;
 
@@ -275,6 +277,8 @@ public:
 	arr<str> pieces(const arr<int> intervals) const;
 
 	int tailInxOf(const str& s) const;
+
+	str replace(int pos, int len, str newSub);
 
 	string data;
 };
@@ -327,6 +331,11 @@ public:
 	int inxOf(KeyType key)
 	{
 		return keys.inxOf(key);
+	}
+
+	bool Has(KeyType key)
+	{
+		return inxOf(key) != -1;
 	}
 
 	arr<KeyType> keys;

@@ -11,7 +11,7 @@ namespace Interp
 	{
 		cout << "Python parse at " << path;
 		arr<str> dcbLines;
-		ReadFileToArr(path, dcbLines);
+		FileToArr(path, dcbLines);
 
 		//???
 		PreHandle();
@@ -59,7 +59,7 @@ namespace Interp
 		if (ctxName == "RayTrace")
 		{
 			arr<str> tt;
-			ReadFileToArr(PathGod.pathMap["InterpRes"] + "/py_ctx_" + ctxName +".py", tt);
+			FileToArr(PathGod.pathMap["InterpRes"] + "/py_ctx_" + ctxName +".py", tt);
 			lines += tt;
 		}
 	}

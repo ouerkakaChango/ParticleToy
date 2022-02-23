@@ -80,6 +80,20 @@ bool str::Has(str s) const
 	return data.find(s.data) != std::string::npos;
 }
 
+vector<size_t> str::allIndices(const str& sub)
+{
+	vector<size_t> positions; // holds all the positions that sub occurs within str
+
+	size_t pos = data.find(sub.data, 0);
+	while (pos != string::npos)
+	{
+		positions.push_back(pos);
+		pos = data.find(sub.data, pos + 1);
+	}
+
+	return positions;
+}
+
 str str::clip(int start) const
 {
 	return data.substr(start, data.size() - start);
@@ -135,9 +149,9 @@ str str::range(int start, int end) const
 	return data.substr(start, end - start + 1);
 }
 
-int str::inxOf(const char& c) const
+int str::inxOf(const char& c, int begin) const
 {
-	for (int i = 0; i < data.size(); i++)
+	for (int i = begin; i < data.size(); i++)
 	{
 		if (data[i] == c)
 		{
@@ -291,6 +305,11 @@ int str::tailInxOf(const str& s) const
 		}
 	}
 	return -1;
+}
+
+str str::replace(int pos, int len, str newSub)
+{
+	return data.replace(pos, len, newSub.data);
 }
 //### str
 

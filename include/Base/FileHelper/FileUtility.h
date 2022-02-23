@@ -2,7 +2,7 @@
 
 #include "Container.h"
 
-void ReadFileToArr(const str& path, arr<str>& lines);
+void FileToArr(const str& path, arr<str>& lines);
 void ArrToFile(const arr<str>& lines, const str& path);
 
 class PathGodClass

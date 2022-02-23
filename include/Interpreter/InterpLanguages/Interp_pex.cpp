@@ -12,7 +12,7 @@ namespace Interp
 	{
 		cout << "PEX: load at "<< path << endl;
 		arr<str> lines;
-		ReadFileToArr(path, lines);
+		FileToArr(path, lines);
 
 		ParseToDescribe(lines);
 
