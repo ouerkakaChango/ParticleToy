@@ -189,6 +189,11 @@ int str::lastInxOf(const char& c) const
 
 str str::NiceSpacebar() const
 {
+	if (data.size() == 0)
+	{
+		return *this;
+	}
+
 	str re;
 	int i = 0;
 	while (data[i] == ' ')
@@ -359,6 +364,14 @@ void GetFileNameFromPath(const str& path, str& folder, str&fName, str&postfix)
 	folder = path.range(0, start);
 	postfix = path.range(inx1, path.size() - 1);
 	int aa = 1;
+}
+
+void NiceSpaceBar(arr<str>& lines)
+{
+	for (int i = 0; i < lines.size(); i++)
+	{
+		lines[i] = lines[i].NiceSpacebar();
+	}
 }
 //### global str
 

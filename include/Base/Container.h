@@ -135,6 +135,17 @@ public:
 		}
 		return -1;
 	}
+
+	//[begin,end]
+	void delRange(int begin, int end)
+	{
+		data.erase(data.begin() + begin, data.begin() + end + 1);
+	}
+
+	void insertBefore(int inx, arr<T> other)
+	{
+		data.insert(data.begin() + inx, other.begin(), other.end());
+	}
 };
 
 template <class T>
@@ -287,6 +298,7 @@ str operator+(const char* s, const str other);
 #define typeStr(obj) str(typeid(obj).name())
 str GetFileNameFromPath(const str& path);
 void GetFileNameFromPath(const str& path, str& folder, str&fName, str&postfix);
+void NiceSpaceBar(arr<str>& lines);
 
 class int2
 {
