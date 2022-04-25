@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
 	if (argc == 1)
 	{
 		log << "Error,No arg";
-		taskFile = "C:/Personal/UnityRayTraceGitGee/TestRayTrace/Assets/Resources/SDFGameCS/Detail1_task.txt";
+		taskFile = "D:/Personal/UnityRayTraceGitGee/TestRayTrace/Assets/Resources/SDFGameCS/Detail1_task.txt";
 	}
 	else
 	{

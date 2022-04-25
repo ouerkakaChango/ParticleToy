@@ -15,8 +15,11 @@ namespace AutoCS
 				while (i<lines.size() && lines[i].size() > 0)
 				{
 					str s = lines[i];
-					arr<str> words = s.pieces(' ');
-					valMap[words[0]] = words[1];
+					if (!s.beginWith("//"))
+					{
+						arr<str> words = s.pieces(' ');
+						valMap[words[0]] = words[1];
+					}
 					i++;
 				}
 			}
