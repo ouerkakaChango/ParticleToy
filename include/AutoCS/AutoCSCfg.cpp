@@ -43,7 +43,7 @@ namespace AutoCS
 						i++;
 						continue;
 					}
-					else if (lines[i].Has("###BLOCK"))
+					else if (lines[i] == "###BLOCK")
 					{
 						//dump tblocks to blocks
 						bInBlock = false;
