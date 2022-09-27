@@ -218,7 +218,7 @@ str str::NiceSpacebar() const
 			nowSpace = true;
 		}
 	}
-	if (re[re.size() - 1] == ' ')
+	if (re.size()>=1 && re[re.size() - 1] == ' ')
 	{
 		re = re.clipBack(' ');
 	}
